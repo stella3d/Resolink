@@ -18,9 +18,16 @@ namespace UnityResolume
         public string OutputPath = "Assets/Resolume-Unity/Map.asset";
 
         ResolumeOscMap m_MapToUpdate;
+        ResolumeType m_ResolumeType;
 
         public void OnGUI()
         {
+            using (new GUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel("Resolume Type");
+                m_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(m_ResolumeType);
+            }
+
             OutputPath = EditorGUILayout.TextField("Asset Path", OutputPath);
 
             if (GUILayout.Button("New OSC Map Asset"))
