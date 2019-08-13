@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml;
+using UnityEditor;
 using UnityEngine;
 
 namespace UnityResolume
@@ -12,21 +13,20 @@ namespace UnityResolume
         const string k_DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
 #endif
 
-
         const string k_ShortCut = "Shortcut";
-        const string k_EndShortCut = "/Shortcut";
         const string k_ShortCutPath = "ShortcutPath";
 
         readonly XmlReaderSettings m_XmlSettings = new XmlReaderSettings {DtdProcessing = DtdProcessing.Parse};
         
-        Dictionary<string, ResolumeOscShortcut> m_ShortcutsByOutputPath = new Dictionary<string, ResolumeOscShortcut>();
-        List<ResolumeOscShortcut> m_Shortcuts = new List<ResolumeOscShortcut>();
+        readonly List<ResolumeOscShortcut> m_Shortcuts = new List<ResolumeOscShortcut>();
         
-        
-        XmlReader m_Reader ;
+        XmlReader m_Reader;
 
         ResolumeOscShortcut m_CurrentShortcut;
-
+        ResolumeOscMap m_Map;
+        
+        public string OutputPath { get; set; }
+        
         public void ParseDefaultFile()
         {
             var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -38,46 +38,38 @@ namespace UnityResolume
         {
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);
             m_Reader.MoveToContent();
-            
-            // Parse the file and display each of the nodes.
-            while (m_Reader.Read()) {
-                switch (m_Reader.NodeType) {
+
+            while (m_Reader.Read()) 
+            {
+                switch (m_Reader.NodeType) 
+                {
                     case XmlNodeType.Element:
-                        //Debug.LogFormat("<{0}>", m_Reader.Name);
-                        // this is where most things happen
                         HandleNodeByName();
                         break;
-                    case XmlNodeType.Text:
-                        //Debug.Log(m_Reader.Value);
-                        break;
-                    case XmlNodeType.CDATA:
-                        //Debug.LogFormat("<![CDATA[{0}]]>", m_Reader.Value);
-                        break;
-                    case XmlNodeType.ProcessingInstruction:
-                        //Debug.LogFormat("<?{0} {1}?>", m_Reader.Name, m_Reader.Value);
-                        break;
-                    case XmlNodeType.Comment:
-                        //Debug.LogFormat("<!--{0}-->", m_Reader.Value);
-                        break;
-                    case XmlNodeType.XmlDeclaration:
-                        //Debug.Log("<?xml version='1.0'?>");
-                        break;
-                    case XmlNodeType.Document:
-                        break;
-                    case XmlNodeType.DocumentType:
-                        //Debug.LogFormat("<!DOCTYPE {0} [{1}]", m_Reader.Name, m_Reader.Value);
-                        break;
-                    case XmlNodeType.EntityReference:
-                        //Debug.Log(m_Reader.Name);
-                        break;
                     case XmlNodeType.EndElement:
-                        //Debug.LogFormat("</{0}>", m_Reader.Name);
                         HandleEndElementByName();
                         break;
                 } 
             }
-            
+
+            if (m_Shortcuts.Count == 0)
+                return;
+
             Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
+
+            CreateAsset();
+        }
+
+        void CreateAsset()
+        {
+            m_Map = ScriptableObject.CreateInstance<ResolumeOscMap>();
+
+            foreach (var shortcut in m_Shortcuts)
+            {
+                m_Map.Shortcuts.Add(shortcut);
+            }
+
+            AssetDatabase.CreateAsset(m_Map, OutputPath);
         }
 
         void HandleNodeByName()
@@ -85,12 +77,7 @@ namespace UnityResolume
             switch (m_Reader.Name)
             {
                 case k_ShortCut:
-                    m_CurrentShortcut = new ResolumeOscShortcut();
-                    break;
-                case k_EndShortCut:
-                    Debug.Log("finished parsing shortcut");
-                    m_Shortcuts.Add(m_CurrentShortcut);
-                    m_CurrentShortcut = null;
+                    m_CurrentShortcut = NewShortcut();
                     break;
                 case k_ShortCutPath:
                     ParseShortcutPath();
@@ -103,11 +90,16 @@ namespace UnityResolume
             switch (m_Reader.Name)
             {
                 case k_ShortCut:
-                    Debug.Log("finished parsing shortcut");
                     m_Shortcuts.Add(m_CurrentShortcut);
                     m_CurrentShortcut = null;
                     break;
             }
+        }
+
+        ResolumeOscShortcut NewShortcut()
+        {
+            long.TryParse(m_Reader.GetAttribute("uniqueId"), out var id);
+            return new ResolumeOscShortcut { UniqueId = id };
         }
 
         public void ParseShortcutPath()

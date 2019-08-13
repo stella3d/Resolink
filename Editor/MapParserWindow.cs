@@ -15,12 +15,15 @@ namespace UnityResolume
             window.Show();
         }
 
+        public string OutputPath = "Assets/Resolume-Unity/Map.asset";
 
         public void OnGUI()
         {
+            OutputPath = EditorGUILayout.TextField("Asset Path", OutputPath);
+            
             if (GUILayout.Button("parse default file"))
             {
-                var parser = new OscMapParser();
+                var parser = new OscMapParser { OutputPath = OutputPath };
                 parser.ParseDefaultFile();
             }
         }
