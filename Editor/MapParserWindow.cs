@@ -17,15 +17,29 @@ namespace UnityResolume
 
         public string OutputPath = "Assets/Resolume-Unity/Map.asset";
 
+        ResolumeOscMap m_MapToUpdate;
+
         public void OnGUI()
         {
             OutputPath = EditorGUILayout.TextField("Asset Path", OutputPath);
-            
-            if (GUILayout.Button("parse default file"))
+
+            if (GUILayout.Button("New OSC Map Asset"))
             {
                 var parser = new OscMapParser { OutputPath = OutputPath };
                 parser.ParseDefaultFile();
             }
+            
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
+#pragma warning disable 618
+            m_MapToUpdate = (ResolumeOscMap) EditorGUILayout.ObjectField(m_MapToUpdate, typeof(ResolumeOscMap));
+#pragma warning restore 618
+            if (GUILayout.Button("Update OSC Map Asset"))
+            {
+                Debug.Log("updating not implemented yet");
+            }
+            
         }
     }
 }
