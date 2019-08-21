@@ -68,7 +68,7 @@ namespace UnityResolume
 
             if (m_Shortcuts.Count == 0)
                 return;
-
+            
             Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
 
             CreateAsset();
@@ -83,6 +83,8 @@ namespace UnityResolume
             {
                 m_Map.Shortcuts.Add(shortcut);
             }
+            
+            m_Map.GroupSubTargets();
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
         }
@@ -101,7 +103,8 @@ namespace UnityResolume
                     ParseShortcutPath();
                     break;
                 case k_SubTargetNodeName:
-                    m_CurrentShortcut.SubTarget = ParseSubTarget();
+                    // on initial parsing, we don't group subtargets that we find in multiple Shortcut nodes
+                    m_CurrentShortcut.SubTargets = new[] { ParseSubTarget() };
                     break;
             }
         }

@@ -19,6 +19,20 @@ namespace UnityResolume
 
         byte[] m_LabelIndexOptions = { 1, 2, 3 };
 
+        GUIStyle m_HeaderFoldout;
+        
+        GUIStyle HeaderFoldoutStyle 
+        {
+            get
+            {
+                if (m_HeaderFoldout != null) 
+                    return m_HeaderFoldout;
+
+                m_HeaderFoldout = new GUIStyle(EditorStyles.foldoutHeader) {stretchWidth = false, fixedWidth = 300};
+                return m_HeaderFoldout;
+            }
+        }
+
         enum LabelIndexOptions : byte
         {
             One, 
@@ -38,13 +52,6 @@ namespace UnityResolume
             m_FoldoutStates = new byte[m_Map.Shortcuts.Count];
 
             GenerateLabels();
-            /*
-            m_Labels = new string[m_Map.Shortcuts.Count];
-            for (int i = 0; i < m_Labels.Length; i++)
-            {
-                m_Labels[i] = GetNiceShortcutLabel(m_Map.Shortcuts[i]);
-            }
-            */
         }
 
         public void GenerateLabels()
@@ -67,8 +74,6 @@ namespace UnityResolume
                         m_Labels[i] = GetNiceLabel3Chunks(outPath);
                         break;
                 }
-
-                //m_Labels[i] = GetNiceShortcutLabel(m_Map.Shortcuts[i]);
             }
         }
 
@@ -78,7 +83,7 @@ namespace UnityResolume
             
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
             {
-                DrawShortcut(i, m_Map.Shortcuts);
+                DrawShortcut(i);
                 EditorGUILayout.Separator();
             }
         }
@@ -100,20 +105,10 @@ namespace UnityResolume
                 EditorGUILayout.PrefixLabel("Show Shortcut IDs");
                 m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
             }
-
             
             GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(360));
         }
 
-        static string GetNiceShortcutLabel(ResolumeOscShortcut shortcut)
-        {
-            var outPath = shortcut.Output.Path;
-            int lastIndex = outPath.LastIndexOf('/');
-            int secondLastIndex = lastIndex > 0 ? outPath.LastIndexOf('/', lastIndex - 1) : -1;
-            var labelIndex = (secondLastIndex > 0 ? secondLastIndex : lastIndex) + 1;
-            return char.ToUpper(outPath[labelIndex]) + outPath.Substring(labelIndex + 1);
-        }
-        
         static string GetNiceLabel1Chunk(string outPath)
         {
             var labelIndex = outPath.LastIndexOf('/') + 1;
@@ -145,13 +140,16 @@ namespace UnityResolume
             return char.ToUpper(outPath[labelIndex]) + outPath.Substring(labelIndex + 1);
         }
 
-        public void DrawShortcut(int index, List<ResolumeOscShortcut> shortcuts)
+        public void DrawShortcut(int index)
         {
             var foldoutState = m_FoldoutStates[index] != byte.MinValue;
-            var afterState = EditorGUILayout.Foldout(foldoutState, m_Labels[index], EditorStyles.foldoutHeader);
+            var afterState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_Labels[index], HeaderFoldoutStyle);
             m_FoldoutStates[index] = afterState ? byte.MaxValue : byte.MinValue;
             if (!afterState)
+            {
+                EditorGUILayout.EndFoldoutHeaderGroup();
                 return;
+            }
 
             var shortcut = m_Map.Shortcuts[index];
 
@@ -161,10 +159,11 @@ namespace UnityResolume
             EditorGUILayout.LabelField("Input Path", shortcut.Input.Path);
             EditorGUILayout.LabelField("Output Path", shortcut.Output.Path);
             
-            if (shortcut.SubTarget == null || !shortcut.SubTarget.IsValid()) 
+            if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0) 
                 return;
 
-            DrawSubTarget(shortcut.SubTarget);
+            DrawSubTargetsIfAny(shortcut.SubTargets);
+            EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
         static void DrawSubTarget(SubTarget subTarget)
@@ -172,9 +171,33 @@ namespace UnityResolume
             EditorGUILayout.LabelField("Sub Target");
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.LabelField("Type", subTarget.Type.ToString());
                 EditorGUILayout.LabelField("Option Index", subTarget.OptionIndex.ToString());
+                EditorGUILayout.LabelField("Type", subTarget.Type.ToString());
             }
+        }
+        
+        static void DrawSubTargets(SubTarget[] subTargets)
+        {
+            EditorGUILayout.LabelField("Sub Targets");
+            using (new EditorGUI.IndentLevelScope())
+            {
+                foreach (var subTarget in subTargets)
+                {
+                    EditorGUILayout.PrefixLabel("Option Index " + subTarget.OptionIndex);
+                    using (new EditorGUI.IndentLevelScope())
+                    {
+                        EditorGUILayout.LabelField("Type", subTarget.Type.ToString());
+                    }
+                }
+            }
+        }
+        
+        static void DrawSubTargetsIfAny(SubTarget[] subTargets)
+        {
+            if(subTargets.Length == 1)
+                DrawSubTarget(subTargets[0]);
+            else
+                DrawSubTargets(subTargets);
         }
     }
 }

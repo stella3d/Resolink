@@ -8,7 +8,7 @@ namespace UnityResolume
         public long UniqueId;
         public ShortcutPath Input;
         public ShortcutPath Output;
-        public SubTarget SubTarget;                // not all Shortcuts have subtargets
+        public SubTarget[] SubTargets;                // not all Shortcuts have subtargets
         public string ParamNodeName;
         public Type DataType;
     }
