@@ -1,12 +1,15 @@
+using System;
+
 namespace UnityResolume
 {
-    [System.Serializable]
+    [Serializable]
     public class ResolumeOscShortcut
     {
         public long UniqueId;
         public ShortcutPath Input;
         public ShortcutPath Output;
-        // not all Shortcuts have subtargets
-        public SubTarget SubTarget;
+        public SubTarget SubTarget;                // not all Shortcuts have subtargets
+        public string ParamNodeName;
+        public Type DataType;
     }
 }

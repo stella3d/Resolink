@@ -5,5 +5,10 @@ namespace UnityResolume
     {
         public int Type;
         public int OptionIndex;
+
+        public bool IsValid()
+        {
+            return Type != 0 || OptionIndex != 0;
+        }
     }
 }

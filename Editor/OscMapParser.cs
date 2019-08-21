@@ -9,10 +9,23 @@ namespace UnityResolume
     public class OscMapParser
     {
 #if UNITY_EDITOR_WIN
-        const string k_DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
-        const string k_DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
+        internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
+        internal const string DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
 #endif
+        
+        const string k_BoolParamNodeName = "RangedParam[bool]";
+        const string k_ParamNodeName = "ParamRange";
+        const string k_ParamChoiceInt = "ParamChoice[int]";
+        const string k_UnsignedLongLongParam = "ParamChoice[unsigned long long]";
+        const string k_AutopilotTargetParam = "ParamChoice[struct AutoPilot::Target]";
+        const string k_ParamTrigger = "ParamTrigger";
+        
+        const string k_UnknownResolumeType =
+            "The Resolume shortcut with unique id {0}'s attribute 'paramNodeName' had a value of {1}, " +
+            "which we don't know the data type for";
 
+        const string k_VersionInfoNodeName = "versionInfo";
+        const string k_SubTargetNodeName = "Subtarget";
         const string k_ShortCut = "Shortcut";
         const string k_ShortCutPath = "ShortcutPath";
 
@@ -24,13 +37,14 @@ namespace UnityResolume
 
         ResolumeOscShortcut m_CurrentShortcut;
         ResolumeOscMap m_Map;
+        ResolumeVersion m_Version;
         
         public string OutputPath { get; set; }
         
         public void ParseDefaultFile()
         {
             var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var path = userPath + k_DefaultAvenuePath;
+            var path = userPath + DefaultAvenuePath;
             ParseFile(path);
         }
 
@@ -63,6 +77,7 @@ namespace UnityResolume
         void CreateAsset()
         {
             m_Map = ScriptableObject.CreateInstance<ResolumeOscMap>();
+            m_Map.Version = m_Version;
 
             foreach (var shortcut in m_Shortcuts)
             {
@@ -76,13 +91,52 @@ namespace UnityResolume
         {
             switch (m_Reader.Name)
             {
+                case k_VersionInfoNodeName:
+                    m_Version = ParseVersion();
+                    break;
                 case k_ShortCut:
                     m_CurrentShortcut = NewShortcut();
                     break;
                 case k_ShortCutPath:
                     ParseShortcutPath();
                     break;
+                case k_SubTargetNodeName:
+                    m_CurrentShortcut.SubTarget = ParseSubTarget();
+                    break;
             }
+        }
+
+        ResolumeVersion ParseVersion()
+        {
+            int.TryParse(m_Reader.GetAttribute("majorVersion"), out var major);
+            int.TryParse(m_Reader.GetAttribute("minorVersion"), out var minor);
+            int.TryParse(m_Reader.GetAttribute("microVersion"), out var micro);
+            
+            return new ResolumeVersion()
+            {
+                Major = major,
+                Minor = minor,
+                Micro = micro
+            };
+        }
+
+        SubTarget ParseSubTarget()
+        {
+            var typeString = m_Reader.GetAttribute("type");
+            var optionString = m_Reader.GetAttribute("optionIndex");
+            if (string.IsNullOrWhiteSpace(typeString) || string.IsNullOrWhiteSpace(optionString))
+                return null;
+            
+            if(int.TryParse(typeString, out var type) && int.TryParse(optionString, out var optionIndex))
+            {
+                return new SubTarget()
+                {
+                    Type = type,
+                    OptionIndex = optionIndex
+                };
+            }
+
+            return null;
         }
 
         void HandleEndElementByName()
@@ -98,15 +152,51 @@ namespace UnityResolume
 
         ResolumeOscShortcut NewShortcut()
         {
-            long.TryParse(m_Reader.GetAttribute("uniqueId"), out var id);
-            return new ResolumeOscShortcut { UniqueId = id };
+            var uniqueIdString = m_Reader.GetAttribute("uniqueId");
+            long.TryParse(uniqueIdString, out var id);
+
+            var paramNodeName = m_Reader.GetAttribute("paramNodeName");
+            if (!TryParseType(paramNodeName, out var type))
+                Debug.LogWarningFormat(k_UnknownResolumeType, uniqueIdString, paramNodeName);
+
+            return new ResolumeOscShortcut
+            {
+                UniqueId = id,
+                DataType = type
+            };
+        }
+        
+        static bool TryParseType(string paramNodeName, out Type type)
+        {
+            switch (paramNodeName)
+            {
+                case k_BoolParamNodeName:
+                    type = typeof(bool);
+                    break;
+                case k_ParamNodeName:
+                    type = typeof(float);
+                    break;
+                case k_ParamChoiceInt:
+                case k_ParamTrigger:
+                case k_AutopilotTargetParam:    
+                    type = typeof(int);
+                    break;
+                case k_UnsignedLongLongParam:
+                    type = typeof(long);
+                    break;
+                default:
+                    type = default;
+                    break;
+            }
+
+            return type != default;
         }
 
         public void ParseShortcutPath()
         {
             int.TryParse(m_Reader.GetAttribute("translationType"), out var translationType);
             int.TryParse(m_Reader.GetAttribute("allowedTranslationTypes"), out var allowedTranslationTypes);
-
+            
             var parsed = new ShortcutPath
             {
                 Name = m_Reader.GetAttribute("name"),

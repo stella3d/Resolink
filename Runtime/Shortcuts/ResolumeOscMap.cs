@@ -7,6 +7,8 @@ namespace UnityResolume
     [Serializable]
     public class ResolumeOscMap : ScriptableObject
     {
+        public ResolumeVersion Version;
+        
         public List<ResolumeOscShortcut> Shortcuts = new List<ResolumeOscShortcut>();
     }
 }
