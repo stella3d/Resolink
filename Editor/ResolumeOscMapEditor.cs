@@ -9,6 +9,16 @@ namespace UnityResolume
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor
     {
+        enum LabelIndexOptions : byte
+        {
+            One, 
+            Two, 
+            Three
+        }
+        
+        LabelIndexOptions m_LabelOption;
+        LabelIndexOptions m_PreviousLabelOption;
+        
         ResolumeOscMap m_Map;
 
         byte[] m_FoldoutStates;
@@ -16,8 +26,6 @@ namespace UnityResolume
         string[] m_Labels;
 
         bool m_ShowUniqueIds;
-
-        byte[] m_LabelIndexOptions = { 1, 2, 3 };
 
         GUIStyle m_HeaderFoldout;
         
@@ -28,29 +36,19 @@ namespace UnityResolume
                 if (m_HeaderFoldout != null) 
                     return m_HeaderFoldout;
 
-                m_HeaderFoldout = new GUIStyle(EditorStyles.foldoutHeader) {stretchWidth = false, fixedWidth = 300};
+                m_HeaderFoldout = new GUIStyle(EditorStyles.foldoutHeader) {stretchWidth = true};
                 return m_HeaderFoldout;
             }
         }
 
-        enum LabelIndexOptions : byte
-        {
-            One, 
-            Two, 
-            Three
-        }
-
-        LabelIndexOptions m_LabelOption;
-        LabelIndexOptions m_PreviousLabelOption;
-
         public void OnEnable()
         {
             m_Map = (ResolumeOscMap) target;
-            if(m_Map == null)
-                Debug.LogWarning("Failed to get Resolume map from target");
+            if( m_Map.Events == null)
+                m_Map.Events = new OscMapEvents(m_Map);
             
+            m_Map.Events.PopulateEvents();
             m_FoldoutStates = new byte[m_Map.Shortcuts.Count];
-
             GenerateLabels();
         }
 
@@ -80,6 +78,9 @@ namespace UnityResolume
         public override void OnInspectorGUI()
         {
             DrawOptions();
+            
+            if(m_Map.Events.Count == 0)
+                m_Map.Events.PopulateEvents();
             
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
             {
@@ -158,12 +159,28 @@ namespace UnityResolume
             
             EditorGUILayout.LabelField("Input Path", shortcut.Input.Path);
             EditorGUILayout.LabelField("Output Path", shortcut.Output.Path);
-            
-            if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0) 
+
+            if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0)
+            {
+                EditorGUILayout.EndFoldoutHeaderGroup();
                 return;
+            }
 
             DrawSubTargetsIfAny(shortcut.SubTargets);
+            DrawEvents(m_Map, shortcut);
+            
             EditorGUILayout.EndFoldoutHeaderGroup();
+        }
+
+        void DrawEvents(ResolumeOscMap map, ResolumeOscShortcut shortcut)
+        {
+            if (shortcut.DataType == typeof(int))
+            {
+            }
+            else if (shortcut.DataType == typeof(float))
+            {
+                
+            }
         }
 
         static void DrawSubTarget(SubTarget subTarget)

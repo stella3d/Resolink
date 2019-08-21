@@ -10,5 +10,7 @@ namespace UnityResolume
         public ResolumeVersion Version;
         
         public List<ResolumeOscShortcut> Shortcuts = new List<ResolumeOscShortcut>();
+        
+        public OscMapEvents Events;
     }
 }
