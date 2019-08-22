@@ -44,7 +44,7 @@ namespace UnityResolume
         public void OnEnable()
         {
             m_Map = (ResolumeOscMap) target;
-            if( m_Map.Events == null)
+            if( m_Map.Events?.IdToFloatEvent == null)
                 m_Map.Events = new OscMapEvents(m_Map);
             
             m_Map.Events.PopulateEvents();
@@ -78,10 +78,13 @@ namespace UnityResolume
         public override void OnInspectorGUI()
         {
             DrawOptions();
-            
-            if(m_Map.Events.Count == 0)
+
+            if (m_Map.Events.Count == 0)
+            {
+                Debug.Log("populating events");
                 m_Map.Events.PopulateEvents();
-            
+            }
+
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
             {
                 DrawShortcut(i);

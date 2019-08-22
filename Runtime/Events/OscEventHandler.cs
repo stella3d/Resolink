@@ -18,5 +18,16 @@ namespace UnityResolume
         {
             Event = new TEvent();
         }
+
+        public void Invoke(T value)
+        {
+            if (!enabled)
+                return;
+
+            Event.Invoke(value);
+        }
+        
+        // the empty update function is here so the inspector has the disable checkbox
+        public void Update() { }
     }
 }

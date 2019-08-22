@@ -19,6 +19,8 @@ namespace UnityResolume
         protected List<FloatEvent> m_FloatEvents = new List<FloatEvent>();
 
         public GameObject gameObject;
+        public GameObject IntEventsObject;
+        public GameObject FloatEventsObject;
         
         public int Count
         {
@@ -37,7 +39,19 @@ namespace UnityResolume
         public OscMapEvents(ResolumeOscMap map)
         {
             m_Map = map;
+            Init();
             PopulateEvents();
+        }
+
+        void Init()
+        {
+            if (gameObject == null)
+            {
+                gameObject = new GameObject("OSC Event Handlers");
+            }
+
+            IdToIntEvent = new Dictionary<long, IntOscEventHandler>();
+            IdToFloatEvent = new Dictionary<long, FloatOscEventHandler>();
         }
 
         public void PopulateEvents()
@@ -45,13 +59,24 @@ namespace UnityResolume
             if (m_Map == null)
                 return;
             
+            if(IdToFloatEvent == null || IdToIntEvent == null || gameObject == null)
+                Init();
+            
             foreach (var shortcut in m_Map.Shortcuts)
             {
                 var id = shortcut.UniqueId;
                 if (!IdToIntEvent.ContainsKey(id))
-                    IdToIntEvent.Add(id, gameObject.AddComponent<IntOscEventHandler>());
+                {
+                    var intComponent = gameObject.AddComponent<IntOscEventHandler>();
+                    intComponent.Shortcut = shortcut;
+                    IdToIntEvent.Add(id, intComponent);
+                }
                 else if (!IdToFloatEvent.ContainsKey(id))
-                    IdToFloatEvent.Add(id, gameObject.AddComponent<FloatOscEventHandler>());
+                {
+                    var floatComponent = gameObject.AddComponent<FloatOscEventHandler>();
+                    floatComponent.Shortcut = shortcut;
+                    IdToFloatEvent.Add(id, floatComponent);
+                }
             }
             
             Debug.LogFormat("{0} blank event handlers populated", Count);
