@@ -16,7 +16,8 @@ namespace UnityResolume
         }
 
         string m_OscMapPath = OscMapParser.DefaultAvenuePath;
-        string OutputPath = "Assets/Resolume-Unity/Map.asset";
+        string OutputPath = "Assets/Unity-Resolume/Map.asset";
+        string HandlerOutputPath = "Assets/Unity-Resolume/ExampleEventHandler.asset";
 
         ResolumeOscMap m_MapToUpdate;
         ResolumeType m_ResolumeType;
@@ -55,6 +56,17 @@ namespace UnityResolume
             if (GUILayout.Button("Update OSC Map Asset"))
             {
                 Debug.Log("updating not implemented yet");
+            }
+            
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+            
+            HandlerOutputPath = EditorGUILayout.TextField("Event Asset Creation Path", HandlerOutputPath);
+
+            if (GUILayout.Button("Create Example shortcut event"))
+            {
+                var eventObj = new GameObject("OSC Event Handlers");
+                var component = eventObj.AddComponent<FloatOscEvent>();
             }
         }
 
