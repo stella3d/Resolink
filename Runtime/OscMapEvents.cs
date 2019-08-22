@@ -10,8 +10,8 @@ namespace UnityResolume
     {
         protected ResolumeOscMap m_Map;
 
-        public Dictionary<long, IntOscEvent> IdToIntEvent = new Dictionary<long, IntOscEvent>();
-        public Dictionary<long, FloatOscEvent> IdToFloatEvent = new Dictionary<long, FloatOscEvent>();
+        public Dictionary<long, IntOscEventHandler> IdToIntEvent = new Dictionary<long, IntOscEventHandler>();
+        public Dictionary<long, FloatOscEventHandler> IdToFloatEvent = new Dictionary<long, FloatOscEventHandler>();
 
         [SerializeField]
         protected List<IntEvent> m_IntEvents = new List<IntEvent>();
@@ -49,9 +49,9 @@ namespace UnityResolume
             {
                 var id = shortcut.UniqueId;
                 if (!IdToIntEvent.ContainsKey(id))
-                    IdToIntEvent.Add(id, gameObject.AddComponent<IntOscEvent>());
+                    IdToIntEvent.Add(id, gameObject.AddComponent<IntOscEventHandler>());
                 else if (!IdToFloatEvent.ContainsKey(id))
-                    IdToFloatEvent.Add(id, gameObject.AddComponent<FloatOscEvent>());
+                    IdToFloatEvent.Add(id, gameObject.AddComponent<FloatOscEventHandler>());
             }
             
             Debug.LogFormat("{0} blank event handlers populated", Count);

@@ -66,7 +66,7 @@ namespace UnityResolume
             if (GUILayout.Button("Create Example shortcut event"))
             {
                 var eventObj = new GameObject("OSC Event Handlers");
-                var component = eventObj.AddComponent<FloatOscEvent>();
+                var component = eventObj.AddComponent<FloatOscEventHandler>();
             }
         }
 
