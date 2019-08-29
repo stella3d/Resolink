@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [Serializable]
     public class ResolumeOscShortcut
@@ -9,7 +9,6 @@ namespace UnityResolume
         public ShortcutPath Input;
         public ShortcutPath Output;
         public SubTarget[] SubTargets;                // not all Shortcuts have subtargets
-        public string ParamNodeName;
         public Type DataType;
     }
 }

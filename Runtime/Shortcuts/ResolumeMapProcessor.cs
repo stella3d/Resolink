@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityResolume
+namespace Resolunity
 {
     public static class ResolumeMapMethods
     {

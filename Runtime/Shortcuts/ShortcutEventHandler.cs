@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityResolume
+namespace Resolunity
 {
-    [Serializable] public class IntEvent        : UnityEvent<int> {}
 
-    [Serializable]
-    public class FloatEvent : UnityEvent<float> { }
     
     [Serializable]
     public abstract class ShortcutEventHandler<TUnityEvent>
@@ -27,7 +24,7 @@ namespace UnityResolume
     }
     
     [Serializable]
-    public class FloatEventHandler : ShortcutEventHandler<FloatEvent>
+    public class FloatEventHandler : ShortcutEventHandler<FloatUnityEvent>
     {
         public FloatEventHandler(ResolumeOscShortcut shortcut) : base(shortcut)
         {
@@ -35,12 +32,12 @@ namespace UnityResolume
                 Debug.LogWarningFormat("Cannot create float event with data type {0}, path {1}",
                     shortcut.DataType, shortcut.Output.Path);
             
-            m_Event = new FloatEvent();
+            m_Event = new FloatUnityEvent();
         }
     }
     
     [Serializable]
-    public class IntEventHandler : ShortcutEventHandler<IntEvent>
+    public class IntEventHandler : ShortcutEventHandler<IntUnityEvent>
     {
         public IntEventHandler(ResolumeOscShortcut shortcut) : base(shortcut)
         {
@@ -48,7 +45,7 @@ namespace UnityResolume
                 Debug.LogWarningFormat("Cannot create int event with data type {0}, path {1}",
                     shortcut.DataType, shortcut.Output.Path);
             
-            m_Event = new IntEvent();
+            m_Event = new IntUnityEvent();
         }
     }
 }

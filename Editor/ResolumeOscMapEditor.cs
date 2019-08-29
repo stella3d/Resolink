@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor
@@ -45,7 +45,7 @@ namespace UnityResolume
         {
             m_Map = (ResolumeOscMap) target;
             if( m_Map.Events?.IdToFloatEvent == null)
-                m_Map.Events = new OscMapEvents(m_Map);
+                m_Map.Events = new EventComponentMapping(m_Map);
             
             m_Map.Events.PopulateEvents();
             m_FoldoutStates = new byte[m_Map.Shortcuts.Count];

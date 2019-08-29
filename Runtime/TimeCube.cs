@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OscJack;
 using UnityEngine;
 
-namespace UnityResolume
+namespace Resolunity
 {
     public class TimeCube : MonoBehaviour
     {

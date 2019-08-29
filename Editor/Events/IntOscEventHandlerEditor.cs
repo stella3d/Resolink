@@ -1,9 +1,9 @@
 using UnityEditor;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [CustomEditor(typeof(IntOscEventHandler))]
-    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntOscEventHandler, IntEvent, int>
+    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntOscEventHandler, IntUnityEvent, int>
     {
     }
 }

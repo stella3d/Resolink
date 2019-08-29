@@ -1,6 +1,6 @@
 using System;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [Serializable]
     public class SubTarget : IComparable<SubTarget>, IEquatable<SubTarget>

@@ -3,40 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [Serializable]
-    public class OscMapEvents
+    public class EventComponentMapping : MonoBehaviour
     {
         protected ResolumeOscMap m_Map;
 
         public Dictionary<long, IntOscEventHandler> IdToIntEvent = new Dictionary<long, IntOscEventHandler>();
         public Dictionary<long, FloatOscEventHandler> IdToFloatEvent = new Dictionary<long, FloatOscEventHandler>();
+        public Dictionary<long, BooleanOscEventHandler> IdToBoolEvent = new Dictionary<long, BooleanOscEventHandler>();
 
         [SerializeField]
-        protected List<IntEvent> m_IntEvents = new List<IntEvent>();
+        protected List<IntUnityEvent> m_IntEvents = new List<IntUnityEvent>();
         [SerializeField]
-        protected List<FloatEvent> m_FloatEvents = new List<FloatEvent>();
+        protected List<FloatUnityEvent> m_FloatEvents = new List<FloatUnityEvent>();
+        [SerializeField]
+        protected List<FloatUnityEvent> m_BoolEvents = new List<FloatUnityEvent>();
 
         public GameObject gameObject;
         public GameObject IntEventsObject;
         public GameObject FloatEventsObject;
+        public GameObject BoolEventsObject;
         
-        public int Count
-        {
-            get
-            {
-                var count = 0;
-                if (IdToFloatEvent != null)
-                    count += IdToFloatEvent.Count;
-                if (IdToIntEvent != null)
-                    count += IdToIntEvent.Count;
-                
-                return count;
-            }
-        }
+        public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
 
-        public OscMapEvents(ResolumeOscMap map)
+        public EventComponentMapping(ResolumeOscMap map)
         {
             m_Map = map;
             Init();
@@ -46,20 +38,14 @@ namespace UnityResolume
         void Init()
         {
             if (gameObject == null)
-            {
                 gameObject = new GameObject("OSC Event Handlers");
-            }
-
-            IdToIntEvent = new Dictionary<long, IntOscEventHandler>();
-            IdToFloatEvent = new Dictionary<long, FloatOscEventHandler>();
         }
 
         public void PopulateEvents()
         {
             if (m_Map == null)
                 return;
-            
-            if(IdToFloatEvent == null || IdToIntEvent == null || gameObject == null)
+            if(gameObject == null)
                 Init();
             
             foreach (var shortcut in m_Map.Shortcuts)

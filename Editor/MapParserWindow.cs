@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityResolume
+namespace Resolunity
 {
     public class MapParserWindow : EditorWindow
     {

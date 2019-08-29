@@ -1,4 +1,4 @@
-﻿namespace UnityResolume
+﻿namespace Resolunity
 {
     public enum ResolumeType : byte
     {

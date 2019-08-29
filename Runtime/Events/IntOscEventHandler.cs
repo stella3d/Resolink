@@ -1,6 +1,12 @@
-using System;
+using OscJack;
 
-namespace UnityResolume
+namespace Resolunity
 {
-    public class IntOscEventHandler : OscEventHandler<IntEvent, int> { }
+    public class IntOscEventHandler : OscEventHandler<IntUnityEvent, int> 
+    {         
+        protected override int GetMessageValue(OscDataHandle dataHandle)
+        {
+            return dataHandle.GetElementAsInt(0);
+        }
+    }
 }

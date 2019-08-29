@@ -1,9 +1,9 @@
 using UnityEditor;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [CustomEditor(typeof(FloatOscEventHandler))]
-    public class FloatOscEventHandlerEditor : OscEventHandlerEditor<FloatOscEventHandler, FloatEvent, float>
+    public class FloatOscEventHandlerEditor : OscEventHandlerEditor<FloatOscEventHandler, FloatUnityEvent, float>
     {
     }
 }

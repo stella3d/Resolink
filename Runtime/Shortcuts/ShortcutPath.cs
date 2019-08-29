@@ -1,4 +1,4 @@
-namespace UnityResolume
+namespace Resolunity
 {
     [System.Serializable]
     public class ShortcutPath

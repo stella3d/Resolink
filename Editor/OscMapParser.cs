@@ -4,7 +4,7 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityResolume
+namespace Resolunity
 {
     public class OscMapParser
     {
@@ -14,7 +14,7 @@ namespace UnityResolume
 #endif
         
         const string k_BoolParamNodeName = "RangedParam[bool]";
-        const string k_ParamNodeName = "ParamRange";
+        const string k_ParamRangeNodeName = "ParamRange";
         const string k_ParamChoiceInt = "ParamChoice[int]";
         const string k_UnsignedLongLongParam = "ParamChoice[unsigned long long]";
         const string k_AutopilotTargetParam = "ParamChoice[struct AutoPilot::Target]";
@@ -169,14 +169,17 @@ namespace UnityResolume
             };
         }
         
-        static bool TryParseType(string paramNodeName, out Type type)
+        bool TryParseType(string paramNodeName, out Type type)
         {
+            Debug.Log("nodeName " + paramNodeName);
+
             switch (paramNodeName)
             {
                 case k_BoolParamNodeName:
                     type = typeof(bool);
                     break;
-                case k_ParamNodeName:
+                case k_ParamRangeNodeName:
+                    Debug.Log(m_Reader.Name +  " " + k_ParamRangeNodeName + " - float");
                     type = typeof(float);
                     break;
                 case k_ParamChoiceInt:

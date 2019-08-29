@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UnityResolume
+namespace Resolunity
 {
     [Serializable]
     public class ResolumeOscMap : ScriptableObject
@@ -11,6 +11,6 @@ namespace UnityResolume
         
         public List<ResolumeOscShortcut> Shortcuts = new List<ResolumeOscShortcut>();
         
-        public OscMapEvents Events;
+        public EventComponentMapping Events;
     }
 }
