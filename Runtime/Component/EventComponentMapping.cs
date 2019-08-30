@@ -137,13 +137,19 @@ namespace Resolunity
         GameObject ObjectForShortcut(ResolumeOscShortcut shortcut)
         {
             if (shortcut.IsTimeEvent())
-                return TimeEventsObject;
-            if (shortcut.TypeName == typeof(int).Name)
-                return IntEventsObject;
-            if (shortcut.TypeName == typeof(float).Name)
-                return FloatEventsObject;
-            
-            return shortcut.TypeName == typeof(bool).Name ? BoolEventsObject : null;
+                return TempoController;
+            if (shortcut.IsCompositionEvent())
+                return Composition;
+            if (shortcut.IsLayerEvent())
+                return CompositionLayer;
+            if (shortcut.IsCompositionDashboardEvent())
+                return CompositionDashboard;
+            if (shortcut.IsCompositionLayerDashboardEvent())
+                return CompositionLayerDashboard;
+            if (shortcut.IsApplicationUiEvent())
+                return ApplicationUI;
+
+            return null;
         }
 
         OscEventHandler ComponentForShortcut(GameObject go, ResolumeOscShortcut shortcut)

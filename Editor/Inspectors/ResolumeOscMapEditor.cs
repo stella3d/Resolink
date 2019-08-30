@@ -53,17 +53,23 @@ namespace Resolunity
 
             for (int i = 0; i < m_Labels.Length; i++)
             {
-                var outPath = m_Map.Shortcuts[i].Output.Path;
+                var shortcut = m_Map.Shortcuts[i];
+                var outPath = shortcut.Output.Path;
+                var inPath = shortcut.Input.Path;
+
+                var suffix = OscMapParser.InputPathToEventType.TryGetValue(inPath, out var type) 
+                    ? $"    -  {type?.Name}" : "";
+                
                 switch (m_LabelOption)
                 {
                     case LabelIndexOptions.One:
-                        m_Labels[i] = GetNiceLabel1Chunk(outPath);
+                        m_Labels[i] = GetNiceLabel1Chunk(outPath) + suffix;
                         break;
                     case LabelIndexOptions.Two:
-                        m_Labels[i] = GetNiceLabel2Chunks(outPath);
+                        m_Labels[i] = GetNiceLabel2Chunks(outPath) + suffix;
                         break;
                     case LabelIndexOptions.Three:
-                        m_Labels[i] = GetNiceLabel3Chunks(outPath);
+                        m_Labels[i] = GetNiceLabel3Chunks(outPath) + suffix;
                         break;
                 }
             }

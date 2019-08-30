@@ -10,9 +10,9 @@ namespace Resolunity
     {
         protected TComponent m_Component;
 
-        SerializedProperty m_EventProperty;
+        protected SerializedProperty m_EventProperty;
 
-        GUIStyle m_LabelStyle;
+        protected GUIStyle m_LabelStyle;
 
         public void OnEnable()
         {

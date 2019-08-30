@@ -7,6 +7,7 @@ using UnityEngine;
 namespace Resolunity
 {
     [CreateAssetMenu]
+    [ExecuteAlways]
     public class OscMapParser : ScriptableObject
     {
         public static OscMapParser instance;
@@ -224,6 +225,15 @@ namespace Resolunity
             }
             
             return null;
+        }
+    }
+
+    [InitializeOnLoad]
+    static class TypeLoader
+    {
+        static TypeLoader()
+        {
+            
         }
     }
 }

@@ -6,8 +6,10 @@ namespace Resolunity
     [CustomEditor(typeof(EventComponentMapping))]
     public class EventComponentMappingEditor : Editor
     {
-
-        EventComponentMapping m_Target;
+        const string k_HelpText = "This component takes the map of OSC events we get from Resolume & generates " +
+                                  "components with UnityEvents for each address in the map.\n\n";
+        
+        protected EventComponentMapping m_Target;
         
         public void OnEnable()
         {
