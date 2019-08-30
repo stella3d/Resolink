@@ -288,7 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b816b457b9d204b91272d3114ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableLogging: 1
+  EnableLogging: 0
 --- !u!1 &5968537749292215562
 GameObject:
   m_ObjectHideFlags: 0
