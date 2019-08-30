@@ -107,39 +107,19 @@ namespace Resolunity
                 InitializeDictionaries();
             if (m_IntEvents == null)
                 InitializeSerializableDictionaries();
-            
+
+            var count = 0;
             foreach (var shortcut in OscMap.Shortcuts)
             {
-                //var inputPath = shortcut.Input.Path;
                 var go = ObjectForShortcut(shortcut);
-                if(go != null)
-                    ComponentForShortcut(go, shortcut);
-                /*
-                if (!IdToIntEvent.ContainsKey(inputPath))
-                {
-                    var intComponent = IntEventsObject.AddComponent<IntOscEventHandler>();
-                    intComponent.Shortcut = shortcut;
-                    IdToIntEvent.Add(inputPath, intComponent);
-                    m_IntEvents.Add(inputPath, intComponent.Event);
-                }
-                else if (!IdToFloatEvent.ContainsKey(inputPath))
-                {
-                    var floatComponent = FloatEventsObject.AddComponent<FloatOscEventHandler>();
-                    floatComponent.Shortcut = shortcut;
-                    IdToFloatEvent.Add(inputPath, floatComponent);
-                    m_FloatEvents.Add(inputPath, floatComponent.Event);
-                }
-                else if (!IdToBoolEvent.ContainsKey(inputPath))
-                {
-                    var boolComponent = BoolEventsObject.AddComponent<BooleanOscEventHandler>();
-                    boolComponent.Shortcut = shortcut;
-                    IdToBoolEvent.Add(inputPath, boolComponent);
-                    m_BoolEvents.Add(inputPath, boolComponent.Event);
-                }
-                */
+                if (go == null) 
+                    continue;
+                
+                ComponentForShortcut(go, shortcut);
+                count++;
             }
             
-            Debug.LogFormat("{0} event handlers populated", Count);
+            Debug.LogFormat("{0} event handlers populated", count);
         }
 
         GameObject ObjectForShortcut(ResolumeOscShortcut shortcut)

@@ -39,6 +39,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3175600420413209015}
+  - component: {fileID: 1788183718}
+  - component: {fileID: 1788183719}
+  - component: {fileID: 1788183720}
   m_Layer: 0
   m_Name: Pause & Tempo
   m_TagString: Untagged
@@ -54,12 +57,111 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3587327163144788485}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5435297799950870753}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1788183718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587327163144788485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aee2a51587e74c01a0db49b6a5c71926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shortcut:
+    UniqueId: 1566536576536
+    Input:
+      Name: InputPath
+      Path: /composition/tempocontroller/pause
+      TranslationType: 1
+      AllowedTranslationTypes: 1
+    Output:
+      Name: OutputPath
+      Path: /composition/tempocontroller/pause
+      TranslationType: 1
+      AllowedTranslationTypes: -1
+    SubTargets: []
+    TypeName: Boolean
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1788183720}
+        m_MethodName: HandlePauseEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_TypeName: Resolunity.BoolUnityEvent, Resolume-Unity.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1788183719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587327163144788485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5617d98bcb8c4393a23f00f6c96bd616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shortcut:
+    UniqueId: 1566536576535
+    Input:
+      Name: InputPath
+      Path: /composition/tempocontroller/tempo
+      TranslationType: 1
+      AllowedTranslationTypes: 1
+    Output:
+      Name: OutputPath
+      Path: /composition/tempocontroller/tempo
+      TranslationType: 1
+      AllowedTranslationTypes: -1
+    SubTargets:
+    - Type: 5
+      OptionIndex: -1
+    TypeName: Single
+  Event:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1788183720}
+        m_MethodName: HandleTempoEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+    m_TypeName: Resolunity.FloatUnityEvent, Resolume-Unity.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1788183720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3587327163144788485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6dcf06c3b44a96a0372b83c163cff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BPM: 0
 --- !u!1 &5435297799950870766
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +172,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5435297799950870753}
   - component: {fileID: 7619410690153919264}
+  - component: {fileID: 1177205122}
+  - component: {fileID: 2546890139085608837}
   m_Layer: 0
   m_Name: OSC Event Handlers
   m_TagString: Untagged
@@ -112,6 +216,79 @@ MonoBehaviour:
   FloatEventsObject: {fileID: 5968537749292215562}
   BoolEventsObject: {fileID: 7057228873369228805}
   TimeEventsObject: {fileID: 3587327163144788485}
+--- !u!114 &1177205122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5435297799950870766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51f8f979447c54247bcba0d5441e6081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _udpPort: 9000
+  _oscAddress: /unity
+  _dataType: 0
+  _event:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _intEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+IntEvent, jp.keijiro.osc-jack.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _floatEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+FloatEvent, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vector2Event:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+Vector2Event, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vector3Event:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+Vector3Event, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vector4Event:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+Vector4Event, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vector2IntEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+Vector2IntEvent, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _vector3IntEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+Vector3IntEvent, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  _stringEvent:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: OscJack.OscEventReceiver+StringEvent, jp.keijiro.osc-jack.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+--- !u!114 &2546890139085608837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5435297799950870766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91b816b457b9d204b91272d3114ea4e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnableLogging: 1
 --- !u!1 &5968537749292215562
 GameObject:
   m_ObjectHideFlags: 0
