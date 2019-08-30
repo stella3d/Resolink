@@ -37,7 +37,7 @@ namespace Resolunity
                 
                 targets.Sort();
                 
-                Debug.LogFormat("path {0} - {1} sub-targets", kvp.Key, kvp.Value?.Count);
+                // Debug.LogFormat("path {0} - {1} sub-targets", kvp.Key, kvp.Value?.Count);
             }
 
             foreach (var shortcut in map.Shortcuts)
@@ -55,7 +55,7 @@ namespace Resolunity
                 k_ProcessedOutputs.Add(outPath);
             }
             
-            Debug.LogFormat("{0} shortcuts after grouping sub-targets", k_NewShortcuts.Count);
+            // Debug.LogFormat("{0} shortcuts after grouping sub-targets", k_NewShortcuts.Count);
             map.Shortcuts = k_NewShortcuts;
         }
     }

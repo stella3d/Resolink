@@ -43,7 +43,10 @@ namespace Resolunity
 
             if (GUILayout.Button("Create New OSC Map Asset"))
             {
-                var parser = new OscMapParser { OutputPath = OutputPath };
+                var parser = ScriptableSingleton<OscMapParser>.instance != null ? 
+                    ScriptableSingleton<OscMapParser>.instance : CreateInstance<OscMapParser>();
+                
+                parser.OutputPath = OutputPath;
                 parser.ParseDefaultFile();
             }
             
@@ -62,12 +65,6 @@ namespace Resolunity
             EditorGUILayout.Space();
             
             HandlerOutputPath = EditorGUILayout.TextField("Event Asset Creation Path", HandlerOutputPath);
-
-            if (GUILayout.Button("Create Example shortcut event"))
-            {
-                var eventObj = new GameObject("OSC Event Handlers");
-                var component = eventObj.AddComponent<FloatOscEventHandler>();
-            }
         }
 
         public string GetMapPath()

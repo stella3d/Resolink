@@ -54,6 +54,7 @@ namespace Resolunity
     [Serializable]
     public class EventComponentMapping : MonoBehaviour
     {
+        
         public ResolumeOscMap OscMap;
 
         public Dictionary<string, IntOscEventHandler> IdToIntEvent;
@@ -79,6 +80,8 @@ namespace Resolunity
         public GameObject CompositionDashboard;
         public GameObject CompositionLayerDashboard;
         public GameObject ApplicationUI;
+        
+        public static Dictionary<string, Type> InputPathToEventType { get; set; }
         
         public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
 
@@ -144,6 +147,11 @@ namespace Resolunity
 
         OscEventHandler ComponentForShortcut(GameObject go, ResolumeOscShortcut shortcut)
         {
+            if (InputPathToEventType == null)
+            {
+            }
+            
+
             OscEventHandler component = null;
             if (shortcut.TypeName == typeof(int).Name)
                 component = go.AddComponent<IntOscEventHandler>();

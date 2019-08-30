@@ -9,9 +9,9 @@ namespace Resolunity
     [CreateAssetMenu]
     public class OscMapParser : ScriptableSingleton<OscMapParser>
     {
-        static readonly Dictionary<string, Type> k_InputPathToEventType = new Dictionary<string, Type>();
+        public static readonly Dictionary<string, Type> InputPathToEventType = new Dictionary<string, Type>();
         
-        [SerializeField] ResolumeEventMetaData[] m_PathMetaData = new ResolumeEventMetaData[1];
+        [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
         
 #if UNITY_EDITOR_WIN
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
@@ -23,18 +23,27 @@ namespace Resolunity
         const string k_ShortCut = "Shortcut";
         const string k_ShortCutPath = "ShortcutPath";
 
-        readonly XmlReaderSettings m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
-        
-        readonly List<ResolumeOscShortcut> m_Shortcuts = new List<ResolumeOscShortcut>();
-        
+        XmlReaderSettings m_XmlSettings;
         XmlReader m_Reader;
+        
+        List<ResolumeOscShortcut> m_Shortcuts;
 
         ResolumeOscShortcut m_CurrentShortcut;
         ResolumeOscMap m_Map;
         ResolumeVersion m_Version;
         
         public string OutputPath { get; set; }
-        
+
+        void OnEnable()
+        {
+            if (m_PathMetaData == null)
+                m_PathMetaData = new ResolumeEventMetaData[1];
+            
+            m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
+            m_Shortcuts = new List<ResolumeOscShortcut>();
+            GatherTypeMetaData();
+        }
+
         public void ParseDefaultFile()
         {
             var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -44,8 +53,6 @@ namespace Resolunity
 
         public void ParseFile(string filePath)
         {
-            GatherTypeMetaData();
-            
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);
             m_Reader.MoveToContent();
 
@@ -75,6 +82,7 @@ namespace Resolunity
             m_Map = CreateInstance<ResolumeOscMap>();
             m_Map.Version = m_Version;
 
+            m_Map.Shortcuts.Clear();
             foreach (var shortcut in m_Shortcuts)
             {
                 m_Map.Shortcuts.Add(shortcut);
@@ -174,7 +182,7 @@ namespace Resolunity
             {
                 case "InputPath":
                     m_CurrentShortcut.Input = parsed;
-                    if (k_InputPathToEventType.TryGetValue(parsed.Path, out var type))
+                    if (InputPathToEventType.TryGetValue(parsed.Path, out var type))
                         m_CurrentShortcut.TypeName = type.Name;
                     break;
                 case "OutputPath":
@@ -185,7 +193,7 @@ namespace Resolunity
         
         public void GatherTypeMetaData()
         {
-            k_InputPathToEventType.Clear();
+            InputPathToEventType.Clear();
             foreach (var asset in m_PathMetaData)
             {
                 for (var i = 0; i < asset.InputPaths.Count; i++)
@@ -193,9 +201,11 @@ namespace Resolunity
                     var path = asset.InputPaths[i];
                     var type = TypeFromEnum(asset.Types[i]);
                     if(type != null) 
-                        k_InputPathToEventType.Add(path, type);
+                        InputPathToEventType.Add(path, type);
                 }
             }
+
+            EventComponentMapping.InputPathToEventType = InputPathToEventType;
         }
 
         static Type TypeFromEnum(TypeSelectionEnum selection)
