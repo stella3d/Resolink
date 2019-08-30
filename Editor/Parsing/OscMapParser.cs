@@ -11,8 +11,7 @@ namespace Resolunity
     {
         static readonly Dictionary<string, Type> k_InputPathToEventType = new Dictionary<string, Type>();
         
-        [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
-        
+        [SerializeField] ResolumeEventMetaData[] m_PathMetaData = new ResolumeEventMetaData[1];
         
 #if UNITY_EDITOR_WIN
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
