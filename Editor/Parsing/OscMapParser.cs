@@ -6,8 +6,14 @@ using UnityEngine;
 
 namespace Resolunity
 {
-    public class OscMapParser
+    [CreateAssetMenu]
+    public class OscMapParser : ScriptableSingleton<OscMapParser>
     {
+        static Dictionary<string, Type> k_InputPathToEventType = new Dictionary<string, Type>();
+        
+        [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
+        
+        
 #if UNITY_EDITOR_WIN
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
         internal const string DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
@@ -50,6 +56,8 @@ namespace Resolunity
 
         public void ParseFile(string filePath)
         {
+            GatherTypeMetaData();
+            
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);
             m_Reader.MoveToContent();
 
@@ -158,20 +166,21 @@ namespace Resolunity
             var uniqueIdString = m_Reader.GetAttribute("uniqueId");
             long.TryParse(uniqueIdString, out var id);
 
+            /*
             var paramNodeName = m_Reader.GetAttribute("paramNodeName");
             if (!TryParseType(paramNodeName, out var type))
                 Debug.LogWarningFormat(k_UnknownResolumeType, uniqueIdString, paramNodeName);
+                */
 
             return new ResolumeOscShortcut
             {
                 UniqueId = id,
-                TypeName = type
             };
         }
         
         bool TryParseType(string paramNodeName, out string type)
         {
-            Debug.Log("nodeName " + paramNodeName);
+            //Debug.Log("nodeName " + paramNodeName);
 
             switch (paramNodeName)
             {
@@ -218,11 +227,43 @@ namespace Resolunity
             {
                 case "InputPath":
                     m_CurrentShortcut.Input = parsed;
+                    if (k_InputPathToEventType.TryGetValue(parsed.Path, out var type))
+                        m_CurrentShortcut.TypeName = type.Name;
                     break;
                 case "OutputPath":
                     m_CurrentShortcut.Output = parsed;
                     break;
             }
+        }
+        
+        public void GatherTypeMetaData()
+        {
+            k_InputPathToEventType.Clear();
+            foreach (var asset in m_PathMetaData)
+            {
+                for (var i = 0; i < asset.InputPaths.Count; i++)
+                {
+                    var path = asset.InputPaths[i];
+                    var type = TypeFromEnum(asset.Types[i]);
+                    if(type != null) 
+                        k_InputPathToEventType.Add(path, type);
+                }
+            }
+        }
+
+        static Type TypeFromEnum(TypeSelectionEnum selection)
+        {
+            switch (selection)
+            {
+                case TypeSelectionEnum.Float:
+                    return typeof(float);
+                case TypeSelectionEnum.Int:
+                    return typeof(int);
+                case TypeSelectionEnum.Bool:
+                    return typeof(bool);
+            }
+            
+            return null;
         }
     }
 }
