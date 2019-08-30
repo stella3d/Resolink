@@ -1,9 +1,10 @@
 using System;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace Resolunity
 {
-    public static class Path
+    public static class PathUtils
     {
         public static bool TryParseWildcardInt(string inputPath, out int value)
         {
@@ -35,6 +36,22 @@ namespace Resolunity
             var subStr = path.Substring(firstSlashIndex, nextSlashIndex - firstSlashIndex);
             int.TryParse(subStr, out var value);
             return value;
+        }
+
+        public static Regex RegexForWildcardPath(string path)
+        {
+            if (!IsWildcardTemplate(path))
+                return null;
+            
+            // as an input example,    /composition/layers/*/autopilot
+            // we want the regex like           \/layers\/[0-9]+\/autopilot
+            var regexStr = path.Replace("/", "\\/");
+            
+            // all of the wildcards in resolume are numbers as far as i've seen
+            regexStr = regexStr.Replace("*", "[0-9]+");
+            Debug.Log($"{path} -> {regexStr}");
+            var regex = new Regex(regexStr);
+            return regex;
         }
     }
 }

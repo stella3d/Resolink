@@ -7,34 +7,58 @@ using UnityEngine;
 
 namespace Resolunity
 {
-    internal class TemplateChecker
+    internal sealed class TemplateChecker
     {
         public Regex[] Regexes;
-        public Action<OscDataHandle>[] Actions;
-        public List<string> AddressesToCheck;
+        public Action<OscDataHandle>[] Handlers;
         
-        public Dictionary<string, Action<OscDataHandle>> Output = new Dictionary<string, Action<OscDataHandle>>();
+        public readonly HashSet<string> AddressesToCheck = new HashSet<string>();
+        
+        public readonly Dictionary<string, Action<OscDataHandle>> Output = new Dictionary<string, Action<OscDataHandle>>();
+
+        public int Count { get; private set; }
+
+        public TemplateChecker(int capacity = 8)
+        {
+            Regexes = new Regex[capacity];
+            Handlers = new Action<OscDataHandle>[capacity];
+        }
 
         public void AddRegexHandler(Regex regex, Action<OscDataHandle> handler)
         {
-            
+            if (Count >= Handlers.Length)
+            {
+                Array.Resize(ref Regexes, Regexes.Length * 2);
+                Array.Resize(ref Handlers, Handlers.Length * 2);
+            }
+
+            Regexes[Count] = regex;
+            Handlers[Count] = handler;
+            Count++;
         }
 
-        public void CheckAll()
+        public bool ProcessAll()
         {
-            Output.Clear();
+            if (AddressesToCheck.Count == 0)
+                return false;
             
+            Output.Clear();
+            var anyMatches = false;
             foreach (var address in AddressesToCheck)
             {
                 for (var i = 0; i < Regexes.Length; i++)
                 {
-                    var regex = Regexes[i];
-                    if (regex.IsMatch(address))
-                        Output[address] = Actions[i];
+                    if (Regexes[i].IsMatch(address))
+                    {
+                        Output[address] = Handlers[i];
+                        anyMatches = true;
+                        break;
+                    }
                 }
             }
             
             AddressesToCheck.Clear();
+            return anyMatches;
         }
     }
 
@@ -49,8 +73,10 @@ namespace Resolunity
         internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
             new Dictionary<string, Action<OscDataHandle>>(8);
 
-
-        readonly Queue<string> m_TemplateProcessingQueue;
+        /// <summary>
+        /// Every incoming osc address we tried to find a template handler for and failed
+        /// </summary>
+        readonly HashSet<string> m_AddressesToIgnore = new HashSet<string>();
         
         readonly ActionInvocationBuffer<OscDataHandle> m_ActionInvocationBuffer = 
             new ActionInvocationBuffer<OscDataHandle>();
@@ -58,7 +84,7 @@ namespace Resolunity
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
-        TemplateChecker m_TemplateChecker;
+        TemplateChecker m_TemplateChecker = new TemplateChecker(8);
         
         public static OscBrain Instance { get; protected set; }
 
@@ -94,6 +120,17 @@ namespace Resolunity
             // call all Actions buffered in response to messages since last frame
             m_ActionInvocationBuffer.InvokeAll();
 
+            if (m_TemplateChecker.ProcessAll())
+            {
+                // if we found events for any addresses with a wildcard parameter like   /layers/4/autopilot ,
+                // add regular handlers for them
+                foreach (var kvp in m_TemplateChecker.Output)
+                {
+                    AddCallbackInternal(kvp.Key, kvp.Value);
+                }
+            }
+
+            // handle the existence of any next osc servers
             if (OscServer.ServerList.Count == m_PreviousServerCount) 
                 return;
             
@@ -116,7 +153,7 @@ namespace Resolunity
         /// <param name="callback">The action to take when the message is received</param>
         public static void AddCallback(string address, Action<OscDataHandle> callback)
         {
-            if (Path.IsWildcardTemplate(address))
+            if (PathUtils.IsWildcardTemplate(address))
             {
                 if (Instance.m_WildcardAddressHandlers.ContainsKey(address))
                 {
@@ -131,6 +168,17 @@ namespace Resolunity
             {
                 callbackList = new List<Action<OscDataHandle>>();
                 Instance.m_AddressHandlers[address] = callbackList;
+            }
+            
+            callbackList.Add(callback);
+        }
+        
+        void AddCallbackInternal(string address, Action<OscDataHandle> callback)
+        {
+            if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
+            {
+                callbackList = new List<Action<OscDataHandle>>();
+                m_AddressHandlers[address] = callbackList;
             }
             
             callbackList.Add(callback);
@@ -171,8 +219,8 @@ namespace Resolunity
 #endif
             if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
             {
-                //if(Path.HasLayerNumber(address))
-                //    m_TemplateProcessingQueue.Enqueue(address);
+                if(PathUtils.IsWildcardTemplate(address))
+                    m_TemplateChecker.AddressesToCheck.Add(address);
                 
                 return;
             }
@@ -182,20 +230,6 @@ namespace Resolunity
             foreach (var callback in callbackList)
             {
                 m_ActionInvocationBuffer.Add(callback, handle);
-            }
-        }
-
-        internal void ProcessTemplates()
-        {
-            while (m_TemplateProcessingQueue.Count > 0)
-            {
-                var inputAddress = m_TemplateProcessingQueue.Dequeue();
-                foreach (var kvp in m_WildcardAddressHandlers)
-                {
-                    var regex = kvp.Key;
-                    
-                }
-                
             }
         }
     }
