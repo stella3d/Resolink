@@ -19,7 +19,6 @@ namespace Resolunity
 
         static string s_OscMapPath;
         string OutputPath = "Assets/Unity-Resolume/Map.asset";
-        string HandlerOutputPath = "Assets/Unity-Resolume/ExampleEventHandler.asset";
 
         ResolumeOscMap m_MapToUpdate;
         ResolumeType m_ResolumeType;
@@ -68,7 +67,8 @@ namespace Resolunity
             if (GUILayout.Button("Select File"))
                 return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, "xml");
 
-            return string.IsNullOrEmpty(s_OscMapPath)? GetDefaultMapPath() : s_OscMapPath;
+            var userPath = string.IsNullOrEmpty(s_OscMapPath) ? GetDefaultMapPath() : s_OscMapPath;
+            return userPath.Replace("~/", Environment.SpecialFolder.UserProfile.ToString());
         }
         
         public string GetDefaultMapPath()

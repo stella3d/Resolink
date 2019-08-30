@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
 namespace Resolunity
 {
+    public static class Regexes
+    {
+        const string k_LayerNumberRegexPattern = "layers\\/[0-9]+\\/";
+
+        public static Regex LayerNumber { get; } = new Regex(k_LayerNumberRegexPattern);
+    }
+
     [CreateAssetMenu]
     [ExecuteAlways]
     public class OscMapParser : ScriptableObject
@@ -14,7 +22,10 @@ namespace Resolunity
         
         public static readonly Dictionary<string, Type> InputPathToEventType = new Dictionary<string, Type>();
         
-        [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
+#pragma warning disable 649
+        [SerializeField] 
+        ResolumeEventMetaData[] m_PathMetaData;
+#pragma warning restore 649
         
 #if UNITY_EDITOR_WIN
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
@@ -198,7 +209,42 @@ namespace Resolunity
                     break;
             }
         }
-        
+
+        public void ParseWildCards(string inputPath)
+        {
+            const string asterisk = "/*/";
+            var wildcardIndex = inputPath.IndexOf(asterisk, StringComparison.CurrentCulture);
+            var hasWildCard = wildcardIndex != -1;
+
+            var numberRegex = Regexes.LayerNumber;
+            var hasLayerNumber = numberRegex.Match(inputPath);
+        }
+
+        public bool TryGetLayerNumberFromPath(string inputPath, out int layerNumber)
+        {
+            var match = Regexes.LayerNumber.Match(inputPath);
+            if (!match.Success)
+            {
+                layerNumber = -1;
+                return false;
+            }
+            
+            Debug.Log("match value - " + match.Value);
+            
+            const int indexOfNumber = 8;
+            var firstCharacter = match.Value[indexOfNumber];
+            var nextCharacter = match.Value[indexOfNumber + 1];
+
+            Debug.Log("two characters - " + firstCharacter + nextCharacter);
+
+            if (nextCharacter != '/')
+                int.TryParse((firstCharacter.ToString() + nextCharacter), out layerNumber);
+            else
+                int.TryParse(firstCharacter.ToString(), out layerNumber);
+
+            return true;
+        }
+
         public void GatherTypeMetaData()
         {
             InputPathToEventType.Clear();
@@ -234,15 +280,6 @@ namespace Resolunity
             }
             
             return null;
-        }
-    }
-
-    [InitializeOnLoad]
-    static class TypeLoader
-    {
-        static TypeLoader()
-        {
-            
         }
     }
 }
