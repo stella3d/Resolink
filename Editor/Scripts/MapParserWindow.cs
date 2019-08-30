@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +6,15 @@ namespace Resolunity
 {
     public class MapParserWindow : EditorWindow
     {
+        static string s_OscMapPath;
+        string OutputPath = "Assets/Resolunity/Map.asset";
+
+        ResolumeType m_ResolumeType;
+        
+        GUIContent m_ResolumeTypeContent = new GUIContent("Resolume Type");
+
+        GUILayoutOption m_SmallColumnWidth;
+
         [MenuItem("Resolume/Map Parser")]
         static void InitWindow()
         {
@@ -17,19 +23,16 @@ namespace Resolunity
             window.Show();
         }
 
-        static string s_OscMapPath;
-        string OutputPath = "Assets/Unity-Resolume/Map.asset";
-
-        ResolumeOscMap m_MapToUpdate;
-        ResolumeType m_ResolumeType;
-
         public void OnGUI()
         {
+            m_SmallColumnWidth = GUILayout.Width(100);
+            
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel("Resolume Type");
-                m_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(m_ResolumeType);
+                m_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(m_ResolumeType, m_SmallColumnWidth);
             }
+            
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel("Resolume OSC File");
@@ -42,23 +45,14 @@ namespace Resolunity
             OutputPath = EditorGUILayout.TextField("Asset Creation Path", OutputPath);
             EditorGUILayout.Space();
 
-            if (GUILayout.Button("Create New OSC Map Asset"))
+            using (new EditorGUI.DisabledScope(!s_OscMapPath.EndsWith(".xml")))
             {
-                var parser = OscMapParser.LoadAsset();
-                parser.OutputPath = OutputPath;
-                parser.ParseFile(s_OscMapPath);
-            }
-            
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-
-#pragma warning disable 618
-            m_MapToUpdate = (ResolumeOscMap) EditorGUILayout.ObjectField(m_MapToUpdate, typeof(ResolumeOscMap));
-#pragma warning restore 618
-
-            if (GUILayout.Button("Update OSC Map Asset"))
-            {
-                Debug.Log("updating not implemented yet");
+                if (GUILayout.Button("Create New OSC Map Asset"))
+                {
+                    var parser = OscMapParser.LoadAsset();
+                    parser.OutputPath = OutputPath;
+                    parser.ParseFile(s_OscMapPath);
+                }
             }
         }
 

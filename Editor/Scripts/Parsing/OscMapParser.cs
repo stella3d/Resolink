@@ -210,41 +210,6 @@ namespace Resolunity
             }
         }
 
-        public void ParseWildCards(string inputPath)
-        {
-            const string asterisk = "/*/";
-            var wildcardIndex = inputPath.IndexOf(asterisk, StringComparison.CurrentCulture);
-            var hasWildCard = wildcardIndex != -1;
-
-            var numberRegex = Regexes.LayerNumber;
-            var hasLayerNumber = numberRegex.Match(inputPath);
-        }
-
-        public bool TryGetLayerNumberFromPath(string inputPath, out int layerNumber)
-        {
-            var match = Regexes.LayerNumber.Match(inputPath);
-            if (!match.Success)
-            {
-                layerNumber = -1;
-                return false;
-            }
-            
-            Debug.Log("match value - " + match.Value);
-            
-            const int indexOfNumber = 8;
-            var firstCharacter = match.Value[indexOfNumber];
-            var nextCharacter = match.Value[indexOfNumber + 1];
-
-            Debug.Log("two characters - " + firstCharacter + nextCharacter);
-
-            if (nextCharacter != '/')
-                int.TryParse((firstCharacter.ToString() + nextCharacter), out layerNumber);
-            else
-                int.TryParse(firstCharacter.ToString(), out layerNumber);
-
-            return true;
-        }
-
         public void GatherTypeMetaData()
         {
             InputPathToEventType.Clear();

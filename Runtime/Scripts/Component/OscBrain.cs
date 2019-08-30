@@ -11,10 +11,6 @@ namespace Resolunity
     {
         public Regex[] Regexes;
         public Action<OscDataHandle>[] Handlers;
-        
-        public readonly HashSet<string> AddressesToCheck = new HashSet<string>();
-        
-        public readonly Dictionary<string, Action<OscDataHandle>> Output = new Dictionary<string, Action<OscDataHandle>>();
 
         public int Count { get; private set; }
 
@@ -37,28 +33,23 @@ namespace Resolunity
             Count++;
         }
 
-        public bool ProcessAll()
+        public bool Process(string address, out Action<OscDataHandle> handler)
         {
-            if (AddressesToCheck.Count == 0)
-                return false;
-            
-            Output.Clear();
-            var anyMatches = false;
-            foreach (var address in AddressesToCheck)
+            for (var i = 0; i < Regexes.Length; i++)
             {
-                for (var i = 0; i < Regexes.Length; i++)
+                var regex = Regexes[i];
+                if (regex.IsMatch(address))
                 {
-                    if (Regexes[i].IsMatch(address))
-                    {
-                        Output[address] = Handlers[i];
-                        anyMatches = true;
-                        break;
-                    }
+                    handler = Handlers[i];
+#if RESOLUNITY_DEBUG_ADDRESS_MATCHING || true
+                    Debug.Log($"{regex} matched {address}");
+#endif
+                    return true;
                 }
             }
-            
-            AddressesToCheck.Clear();
-            return anyMatches;
+
+            handler = null;
+            return false;
         }
     }
 
@@ -119,16 +110,6 @@ namespace Resolunity
         {
             // call all Actions buffered in response to messages since last frame
             m_ActionInvocationBuffer.InvokeAll();
-
-            if (m_TemplateChecker.ProcessAll())
-            {
-                // if we found events for any addresses with a wildcard parameter like   /layers/4/autopilot ,
-                // add regular handlers for them
-                foreach (var kvp in m_TemplateChecker.Output)
-                {
-                    AddCallbackInternal(kvp.Key, kvp.Value);
-                }
-            }
 
             // handle the existence of any next osc servers
             if (OscServer.ServerList.Count == m_PreviousServerCount) 
@@ -219,9 +200,15 @@ namespace Resolunity
 #endif
             if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
             {
-                if(PathUtils.IsWildcardTemplate(address))
-                    m_TemplateChecker.AddressesToCheck.Add(address);
-                
+                if (m_AddressesToIgnore.Contains(address))
+                    return;
+
+                // if we find a match in the template handlers, add a handler, otherwise ignore this address
+                if (m_TemplateChecker.Process(address, out var handler))
+                    AddCallbackInternal(address, handler);
+                else
+                    m_AddressesToIgnore.Add(address);
+
                 return;
             }
 
@@ -231,6 +218,16 @@ namespace Resolunity
             {
                 m_ActionInvocationBuffer.Add(callback, handle);
             }
+        }
+
+        /// <summary>
+        /// Messages arriving at addresses we can't find handlers for get added to an ignore set.
+        /// Call this to clear that - You might do this if handlers were added later.
+        /// This should not be needed in most cases
+        /// </summary>
+        public static void ClearIgnoredAddresses()
+        {
+            Instance.m_AddressesToIgnore.Clear();
         }
     }
 }
