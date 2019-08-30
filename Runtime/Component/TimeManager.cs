@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using OscJack;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Resolunity
 {
-    public class TimeCube : MonoBehaviour
+    public class TimeManager : MonoBehaviour
     {
         public float BPM;
         
@@ -23,8 +20,6 @@ namespace Resolunity
         {
             m_InitialTimeScale = Time.timeScale;
             m_IsFirstTempoEvent = true;
-            
-            Debug.Log("initial time scale " + m_InitialTimeScale);
         }
 
         void Update()
@@ -60,9 +55,10 @@ namespace Resolunity
         public void HandleTempoEvent(float eventValue)
         {
             // Debug.Log("HandleTempoEvent");
+            BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
+
             if (m_IsFirstTempoEvent)
             {
-                BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
                 m_InitialTimeScale = Time.timeScale;
                 m_PreviousTimeScale = Time.timeScale;
                 m_InitialEventValue = eventValue;
@@ -71,19 +67,12 @@ namespace Resolunity
             }
             else
             {
-                // what if we got 0.18 and previous was 0.2 ?
-                // we would expect to have a portion of 0.9
                 var portionOfPrevious = eventValue / m_PreviousEventValue;
-                var previousBpm = Utils.ResolumeBpmEventToRealBpm(m_PreviousEventValue);
-                BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
-                Debug.Log($"bpm change from {previousBpm} to {BPM}");
-                
                 Time.timeScale = m_PreviousTimeScale * portionOfPrevious;
                 m_PreviousTimeScale = Time.timeScale;
                 m_PreviousEventValue = eventValue;
             }
 
-            BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
         }
     }
 }

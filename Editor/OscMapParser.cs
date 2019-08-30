@@ -190,6 +190,7 @@ namespace Resolunity
                     type = typeof(int).Name;
                     break;
                 case k_UnsignedLongLongParam:
+                    Debug.Log(m_Reader.Name + " - [ulong long]");
                     type = typeof(long).Name;
                     break;
                 default:
