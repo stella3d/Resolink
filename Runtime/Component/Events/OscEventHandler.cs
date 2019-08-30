@@ -5,7 +5,10 @@ using UnityEngine.Events;
 
 namespace Resolunity
 {
-    public class OscEventHandler : MonoBehaviour { }
+    public class OscEventHandler : MonoBehaviour
+    {
+        public ResolumeOscShortcut Shortcut;
+    }
 
     [Serializable]
     public abstract class OscEventHandler<TEvent, T> : OscEventHandler
@@ -13,19 +16,38 @@ namespace Resolunity
     {
         public TEvent Event;
 
-        public ResolumeOscShortcut Shortcut;
+        protected bool m_Registered;
         
         public void OnEnable()
         {
             if (Event == null)
                 Event = new TEvent();
-            
-            OscBrain.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
+
+            if (OscBrain.Instance != null && !m_Registered)
+                Register();
+        }
+
+        void Start()
+        {
+            if (!m_Registered)
+                Register();
         }
 
         public void OnDisable()
         {
+            UnRegister();
+        }
+        
+        protected void Register()
+        {
+            OscBrain.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
+            m_Registered = true;
+        }
+
+        protected void UnRegister()
+        {
             OscBrain.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
+            m_Registered = false;
         }
 
         protected abstract T GetMessageValue(OscDataHandle dataHandle);

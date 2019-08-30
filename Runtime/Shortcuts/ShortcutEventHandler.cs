@@ -28,9 +28,9 @@ namespace Resolunity
     {
         public FloatEventHandler(ResolumeOscShortcut shortcut) : base(shortcut)
         {
-            if (shortcut.DataType == typeof(float))
+            if (shortcut.TypeName == typeof(float).Name)
                 Debug.LogWarningFormat("Cannot create float event with data type {0}, path {1}",
-                    shortcut.DataType, shortcut.Output.Path);
+                    shortcut.TypeName, shortcut.Output.Path);
             
             m_Event = new FloatUnityEvent();
         }
@@ -41,9 +41,9 @@ namespace Resolunity
     {
         public IntEventHandler(ResolumeOscShortcut shortcut) : base(shortcut)
         {
-            if (shortcut.DataType == typeof(int))
+            if (shortcut.TypeName == typeof(int).Name)
                 Debug.LogWarningFormat("Cannot create int event with data type {0}, path {1}",
-                    shortcut.DataType, shortcut.Output.Path);
+                    shortcut.TypeName, shortcut.Output.Path);
             
             m_Event = new IntUnityEvent();
         }

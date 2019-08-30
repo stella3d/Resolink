@@ -50,7 +50,7 @@ namespace Resolunity
         internal readonly Dictionary<string, List<Action<OscDataHandle>>> m_AddressHandlers = 
             new Dictionary<string, List<Action<OscDataHandle>>>();
 
-        static OscBrain Instance;
+        internal static OscBrain Instance;
         
         ActionBuffer<OscDataHandle> m_ActionBuffer = new ActionBuffer<OscDataHandle>();
 
@@ -65,12 +65,17 @@ namespace Resolunity
             m_PrimaryCallbackAdded = true;
         }
 
+        void Awake()
+        {
+            Instance = this;
+        }
+
         void Start()
         {
             if (!m_PrimaryCallbackAdded)
             {
                 AddPrimaryCallback(PrimaryCallback);
-                m_PrimaryCallbackAdded = false;
+                m_PrimaryCallbackAdded = true;
             }
         }
 
@@ -146,12 +151,6 @@ namespace Resolunity
                     m_ActionBuffer.Add(callback, handle);
                 }
             }
-        }
-
-        public void SetTimeScale(float scale)
-        {
-            Debug.Log("set timescale");
-            Time.timeScale = scale * 4f;
         }
     }
 }

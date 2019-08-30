@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Resolunity
 {
@@ -44,13 +41,10 @@ namespace Resolunity
         public void OnEnable()
         {
             m_Map = (ResolumeOscMap) target;
-            if( m_Map.Events?.IdToFloatEvent == null)
-                m_Map.Events = new EventComponentMapping(m_Map);
-            
-            m_Map.Events.PopulateEvents();
             m_FoldoutStates = new byte[m_Map.Shortcuts.Count];
             GenerateLabels();
         }
+
 
         public void GenerateLabels()
         {
@@ -78,12 +72,6 @@ namespace Resolunity
         public override void OnInspectorGUI()
         {
             DrawOptions();
-
-            if (m_Map.Events.Count == 0)
-            {
-                Debug.Log("populating events");
-                m_Map.Events.PopulateEvents();
-            }
 
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
             {
@@ -177,10 +165,10 @@ namespace Resolunity
 
         void DrawEvents(ResolumeOscMap map, ResolumeOscShortcut shortcut)
         {
-            if (shortcut.DataType == typeof(int))
+            if (shortcut.TypeName == typeof(int).Name)
             {
             }
-            else if (shortcut.DataType == typeof(float))
+            else if (shortcut.TypeName == typeof(float).Name)
             {
                 
             }

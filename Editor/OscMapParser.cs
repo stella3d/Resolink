@@ -165,30 +165,32 @@ namespace Resolunity
             return new ResolumeOscShortcut
             {
                 UniqueId = id,
-                DataType = type
+                TypeName = type
             };
         }
         
-        bool TryParseType(string paramNodeName, out Type type)
+        bool TryParseType(string paramNodeName, out string type)
         {
             Debug.Log("nodeName " + paramNodeName);
 
             switch (paramNodeName)
             {
                 case k_BoolParamNodeName:
-                    type = typeof(bool);
+                    Debug.Log(m_Reader.Name + " - bool");
+                    type = typeof(bool).Name;
                     break;
                 case k_ParamRangeNodeName:
-                    Debug.Log(m_Reader.Name +  " " + k_ParamRangeNodeName + " - float");
-                    type = typeof(float);
+                    Debug.Log(m_Reader.Name + " - float");
+                    type = typeof(float).Name;
                     break;
                 case k_ParamChoiceInt:
                 case k_ParamTrigger:
                 case k_AutopilotTargetParam:    
-                    type = typeof(int);
+                    Debug.Log(m_Reader.Name + " - int");
+                    type = typeof(int).Name;
                     break;
                 case k_UnsignedLongLongParam:
-                    type = typeof(long);
+                    type = typeof(long).Name;
                     break;
                 default:
                     type = default;

@@ -9,6 +9,6 @@ namespace Resolunity
         public ShortcutPath Input;
         public ShortcutPath Output;
         public SubTarget[] SubTargets;                // not all Shortcuts have subtargets
-        public Type DataType;
+        public string TypeName;
     }
 }

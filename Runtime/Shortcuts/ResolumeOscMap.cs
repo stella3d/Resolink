@@ -10,7 +10,5 @@ namespace Resolunity
         public ResolumeVersion Version;
         
         public List<ResolumeOscShortcut> Shortcuts = new List<ResolumeOscShortcut>();
-        
-        public EventComponentMapping Events;
     }
 }
