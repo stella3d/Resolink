@@ -46,6 +46,7 @@ namespace Resolunity
                 EditorGUILayout.Space();
             }
 
+            EditorGUILayout.Space();
             DrawAddButton();
 
             serializedObject.ApplyModifiedProperties();
@@ -53,13 +54,14 @@ namespace Resolunity
 
         void DrawAddButton()
         {
+            EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Add New"))
                 m_Target.AddCapacity();
             
-            EditorGUILayout.Space();
-
-            if (GUILayout.Button("Trim"))
+            if (GUILayout.Button("Remove Last", GUILayout.Width(144)))
                 m_Target.Trim();
+
+            EditorGUILayout.EndHorizontal();
         }
     }
 }
