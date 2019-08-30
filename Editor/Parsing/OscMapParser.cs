@@ -37,6 +37,13 @@ namespace Resolunity
         
         public string OutputPath { get; set; }
 
+        public static OscMapParser LoadAsset()
+        {
+            var parserGuids = AssetDatabase.FindAssets("t: OscMapParser");
+            var parserPath = AssetDatabase.GUIDToAssetPath(parserGuids[0]);
+            return AssetDatabase.LoadAssetAtPath<OscMapParser>(parserPath);
+        }
+
         void OnEnable()
         {
             instance = this;
@@ -54,6 +61,8 @@ namespace Resolunity
 
         public void ParseFile(string filePath)
         {
+            GatherTypeMetaData();
+            
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);
             m_Reader.MoveToContent();
 

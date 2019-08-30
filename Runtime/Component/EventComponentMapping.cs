@@ -131,7 +131,7 @@ namespace Resolunity
                 count++;
             }
             
-            Debug.LogFormat("{0} event handlers populated", count);
+            // Debug.LogFormat("{0} event handlers populated", count);
         }
 
         GameObject ObjectForShortcut(ResolumeOscShortcut shortcut)

@@ -45,12 +45,9 @@ namespace Resolunity
 
             if (GUILayout.Button("Create New OSC Map Asset"))
             {
-                var parserGuids = AssetDatabase.FindAssets("t: OscMapParser");
-                var parserPath = AssetDatabase.GUIDToAssetPath(parserGuids[0]);
-                var parser = AssetDatabase.LoadAssetAtPath<OscMapParser>(parserPath);
-                
+                var parser = OscMapParser.LoadAsset();
                 parser.OutputPath = OutputPath;
-                parser.ParseDefaultFile();
+                parser.ParseFile(s_OscMapPath);
             }
             
             EditorGUILayout.Space();
