@@ -11,4 +11,7 @@ namespace Resolunity
     
     [Serializable]
     public class BoolUnityEvent : UnityEvent<bool> { }
+    
+    [Serializable]
+    public class StringUnityEvent : UnityEvent<string> { }
 }

@@ -12,3 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fafa1a8a96b7b4499414febcd41e3f3, type: 3}
   m_Name: Osc Map Parser
   m_EditorClassIdentifier: 
+  m_PathMetaData:
+  - {fileID: 11400000, guid: f2f6b065c20519349b3f5c56bf59144e, type: 2}
+  - {fileID: 11400000, guid: 62a9c388fb7e09a498e4277757e04aff, type: 2}
+  - {fileID: 11400000, guid: fd7d8a76270a1f947959eb171f27369d, type: 2}
+  - {fileID: 11400000, guid: 8c93fea6a80857c48b1d92e4931a7e0c, type: 2}
+  - {fileID: 11400000, guid: ef6b5887cc7f6e440bb76612d68c90b3, type: 2}
+  - {fileID: 11400000, guid: 2751b41ecbe49cb4aba99b6f57ec17af, type: 2}

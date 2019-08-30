@@ -10,7 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Tempo Event Data
+  m_Name: Tempo Controller
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 02000000030000000300000003000000030000000300000003000000
+  InputPaths:
+  - /composition/tempocontroller/tempo
+  - /composition/tempocontroller/pause
+  - /composition/tempocontroller/resync
+  - /composition/tempocontroller/metronome
+  - /composition/tempocontroller/tempotap
+  - /composition/tempocontroller/tempopull
+  - /composition/tempocontroller/tempopush

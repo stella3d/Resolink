@@ -10,7 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Application Ui Event Data
+  m_Name: Application UI
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 0200000002000000
+  InputPaths:
+  - /application/ui/clipsscrollhorizontal
+  - /application/ui/clipsscrollvertical

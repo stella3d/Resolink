@@ -67,10 +67,18 @@ namespace Resolunity
         [SerializeField]
         protected UniqueIdEventDictionary<BoolUnityEvent> m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
 
-        public GameObject IntEventsObject;
-        public GameObject FloatEventsObject;
-        public GameObject BoolEventsObject;
-        public GameObject TimeEventsObject;
+        [HideInInspector] public GameObject TimeEventsObject;
+        [HideInInspector] public GameObject IntEventsObject;
+        [HideInInspector] public GameObject FloatEventsObject;
+        [HideInInspector] public GameObject BoolEventsObject;
+        
+        [Header("Event Component Objects")]
+        public GameObject TempoController;
+        public GameObject Composition;
+        public GameObject CompositionLayer;
+        public GameObject CompositionDashboard;
+        public GameObject CompositionLayerDashboard;
+        public GameObject ApplicationUI;
         
         public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
 

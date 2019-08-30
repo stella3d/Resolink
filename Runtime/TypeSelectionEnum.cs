@@ -6,5 +6,6 @@ namespace Resolunity
         Int,
         Float,
         Bool,
+        String
     }
 }

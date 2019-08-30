@@ -9,7 +9,7 @@ namespace Resolunity
     [CreateAssetMenu]
     public class OscMapParser : ScriptableSingleton<OscMapParser>
     {
-        static Dictionary<string, Type> k_InputPathToEventType = new Dictionary<string, Type>();
+        static readonly Dictionary<string, Type> k_InputPathToEventType = new Dictionary<string, Type>();
         
         [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
         
@@ -18,24 +18,13 @@ namespace Resolunity
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
         internal const string DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
 #endif
-        
-        const string k_BoolParamNodeName = "RangedParam[bool]";
-        const string k_ParamRangeNodeName = "ParamRange";
-        const string k_ParamChoiceInt = "ParamChoice[int]";
-        const string k_UnsignedLongLongParam = "ParamChoice[unsigned long long]";
-        const string k_AutopilotTargetParam = "ParamChoice[struct AutoPilot::Target]";
-        const string k_ParamTrigger = "ParamTrigger";
-        
-        const string k_UnknownResolumeType =
-            "The Resolume shortcut with unique id {0}'s attribute 'paramNodeName' had a value of {1}, " +
-            "which we don't know the data type for";
 
         const string k_VersionInfoNodeName = "versionInfo";
         const string k_SubTargetNodeName = "Subtarget";
         const string k_ShortCut = "Shortcut";
         const string k_ShortCutPath = "ShortcutPath";
 
-        readonly XmlReaderSettings m_XmlSettings = new XmlReaderSettings {DtdProcessing = DtdProcessing.Parse};
+        readonly XmlReaderSettings m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
         
         readonly List<ResolumeOscShortcut> m_Shortcuts = new List<ResolumeOscShortcut>();
         
@@ -84,7 +73,7 @@ namespace Resolunity
 
         void CreateAsset()
         {
-            m_Map = ScriptableObject.CreateInstance<ResolumeOscMap>();
+            m_Map = CreateInstance<ResolumeOscMap>();
             m_Map.Version = m_Version;
 
             foreach (var shortcut in m_Shortcuts)
@@ -166,48 +155,7 @@ namespace Resolunity
             var uniqueIdString = m_Reader.GetAttribute("uniqueId");
             long.TryParse(uniqueIdString, out var id);
 
-            /*
-            var paramNodeName = m_Reader.GetAttribute("paramNodeName");
-            if (!TryParseType(paramNodeName, out var type))
-                Debug.LogWarningFormat(k_UnknownResolumeType, uniqueIdString, paramNodeName);
-                */
-
-            return new ResolumeOscShortcut
-            {
-                UniqueId = id,
-            };
-        }
-        
-        bool TryParseType(string paramNodeName, out string type)
-        {
-            //Debug.Log("nodeName " + paramNodeName);
-
-            switch (paramNodeName)
-            {
-                case k_BoolParamNodeName:
-                    Debug.Log(m_Reader.Name + " - bool");
-                    type = typeof(bool).Name;
-                    break;
-                case k_ParamRangeNodeName:
-                    Debug.Log(m_Reader.Name + " - float");
-                    type = typeof(float).Name;
-                    break;
-                case k_ParamChoiceInt:
-                case k_ParamTrigger:
-                case k_AutopilotTargetParam:    
-                    Debug.Log(m_Reader.Name + " - int");
-                    type = typeof(int).Name;
-                    break;
-                case k_UnsignedLongLongParam:
-                    Debug.Log(m_Reader.Name + " - [ulong long]");
-                    type = typeof(long).Name;
-                    break;
-                default:
-                    type = default;
-                    break;
-            }
-
-            return type != default;
+            return new ResolumeOscShortcut { UniqueId = id };
         }
 
         public void ParseShortcutPath()
@@ -261,6 +209,8 @@ namespace Resolunity
                     return typeof(int);
                 case TypeSelectionEnum.Bool:
                     return typeof(bool);
+                case TypeSelectionEnum.String:
+                    return typeof(string);
             }
             
             return null;

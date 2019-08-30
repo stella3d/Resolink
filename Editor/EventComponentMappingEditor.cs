@@ -17,6 +17,8 @@ namespace Resolunity
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
+            EditorGUILayout.Space();
+            EditorUtils.DrawBoxLine();
 
             if (GUILayout.Button("Generate Mapping"))
             {
