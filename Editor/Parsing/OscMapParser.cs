@@ -7,8 +7,10 @@ using UnityEngine;
 namespace Resolunity
 {
     [CreateAssetMenu]
-    public class OscMapParser : ScriptableSingleton<OscMapParser>
+    public class OscMapParser : ScriptableObject
     {
+        public static OscMapParser instance;
+        
         public static readonly Dictionary<string, Type> InputPathToEventType = new Dictionary<string, Type>();
         
         [SerializeField] ResolumeEventMetaData[] m_PathMetaData;
@@ -36,9 +38,7 @@ namespace Resolunity
 
         void OnEnable()
         {
-            if (m_PathMetaData == null)
-                m_PathMetaData = new ResolumeEventMetaData[1];
-            
+            instance = this;
             m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
             m_Shortcuts = new List<ResolumeOscShortcut>();
             GatherTypeMetaData();
@@ -73,7 +73,6 @@ namespace Resolunity
                 return;
             
             Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
-
             CreateAsset();
         }
 
@@ -161,7 +160,6 @@ namespace Resolunity
         {
             var uniqueIdString = m_Reader.GetAttribute("uniqueId");
             long.TryParse(uniqueIdString, out var id);
-
             return new ResolumeOscShortcut { UniqueId = id };
         }
 
@@ -196,6 +194,9 @@ namespace Resolunity
             InputPathToEventType.Clear();
             foreach (var asset in m_PathMetaData)
             {
+                if (asset == null)
+                    continue;
+                
                 for (var i = 0; i < asset.InputPaths.Count; i++)
                 {
                     var path = asset.InputPaths[i];

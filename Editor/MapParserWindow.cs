@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,11 +12,12 @@ namespace Resolunity
         [MenuItem("Resolume/Map Parser")]
         static void InitWindow()
         {
+            s_OscMapPath = OscMapParser.DefaultAvenuePath;
             MapParserWindow window = (MapParserWindow) GetWindow(typeof(MapParserWindow));
             window.Show();
         }
 
-        string m_OscMapPath = OscMapParser.DefaultAvenuePath;
+        static string s_OscMapPath;
         string OutputPath = "Assets/Unity-Resolume/Map.asset";
         string HandlerOutputPath = "Assets/Unity-Resolume/ExampleEventHandler.asset";
 
@@ -32,10 +34,10 @@ namespace Resolunity
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel("Resolume OSC File");
-                m_OscMapPath = GetMapPath();
+                s_OscMapPath = GetMapPath();
             }
             
-            EditorGUILayout.LabelField(m_OscMapPath);
+            EditorGUILayout.LabelField(s_OscMapPath);
             EditorGUILayout.Space();
 
             OutputPath = EditorGUILayout.TextField("Asset Creation Path", OutputPath);
@@ -43,8 +45,9 @@ namespace Resolunity
 
             if (GUILayout.Button("Create New OSC Map Asset"))
             {
-                var parser = ScriptableSingleton<OscMapParser>.instance != null ? 
-                    ScriptableSingleton<OscMapParser>.instance : CreateInstance<OscMapParser>();
+                var parserGuids = AssetDatabase.FindAssets("t: OscMapParser");
+                var parserPath = AssetDatabase.GUIDToAssetPath(parserGuids[0]);
+                var parser = AssetDatabase.LoadAssetAtPath<OscMapParser>(parserPath);
                 
                 parser.OutputPath = OutputPath;
                 parser.ParseDefaultFile();
@@ -56,22 +59,23 @@ namespace Resolunity
 #pragma warning disable 618
             m_MapToUpdate = (ResolumeOscMap) EditorGUILayout.ObjectField(m_MapToUpdate, typeof(ResolumeOscMap));
 #pragma warning restore 618
+
             if (GUILayout.Button("Update OSC Map Asset"))
             {
                 Debug.Log("updating not implemented yet");
             }
-            
-            EditorGUILayout.Space();
-            EditorGUILayout.Space();
-            
-            HandlerOutputPath = EditorGUILayout.TextField("Event Asset Creation Path", HandlerOutputPath);
         }
 
         public string GetMapPath()
         {
             if (GUILayout.Button("Select File"))
-                return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, ".xml");
+                return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, "xml");
 
+            return string.IsNullOrEmpty(s_OscMapPath)? GetDefaultMapPath() : s_OscMapPath;
+        }
+        
+        public string GetDefaultMapPath()
+        {
             return m_ResolumeType == ResolumeType.Avenue 
                 ? $"~{OscMapParser.DefaultAvenuePath}" 
                 : $"~{OscMapParser.DefaultArenaPath}";

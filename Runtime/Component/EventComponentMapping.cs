@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 namespace Resolunity
 {
@@ -147,11 +148,6 @@ namespace Resolunity
 
         OscEventHandler ComponentForShortcut(GameObject go, ResolumeOscShortcut shortcut)
         {
-            if (InputPathToEventType == null)
-            {
-            }
-            
-
             OscEventHandler component = null;
             if (shortcut.TypeName == typeof(int).Name)
                 component = go.AddComponent<IntOscEventHandler>();
@@ -159,11 +155,11 @@ namespace Resolunity
                 component = go.AddComponent<FloatOscEventHandler>();
             else if (shortcut.TypeName == typeof(bool).Name)
                 component = go.AddComponent<BooleanOscEventHandler>();
+            else if (shortcut.TypeName == typeof(string).Name)
+                component = go.AddComponent<StringOscEventHandler>();
 
             if (component != null)
-            {
                 component.Shortcut = shortcut;
-            }
 
             return component;
         }
