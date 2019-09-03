@@ -13,7 +13,7 @@ namespace Resolink
             Three
         }
         
-        LabelIndexOptions m_LabelOption;
+        LabelIndexOptions m_LabelOption = LabelIndexOptions.Three;
         LabelIndexOptions m_PreviousLabelOption;
         
         ResolumeOscMap m_Map;
