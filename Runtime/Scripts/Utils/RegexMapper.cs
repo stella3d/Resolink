@@ -38,7 +38,7 @@ namespace Resolink
                 var regex = Regexes[i];
                 if (regex.IsMatch(address))
                 {
-#if RESOLINK_DEBUG_REGEX || true
+#if RESOLINK_DEBUG_REGEX
                     Debug.Log($"{regex} matched {address}");
 #endif
                     value = Values[i];
