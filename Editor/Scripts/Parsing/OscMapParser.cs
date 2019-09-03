@@ -65,7 +65,6 @@ namespace Resolink
 
         public void ParseFile(string filePath)
         {
-
             m_Shortcuts.Clear();
             GatherTypeMetaData();
             

@@ -7,7 +7,7 @@ namespace Resolink
     public class MapParserWindow : EditorWindow
     {
         static string s_OscMapPath;
-        string OutputPath = "Assets/Resolunity/Map.asset";
+        string OutputPath = "Assets/Resolink/Map.asset";
 
         ResolumeType m_ResolumeType;
         
