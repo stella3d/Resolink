@@ -1,10 +1,32 @@
 # Resolink
 
-This package aims to make integrating a Unity app with a Resolume setup easier.
+This package aims to make integrating a [Unity](https://unity.com/) app with a [Resolume](https://resolume.com/) setup easier, by doing three things.
+
+1) Generate event handlers in a Unity scene based on the events you setup in Resolume
+
+2) Handle texture sharing from Unity -> Resolume
+
+3) Keeping time / tempo in sync
 
 ## Table of Contents
 
+[Aknowledgements](#aknowledgements)
+
+[Dependencies](#dependencies)
+
 [Time Sync](#time-sync)
+
+### Aknowledgements
+
+This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All 3 packages this depends on were developed by him.
+
+### Dependencies
+
+[OscJack](https://github.com/keijiro/OscJack) for handling OSC messages
+
+[KlakSpout](https://github.com/keijiro/KlakSpout) (on Windows) or [KlakSyphon](https://github.com/keijiro/KlakSyphon) (on Mac) for sharing the rendered texture to Resolume
+
+For now, dependencies are bundled in the package.
 
 ### Time Sync
 
