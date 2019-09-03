@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Clip Transport
   m_EditorClassIdentifier: 
-  Types: 0100000002000000020000000200000002000000020000000100000001000000010000000100000003000000
+  Types: 0102020202020101010103
   InputPaths:
   - /composition/layers/*/clips/*/transporttype
   - /composition/layers/*/clips/*/transport/position

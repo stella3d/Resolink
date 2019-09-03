@@ -1,6 +1,6 @@
 namespace Resolink
 {
-    public enum TypeSelectionEnum
+    public enum TypeSelectionEnum : byte
     {
         NotSelected,
         Int,

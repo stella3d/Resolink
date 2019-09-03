@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Tempo Controller
   m_EditorClassIdentifier: 
-  Types: 02000000030000000300000003000000030000000300000003000000
+  Types: 02030303030303
   InputPaths:
   - /composition/tempocontroller/tempo
   - /composition/tempocontroller/pause
