@@ -60,6 +60,7 @@ namespace Resolink
         static readonly List<BooleanOscEventHandler> k_BoolHandlerComponents = new List<BooleanOscEventHandler>();
         static readonly List<StringOscEventHandler> k_StringHandlerComponents = new List<StringOscEventHandler>();
         
+        [Tooltip("A map of OSC events parsed from Resolume")]
         public ResolumeOscMap OscMap;
 
         public Dictionary<string, IntOscEventHandler> IdToIntEvent;
@@ -73,7 +74,6 @@ namespace Resolink
         [SerializeField]
         protected UniqueIdEventDictionary<BoolUnityEvent> m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
         
-        [Header("Event Component Objects")]
         public GameObject TempoController;
         public GameObject ClipTransport;
         public GameObject ClipCuepoints;
@@ -180,7 +180,6 @@ namespace Resolink
                 if (c.Shortcut.Input.Path != shortcut.Input.Path)
                     continue;
 
-                Debug.Log($"found existing component for {shortcut.Input.Path} on object {go.name}");
                 found = true;
                 break;
             }
