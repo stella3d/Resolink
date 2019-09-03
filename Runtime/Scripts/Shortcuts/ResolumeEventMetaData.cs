@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Resolink
 {
+    /// <summary>
+    /// Used to store data about the data received for each event from Resolume
+    /// </summary>
     [CreateAssetMenu]
     public class ResolumeEventMetaData : ScriptableObject
     {
