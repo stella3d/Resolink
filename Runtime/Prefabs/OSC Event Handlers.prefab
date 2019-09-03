@@ -143,12 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OscMap: {fileID: 0}
-  TimeEventsObject: {fileID: 0}
-  IntEventsObject: {fileID: 0}
-  FloatEventsObject: {fileID: 0}
-  BoolEventsObject: {fileID: 0}
   TempoController: {fileID: 6342072760163709743}
   ClipTransport: {fileID: 6129421694583563333}
+  ClipCuepoints: {fileID: 3448544746513536572}
   Composition: {fileID: 4714725749009031895}
   CompositionLayer: {fileID: 5744478920631697045}
   CompositionDashboard: {fileID: 3106361868688339697}

@@ -5,6 +5,8 @@ namespace Resolink
     public static class ShortcutExtensions
     {
         const string compLayers = "/composition/layers";
+        const string k_Cuepoints = "/cuepoints/";
+
 
         public static bool IsTimeEvent(this ResolumeOscShortcut shortcut)
         {
@@ -13,15 +15,25 @@ namespace Resolink
             return inputPath.Contains(tempoController);
         }
         
-        public static bool IsCueEvent(this string inputPath)
+        public static bool IsCueEvent(this ResolumeOscShortcut shortcut)
         {
-            const string cuepoints = "/cuepoints/";
-            return inputPath.Contains(cuepoints);
+            return shortcut.Input.Path.Contains(k_Cuepoints);
+        }
+        
+        public static bool IsClipTransportEvent(this ResolumeOscShortcut shortcut)
+        {
+            var notCuepoint = !shortcut.Input.Path.Contains(k_Cuepoints);
+            var containsTrans = shortcut.Input.Path.Contains("/transport");
+            var isOnLayers = shortcut.Input.Path.Contains("/layers");
+            return notCuepoint && containsTrans && isOnLayers;
         }
         
         public static bool IsCompositionEvent(this ResolumeOscShortcut shortcut, bool excludeDashboard = true)
         {
             var inputPath = shortcut.Input.Path;
+            if (inputPath.Contains("/composition/layers"))
+                return false;
+            
             var dashboardOk = !excludeDashboard || !inputPath.Contains("dashboard");
             return inputPath.IndexOf("/composition", StringComparison.CurrentCulture) == 0 && dashboardOk;
         }

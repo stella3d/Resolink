@@ -55,7 +55,6 @@ namespace Resolink
     [Serializable]
     public class EventComponentMapping : MonoBehaviour
     {
-        
         public ResolumeOscMap OscMap;
 
         public Dictionary<string, IntOscEventHandler> IdToIntEvent;
@@ -68,22 +67,16 @@ namespace Resolink
         protected UniqueIdEventDictionary<FloatUnityEvent> m_FloatEvents = new UniqueIdEventDictionary<FloatUnityEvent>();
         [SerializeField]
         protected UniqueIdEventDictionary<BoolUnityEvent> m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
-
-        [HideInInspector] public GameObject TimeEventsObject;
-        [HideInInspector] public GameObject IntEventsObject;
-        [HideInInspector] public GameObject FloatEventsObject;
-        [HideInInspector] public GameObject BoolEventsObject;
         
         [Header("Event Component Objects")]
         public GameObject TempoController;
         public GameObject ClipTransport;
+        public GameObject ClipCuepoints;
         public GameObject Composition;
         public GameObject CompositionLayer;
         public GameObject CompositionDashboard;
         public GameObject CompositionLayerDashboard;
         public GameObject ApplicationUI;
-        
-        // public static Dictionary<string, Type> InputPathToEventType { get; set; }
         
         public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
 
@@ -115,7 +108,11 @@ namespace Resolink
         public void PopulateEvents()
         {
             if (OscMap == null)
+            {
+                Debug.LogWarning("Cannot generate components without an OSC map asset!");
                 return;
+            }
+
             if(IdToIntEvent == null)
                 InitializeDictionaries();
             if (m_IntEvents == null)
@@ -139,8 +136,10 @@ namespace Resolink
         {
             if (shortcut.IsTimeEvent())
                 return TempoController;
-            // TODO - if is clip transport event
-            // TODO - if is cuepoint 
+            if (shortcut.IsClipTransportEvent())
+                return ClipTransport;
+            if (shortcut.IsCueEvent())
+                return ClipCuepoints;
             if (shortcut.IsCompositionEvent())
                 return Composition;
             if (shortcut.IsLayerEvent())
