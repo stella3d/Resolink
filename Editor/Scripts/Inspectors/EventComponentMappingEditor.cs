@@ -12,6 +12,11 @@ namespace Resolink
                                   "After generation, you can find the component for an event on the appropriate child " +
                                   "object, according to what the event is associated with in Resolume.\n\n" +
                                   "If a component for a given event is already present, it will be skipped.";
+
+        const string k_EventFoldoutTooltip =
+            "References to objects that hold event handler components for each category of events";
+
+        GUIContent m_EventFoldoutContent;
         
         protected EventComponentMapping m_Target;
 
@@ -42,6 +47,8 @@ namespace Resolink
             m_CompositionDashboardProperty = serializedObject.FindProperty("CompositionDashboard");
             m_CompositionLayerDashboardProperty = serializedObject.FindProperty("CompositionLayerDashboard");
             m_ApplicationUIProperty = serializedObject.FindProperty("ApplicationUI");
+            
+            m_EventFoldoutContent = new GUIContent("Event Component Objects", k_EventFoldoutTooltip);
         }
 
         public override void OnInspectorGUI()
@@ -50,7 +57,7 @@ namespace Resolink
             
             EditorGUILayout.PropertyField(m_OscMapProperty);
             
-            m_EventObjectFoldoutState = EditorGUILayout.Foldout(m_EventObjectFoldoutState, "Event Component Objects");
+            m_EventObjectFoldoutState = EditorGUILayout.Foldout(m_EventObjectFoldoutState, m_EventFoldoutContent);
             if (m_EventObjectFoldoutState)
             {
                 EditorGUILayout.PropertyField(m_TempoObjectProperty);

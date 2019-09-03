@@ -73,14 +73,25 @@ namespace Resolink
         protected UniqueIdEventDictionary<FloatUnityEvent> m_FloatEvents = new UniqueIdEventDictionary<FloatUnityEvent>();
         [SerializeField]
         protected UniqueIdEventDictionary<BoolUnityEvent> m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
+
+        const string k_Suffix = " in Resolume";
+        const string k_EventsRelated = "Events related to ";
         
+        [Tooltip(k_EventsRelated + "BPM" + k_Suffix)]
         public GameObject TempoController;
+        [Tooltip(k_EventsRelated + "clip transport" + k_Suffix)]
         public GameObject ClipTransport;
+        [Tooltip(k_EventsRelated + "clip cue points" + k_Suffix)]
         public GameObject ClipCuepoints;
+        [Tooltip(k_EventsRelated + "the Resolume composition, but not associated with a layer")]
         public GameObject Composition;
+        [Tooltip(k_EventsRelated + "any or all layers in the Resolume composition")]
         public GameObject CompositionLayer;
+        [Tooltip(k_EventsRelated + "the Resolume composition dashboard")]
         public GameObject CompositionDashboard;
+        [Tooltip(k_EventsRelated + "the any or all layer-specific dashboards" + k_Suffix)]
         public GameObject CompositionLayerDashboard;
+        [Tooltip(k_EventsRelated + "the Resolume application UI, not the composition")]
         public GameObject ApplicationUI;
         
         public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
