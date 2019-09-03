@@ -22,11 +22,16 @@ This wouldn't be possible without the work of [Keijiro Takahashi](https://github
 
 ### Dependencies
 
+For now, dependencies are bundled in the package.
+
 [OscJack](https://github.com/keijiro/OscJack) for handling OSC messages
 
-[KlakSpout](https://github.com/keijiro/KlakSpout) (on Windows) or [KlakSyphon](https://github.com/keijiro/KlakSyphon) (on Mac) for sharing the rendered texture to Resolume
+For sharing the render to Resolume
 
-For now, dependencies are bundled in the package.
+(on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
+
+(on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
+
 
 ### Time Sync
 
