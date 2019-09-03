@@ -1,6 +1,10 @@
-# Unity-Resolume
+# Resolink
 
-This package aims to make integrating a Unity app with a Resolume setup easier.  
+This package aims to make integrating a Unity app with a Resolume setup easier.
+
+## Table of Contents
+
+[Time Sync](#time-sync)
 
 ### Time Sync
 
