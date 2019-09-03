@@ -1,4 +1,4 @@
-namespace Resolunity
+namespace Resolink
 {
     [System.Serializable]
     public struct ResolumeVersion

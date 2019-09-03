@@ -1,4 +1,4 @@
-namespace Resolunity
+namespace Resolink
 {
     public enum TypeSelectionEnum
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
-namespace Resolunity.Tests
+namespace Resolink.Tests
 {
     public class PathParsingTests
     {

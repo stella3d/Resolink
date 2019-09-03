@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Resolunity
+namespace Resolink
 {
     public static class Regexes
     {

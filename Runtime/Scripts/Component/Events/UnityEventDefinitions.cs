@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.Events;
 
-namespace Resolunity
+namespace Resolink
 {
     [Serializable] 
     public class IntUnityEvent : UnityEvent<int> {}

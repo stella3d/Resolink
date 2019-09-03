@@ -1,6 +1,6 @@
 using System;
 
-namespace Resolunity
+namespace Resolink
 {
     [Serializable]
     public class SubTarget : IComparable<SubTarget>, IEquatable<SubTarget>

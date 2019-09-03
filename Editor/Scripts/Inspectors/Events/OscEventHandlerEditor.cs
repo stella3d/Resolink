@@ -2,7 +2,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Resolunity
+namespace Resolink
 {
     public abstract class OscEventHandlerEditor<TComponent, TEvent, T> : Editor
         where TComponent : OscEventHandler<TEvent, T>

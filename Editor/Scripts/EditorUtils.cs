@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     public static class EditorUtils
     {

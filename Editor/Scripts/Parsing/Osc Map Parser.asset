@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PathMetaData:
   - {fileID: 11400000, guid: f2f6b065c20519349b3f5c56bf59144e, type: 2}
+  - {fileID: 11400000, guid: b743c4e9fcc117542bb1d5f292ea7496, type: 2}
+  - {fileID: 11400000, guid: 5dd952478ab87fa4ea13ce8d0e60aca3, type: 2}
   - {fileID: 11400000, guid: 62a9c388fb7e09a498e4277757e04aff, type: 2}
   - {fileID: 11400000, guid: fd7d8a76270a1f947959eb171f27369d, type: 2}
   - {fileID: 11400000, guid: 8c93fea6a80857c48b1d92e4931a7e0c, type: 2}

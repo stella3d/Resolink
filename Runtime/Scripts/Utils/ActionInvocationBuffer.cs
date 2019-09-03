@@ -1,6 +1,6 @@
 using System;
 
-namespace Resolunity
+namespace Resolink
 {
     /// <summary>
     /// Stores our buffered actions queued from callbacks

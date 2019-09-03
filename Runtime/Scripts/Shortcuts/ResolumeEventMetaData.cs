@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     [CreateAssetMenu]
     public class ResolumeEventMetaData : ScriptableObject

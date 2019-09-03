@@ -2,7 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     public class MapParserWindow : EditorWindow
     {
@@ -11,7 +11,7 @@ namespace Resolunity
 
         ResolumeType m_ResolumeType;
         
-        GUIContent m_ResolumeTypeContent = new GUIContent("Resolume Type");
+        readonly GUIContent m_ResolumeTypeContent = new GUIContent("Resolume Type", "Changes the default map path");
 
         GUILayoutOption m_SmallColumnWidth;
 
@@ -29,16 +29,11 @@ namespace Resolunity
             
             using (new GUILayout.HorizontalScope())
             {
-                EditorGUILayout.PrefixLabel("Resolume Type");
+                EditorGUILayout.PrefixLabel(m_ResolumeTypeContent);
                 m_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(m_ResolumeType, m_SmallColumnWidth);
             }
             
-            using (new GUILayout.HorizontalScope())
-            {
-                EditorGUILayout.PrefixLabel("Resolume OSC File");
-                s_OscMapPath = GetMapPath();
-            }
-            
+            s_OscMapPath = GetMapPath();
             EditorGUILayout.LabelField(s_OscMapPath);
             EditorGUILayout.Space();
 
@@ -58,7 +53,7 @@ namespace Resolunity
 
         public string GetMapPath()
         {
-            if (GUILayout.Button("Select File"))
+            if (GUILayout.Button("Select Resolume OSC Map File"))
                 return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, "xml");
 
             var userPath = string.IsNullOrEmpty(s_OscMapPath) ? GetDefaultMapPath() : s_OscMapPath;

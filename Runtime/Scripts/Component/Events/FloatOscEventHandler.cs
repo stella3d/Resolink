@@ -1,6 +1,6 @@
 using OscJack;
 
-namespace Resolunity
+namespace Resolink
 {
     public class FloatOscEventHandler : OscEventHandler<FloatUnityEvent, float>
     {

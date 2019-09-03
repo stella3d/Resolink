@@ -1,57 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
 using OscJack;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
-    internal sealed class TemplateChecker
-    {
-        public Regex[] Regexes;
-        public Action<OscDataHandle>[] Handlers;
 
-        public int Count { get; private set; }
-
-        public TemplateChecker(int capacity = 8)
-        {
-            Regexes = new Regex[capacity];
-            Handlers = new Action<OscDataHandle>[capacity];
-        }
-
-        public void AddRegexHandler(Regex regex, Action<OscDataHandle> handler)
-        {
-            if (Count >= Handlers.Length)
-            {
-                Array.Resize(ref Regexes, Regexes.Length * 2);
-                Array.Resize(ref Handlers, Handlers.Length * 2);
-            }
-
-            Regexes[Count] = regex;
-            Handlers[Count] = handler;
-            Count++;
-        }
-
-        public bool Process(string address, out Action<OscDataHandle> handler)
-        {
-            for (var i = 0; i < Regexes.Length; i++)
-            {
-                var regex = Regexes[i];
-                if (regex.IsMatch(address))
-                {
-                    handler = Handlers[i];
-#if RESOLUNITY_DEBUG_ADDRESS_MATCHING || true
-                    Debug.Log($"{regex} matched {address}");
-#endif
-                    return true;
-                }
-            }
-
-            handler = null;
-            return false;
-        }
-    }
 
     [ExecuteAlways]
     public class OscBrain : MonoBehaviour
@@ -75,7 +30,7 @@ namespace Resolunity
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
-        TemplateChecker m_TemplateChecker = new TemplateChecker(8);
+        RegexActionMapper m_TemplateChecker = new RegexActionMapper(8);
         
         public static OscBrain Instance { get; protected set; }
 
@@ -195,14 +150,14 @@ namespace Resolunity
         /// <param name="handle">A handle to access the value of the message</param>
         protected void PrimaryCallback(string address, OscDataHandle handle)
         {
-#if DEBUG_OSC_CALLBACK
+#if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));
 #endif
+            if (m_AddressesToIgnore.Contains(address))
+                return;
+            
             if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
             {
-                if (m_AddressesToIgnore.Contains(address))
-                    return;
-
                 // if we find a match in the template handlers, add a handler, otherwise ignore this address
                 if (m_TemplateChecker.Process(address, out var handler))
                     AddCallbackInternal(address, handler);
@@ -222,8 +177,8 @@ namespace Resolunity
 
         /// <summary>
         /// Messages arriving at addresses we can't find handlers for get added to an ignore set.
-        /// Call this to clear that - You might do this if handlers were added later.
-        /// This should not be needed in most cases
+        /// Call this to clear that - You would do this if handlers were added later at runtime.
+        /// This should not be needed otherwise
         /// </summary>
         public static void ClearIgnoredAddresses()
         {

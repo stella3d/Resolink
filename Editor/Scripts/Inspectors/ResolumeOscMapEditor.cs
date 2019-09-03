@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor

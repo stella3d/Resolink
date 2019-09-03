@@ -1,6 +1,6 @@
 using System;
 
-namespace Resolunity
+namespace Resolink
 {
     public static class ShortcutExtensions
     {
@@ -11,6 +11,12 @@ namespace Resolunity
             const string tempoController = "tempocontroller";
             var inputPath = shortcut.Input.Path;
             return inputPath.Contains(tempoController);
+        }
+        
+        public static bool IsCueEvent(this string inputPath)
+        {
+            const string cuepoints = "/cuepoints/";
+            return inputPath.Contains(cuepoints);
         }
         
         public static bool IsCompositionEvent(this ResolumeOscShortcut shortcut, bool excludeDashboard = true)

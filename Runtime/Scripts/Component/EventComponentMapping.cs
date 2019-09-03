@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-namespace Resolunity
+namespace Resolink
 {
     [Serializable]
     public abstract class SerializableDictionary<TKey, TValue>
@@ -76,6 +76,7 @@ namespace Resolunity
         
         [Header("Event Component Objects")]
         public GameObject TempoController;
+        public GameObject ClipTransport;
         public GameObject Composition;
         public GameObject CompositionLayer;
         public GameObject CompositionDashboard;
@@ -138,6 +139,8 @@ namespace Resolunity
         {
             if (shortcut.IsTimeEvent())
                 return TempoController;
+            // TODO - if is clip transport event
+            // TODO - if is cuepoint 
             if (shortcut.IsCompositionEvent())
                 return Composition;
             if (shortcut.IsLayerEvent())

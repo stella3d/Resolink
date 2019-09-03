@@ -2,7 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     public static class PathUtils
     {

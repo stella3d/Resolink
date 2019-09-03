@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
+  m_Name: Clip Transport
+  m_EditorClassIdentifier: 
+  Types: 0100000002000000020000000200000002000000020000000100000001000000010000000100000003000000
+  InputPaths:
+  - /composition/layers/*/clips/*/transporttype
+  - /composition/layers/*/clips/*/transport/position
+  - /composition/layers/*/clips/*/transport/position/in
+  - /composition/layers/*/clips/*/transport/position/out
+  - /composition/layers/*/clips/*/transport/position/behaviour/speed
+  - /composition/layers/*/clips/*/transport/position/behaviour/duration
+  - /composition/layers/*/clips/*/transport/position/behaviour/playdirection
+  - /composition/layers/*/clips/*/transport/position/behaviour/playmode
+  - /composition/layers/*/clips/*/transport/position/behaviour/playmodeaway
+  - /composition/layers/*/clips/*/transport/position/behaviour/beatloop
+  - /composition/layers/*/clips/*/transport/position/behaviour/catchup

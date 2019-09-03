@@ -3,7 +3,7 @@ using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Resolunity
+namespace Resolink
 {
     public class OscEventHandler : MonoBehaviour
     {

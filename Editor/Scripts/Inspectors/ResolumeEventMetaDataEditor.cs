@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
     [CustomEditor(typeof(ResolumeEventMetaData))]
     public class ResolumeEventMetaDataEditor : Editor

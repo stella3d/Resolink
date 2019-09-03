@@ -5,15 +5,8 @@ using System.Xml;
 using UnityEditor;
 using UnityEngine;
 
-namespace Resolunity
+namespace Resolink
 {
-    public static class Regexes
-    {
-        const string k_LayerNumberRegexPattern = "layers\\/[0-9]+\\/";
-
-        public static Regex LayerNumber { get; } = new Regex(k_LayerNumberRegexPattern);
-    }
-
     [CreateAssetMenu]
     [ExecuteAlways]
     public class OscMapParser : ScriptableObject
