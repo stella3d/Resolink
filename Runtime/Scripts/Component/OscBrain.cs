@@ -30,7 +30,7 @@ namespace Resolink
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
-        RegexActionMapper m_TemplateChecker = new RegexActionMapper(8);
+        readonly RegexActionMapper m_TemplateChecker = new RegexActionMapper();
         
         public static OscBrain Instance { get; protected set; }
 

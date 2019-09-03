@@ -13,7 +13,7 @@ namespace Resolink
     {
         public static OscMapParser instance;
         
-        public static readonly Dictionary<string, Type> InputPathToEventType = new Dictionary<string, Type>();
+        public static readonly Dictionary<Regex, Type> InputPathRegexToEventType = new Dictionary<Regex, Type>();
         
 #pragma warning disable 649
         [SerializeField] 
@@ -38,6 +38,8 @@ namespace Resolink
         ResolumeOscShortcut m_CurrentShortcut;
         ResolumeOscMap m_Map;
         ResolumeVersion m_Version;
+
+        RegexTypeMapper m_RegexToTypeMapper = new RegexTypeMapper();
         
         public string OutputPath { get; set; }
 
@@ -54,6 +56,7 @@ namespace Resolink
             m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
             m_Shortcuts = new List<ResolumeOscShortcut>();
             GatherTypeMetaData();
+            
         }
 
         public void ParseDefaultFile()
@@ -86,7 +89,17 @@ namespace Resolink
 
             if (m_Shortcuts.Count == 0)
                 return;
-            
+
+
+            foreach (var shortcut in m_Shortcuts)
+            {
+                var inPath = shortcut.Input.Path;
+                if (!m_RegexToTypeMapper.Process(inPath, out var typeForShortcut))
+                    continue;
+
+                shortcut.TypeName = typeForShortcut.Name;
+            }
+
             Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
             CreateAsset();
         }
@@ -195,8 +208,6 @@ namespace Resolink
             {
                 case "InputPath":
                     m_CurrentShortcut.Input = parsed;
-                    if (InputPathToEventType.TryGetValue(parsed.Path, out var type))
-                        m_CurrentShortcut.TypeName = type.Name;
                     break;
                 case "OutputPath":
                     m_CurrentShortcut.Output = parsed;
@@ -206,7 +217,7 @@ namespace Resolink
 
         public void GatherTypeMetaData()
         {
-            InputPathToEventType.Clear();
+            m_RegexToTypeMapper.Clear();
             foreach (var asset in m_PathMetaData)
             {
                 if (asset == null)
@@ -215,13 +226,15 @@ namespace Resolink
                 for (var i = 0; i < asset.InputPaths.Count; i++)
                 {
                     var path = asset.InputPaths[i];
+                    var regex = PathUtils.RegexForPath(path);
                     var type = TypeFromEnum(asset.Types[i]);
+                    
                     if(type != null) 
-                        InputPathToEventType.Add(path, type);
+                        m_RegexToTypeMapper.AddRegexToValue(regex, type);
                 }
             }
 
-            EventComponentMapping.InputPathToEventType = InputPathToEventType;
+            // EventComponentMapping.InputPathToEventType = InputPathToEventType;
         }
 
         static Type TypeFromEnum(TypeSelectionEnum selection)

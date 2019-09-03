@@ -83,7 +83,7 @@ namespace Resolink
         public GameObject CompositionLayerDashboard;
         public GameObject ApplicationUI;
         
-        public static Dictionary<string, Type> InputPathToEventType { get; set; }
+        // public static Dictionary<string, Type> InputPathToEventType { get; set; }
         
         public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
 

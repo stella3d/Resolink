@@ -57,8 +57,7 @@ namespace Resolink
                 var outPath = shortcut.Output.Path;
                 var inPath = shortcut.Input.Path;
 
-                var suffix = OscMapParser.InputPathToEventType.TryGetValue(inPath, out var type) 
-                    ? $"    -  {type?.Name}" : "";
+                var suffix = "        -  " + shortcut.TypeName;
                 
                 switch (m_LabelOption)
                 {
