@@ -65,6 +65,8 @@ namespace Resolink
 
         public void ParseFile(string filePath)
         {
+
+            m_Shortcuts.Clear();
             GatherTypeMetaData();
             
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);

@@ -57,7 +57,9 @@ namespace Resolink
                 return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, "xml");
 
             var userPath = string.IsNullOrEmpty(s_OscMapPath) ? GetDefaultMapPath() : s_OscMapPath;
-            return userPath.Replace("~/", Environment.SpecialFolder.UserProfile.ToString());
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            var replaced = userPath.Replace("~", folder);
+            return replaced;
         }
         
         public string GetDefaultMapPath()
