@@ -55,6 +55,11 @@ namespace Resolink
     [Serializable]
     public class EventComponentMapping : MonoBehaviour
     {
+        static readonly List<IntOscEventHandler> k_IntHandlerComponents = new List<IntOscEventHandler>();
+        static readonly List<FloatOscEventHandler> k_FloatHandlerComponents = new List<FloatOscEventHandler>();
+        static readonly List<BooleanOscEventHandler> k_BoolHandlerComponents = new List<BooleanOscEventHandler>();
+        static readonly List<StringOscEventHandler> k_StringHandlerComponents = new List<StringOscEventHandler>();
+        
         public ResolumeOscMap OscMap;
 
         public Dictionary<string, IntOscEventHandler> IdToIntEvent;
@@ -128,8 +133,6 @@ namespace Resolink
                 ComponentForShortcut(go, shortcut);
                 count++;
             }
-            
-            // Debug.LogFormat("{0} event handlers populated", count);
         }
 
         GameObject ObjectForShortcut(ResolumeOscShortcut shortcut)
@@ -154,22 +157,39 @@ namespace Resolink
             return null;
         }
 
-        OscEventHandler ComponentForShortcut(GameObject go, ResolumeOscShortcut shortcut)
+        void ComponentForShortcut(GameObject go, ResolumeOscShortcut shortcut)
         {
-            OscEventHandler component = null;
             if (shortcut.TypeName == typeof(int).Name)
-                component = go.AddComponent<IntOscEventHandler>();
+                AddShortcutComponentIfAbsent(go, shortcut, k_IntHandlerComponents);
             else if (shortcut.TypeName == typeof(float).Name)
-                component = go.AddComponent<FloatOscEventHandler>();
+                AddShortcutComponentIfAbsent(go, shortcut, k_FloatHandlerComponents);
             else if (shortcut.TypeName == typeof(bool).Name)
-                component = go.AddComponent<BooleanOscEventHandler>();
+                AddShortcutComponentIfAbsent(go, shortcut, k_BoolHandlerComponents);
             else if (shortcut.TypeName == typeof(string).Name)
-                component = go.AddComponent<StringOscEventHandler>();
+                AddShortcutComponentIfAbsent(go, shortcut, k_StringHandlerComponents);
+        }
+        
+        void AddShortcutComponentIfAbsent<T>(GameObject go, ResolumeOscShortcut shortcut, List<T> components) 
+            where T: OscEventHandler
+        {
+            go.GetComponents(components);
+            var found = false;
+            T component = null;
+            foreach (var c in components)
+            {
+                if (c.Shortcut.Input.Path != shortcut.Input.Path)
+                    continue;
 
-            if (component != null)
+                Debug.Log($"found existing component for {shortcut.Input.Path} on object {go.name}");
+                found = true;
+                break;
+            }
+
+            if (!found)
+                component = go.AddComponent<T>();
+
+            if(component != null)
                 component.Shortcut = shortcut;
-
-            return component;
         }
     }
 }
