@@ -163,20 +163,8 @@ namespace Resolink
             }
 
             DrawSubTargetsIfAny(shortcut.SubTargets);
-            DrawEvents(m_Map, shortcut);
             
             EditorGUILayout.EndFoldoutHeaderGroup();
-        }
-
-        void DrawEvents(ResolumeOscMap map, ResolumeOscShortcut shortcut)
-        {
-            if (shortcut.TypeName == typeof(int).Name)
-            {
-            }
-            else if (shortcut.TypeName == typeof(float).Name)
-            {
-                
-            }
         }
 
         static void DrawSubTarget(SubTarget subTarget)
