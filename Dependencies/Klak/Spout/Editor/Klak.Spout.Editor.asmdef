@@ -1,0 +1,12 @@
+{
+    "name": "Klak.Spout.Editor",
+    "references": [
+        "Klak.Spout"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false
+}
