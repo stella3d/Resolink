@@ -12,13 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition Layer Dashboard
   m_EditorClassIdentifier: 
-  Types: 0202020202020202
+  Types: 02
   InputPaths:
-  - /composition/layers/*/dashboard/link1
-  - /composition/layers/*/dashboard/link2
-  - /composition/layers/*/dashboard/link3
-  - /composition/layers/*/dashboard/link4
-  - /composition/layers/*/dashboard/link5
-  - /composition/layers/*/dashboard/link6
-  - /composition/layers/*/dashboard/link7
-  - /composition/layers/*/dashboard/link8
+  - /composition/layers/*/dashboard/link[1-8]

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition Layer
   m_EditorClassIdentifier: 
-  Types: 020302010202010301020101010201030303020202030301040303030301
+  Types: 0203020102020103010201000102010000000202020303010403
   InputPaths:
   - /composition/layers/*/master
   - /composition/layers/*/select
@@ -24,14 +24,14 @@ MonoBehaviour:
   - /composition/layers/*/clear
   - /composition/layers/*/direction
   - /composition/layers/*/speed
-  - /composition/layers/*/playmode
-  - /composition/layers/*/playmodeaway
+  - /composition/layers/*/clips/*/video/scaletofit
+  - 
   - /composition/layers/*/crossfadergroup
   - /composition/layers/*/transition/duration
   - /composition/layers/*/video/transition/mixer/blendmode
-  - /composition/layers/*/connectprevclip
-  - /composition/layers/*/connectnextclip
-  - /composition/layers/*/connectspecificclip
+  - 
+  - 
+  - 
   - /composition/layers/*/position
   - /composition/layers/*/audio/volume
   - /composition/layers/*/audio/pan
@@ -39,8 +39,4 @@ MonoBehaviour:
   - /composition/layers/*/solo
   - /composition/layers/*/autopilot
   - /composition/layers/*/name
-  - /composition/layers/*/clips/*/video/ascale
-  - /composition/layers/*/clips/*/video/bscale
-  - /composition/layers/*/clips/*/video/gscale
-  - /composition/layers/*/clips/*/video/rscale
-  - /composition/layers/*/clips/*/video/scaletofit
+  - /composition/layers/*/connect[a-z]+clip

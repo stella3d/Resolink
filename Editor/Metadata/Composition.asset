@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition
   m_EditorClassIdentifier: 
-  Types: 02020101030303030303030303
+  Types: 02020101030303030303030303010101
   InputPaths:
   - /composition/master
   - /composition/speed
@@ -27,3 +27,6 @@ MonoBehaviour:
   - /composition/connectprevcolumn
   - /composition/connectnextcolumn
   - /composition/connectspecificcolumn
+  - /composition/crossfader/video/mixer/blendmode
+  - /composition/crossfader/behaviour
+  - /composition/crossfader/curve

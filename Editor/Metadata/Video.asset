@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Application UI
+  m_Name: Video
   m_EditorClassIdentifier: 
-  Types: 02
+  Types: 010000
   InputPaths:
-  - /application/ui/clipsscroll[a-z]+
+  - /video/scaletofit
+  - /video/[abg]scale
+  - 
