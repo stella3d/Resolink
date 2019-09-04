@@ -12,17 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Clip Transport Cuepoints
   m_EditorClassIdentifier: 
-  Types: 030303030303030303030303
+  Types: 0303
   InputPaths:
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set1
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump1
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set2
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump2
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set3
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump3
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set4
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump4
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set5
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump5
-  - /composition/layers/*/clips/*/transport/cuepoints/setparams/set6
-  - /composition/layers/*/clips/*/transport/cuepoints/jumpparams/jump6
+  - /composition/layers/[0-9]+/clips/[0-9]+/transport/cuepoints/setparams/set[1-6]
+  - /composition/layers/[0-9]+/clips/[0-9]+/transport/cuepoints/jumpparams/jump[1-6]

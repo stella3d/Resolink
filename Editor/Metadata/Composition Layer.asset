@@ -12,31 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition Layer
   m_EditorClassIdentifier: 
-  Types: 0203020102020103010201000102010000000202020303010403
+  Types: 02030301020104010202
   InputPaths:
-  - /composition/layers/*/master
-  - /composition/layers/*/select
-  - /composition/layers/*/video/opacity
-  - /composition/layers/*/video/mixer/blendmode
-  - /composition/layers/*/video/height
-  - /composition/layers/*/video/width
-  - /composition/layers/*/video/autosize
-  - /composition/layers/*/clear
-  - /composition/layers/*/direction
-  - /composition/layers/*/speed
-  - /composition/layers/*/clips/*/video/scaletofit
-  - 
-  - /composition/layers/*/crossfadergroup
-  - /composition/layers/*/transition/duration
-  - /composition/layers/*/video/transition/mixer/blendmode
-  - 
-  - 
-  - 
-  - /composition/layers/*/position
-  - /composition/layers/*/audio/volume
-  - /composition/layers/*/audio/pan
-  - /composition/layers/*/bypassed
-  - /composition/layers/*/solo
-  - /composition/layers/*/autopilot
-  - /composition/layers/*/name
-  - /composition/layers/*/connect[a-z]+clip
+  - /composition/layers/[0-9]+/master
+  - /composition/layers/[0-9]+/select
+  - /composition/layers/[0-9]+/connect[a-z]+clip
+  - /composition/layers/[0-9]+/direction
+  - /composition/layers/[0-9]+/speed
+  - /composition/layers/[0-9]+/autopilot
+  - /composition/layers/[0-9]+/name
+  - /composition/layers/[0-9]+/crossfadergroup
+  - /composition/layers/[0-9]+/transition/duration
+  - /composition/layers/[0-9]+/position

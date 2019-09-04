@@ -22,8 +22,6 @@ namespace Resolink.Tests
             AssertRegexMatch(RegexStrings.ConnectSemanticColumn, input, match);
         }
         
-        
-        
         [TestCase("/composition/layers/6/clips/1/transport/cuepoints/setparams/set1")]
         [TestCase("/composition/layers/5/clips/2/transport/cuepoints/setparams/set2")]
         [TestCase("/composition/layers/4/clips/3/transport/cuepoints/setparams/set3")]

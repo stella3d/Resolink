@@ -50,8 +50,8 @@ namespace Resolink
         {
             // as an input example,    /composition/layers/*/autopilot
             // we want the regex like  ^\/composition\/layers\/[0-9]+\/autopilot$
-            var regexStr = "^" + path.Replace("/", "\\/") + "$";
-            regexStr = regexStr.Replace("*", "[0-9]+");
+            var regexStr = path + "$";
+            regexStr = regexStr.Replace("/*/", "/[0-9]+/");
             return new Regex(regexStr);
         }
     }

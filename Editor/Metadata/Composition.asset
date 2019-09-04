@@ -12,21 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition
   m_EditorClassIdentifier: 
-  Types: 02020101030303030303030303010101
+  Types: 0202010103030303030101
   InputPaths:
   - /composition/master
   - /composition/speed
-  - /composition/columns/*/connect
-  - /composition/decks/*/select
-  - /composition/bypassed
+  - /composition/columns/[0-9]+/connect
+  - /composition/decks/[0-9]+/select
+  - /composition/connect(prev|next|specific)column
   - /composition/disconnectall
   - /composition/select
-  - /composition/backwards
+  - /composition/(backwards|forwards)
   - /composition/paused
-  - /composition/forwards
-  - /composition/connectprevcolumn
-  - /composition/connectnextcolumn
-  - /composition/connectspecificcolumn
-  - /composition/crossfader/video/mixer/blendmode
   - /composition/crossfader/behaviour
   - /composition/crossfader/curve

@@ -12,15 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Behaviors
   m_EditorClassIdentifier: 
-  Types: 02020102030202010103
+  Types: 0202010203020301010301
   InputPaths:
   - /[a-z]+/behaviour/gain
   - /[a-z]+/behaviour/fallback
   - /[a-z]+/behaviour/valuebehaviour
   - /[a-z]+/behaviour/speed
   - /[a-z]+/behaviour/invert
-  - /[a-z]+/behaviour/duration
-  - /[a-z]+/behaviour/duration/[a-z]+
+  - /[a-z]+/behaviour/duration(/(divide|multiply))?
+  - /[a-z]+/behaviour/catchup
   - /[a-z]+/behaviour/playdirection
   - /[a-z]+/behaviour/playmode
   - /[a-z]+/behaviour/playmodeaway
+  - /[a-z]+/behaviour/beatloop

@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 02
   InputPaths:
-  - /application/ui/clipsscroll[a-z]+
+  - /application/ui/clipsscroll(horizontal|vertical)
