@@ -116,6 +116,9 @@ namespace Resolink
             }
             
             m_Map.GroupSubTargets();
+            
+            // sort by output path label
+            m_Map.Shortcuts.Sort();
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
         }
