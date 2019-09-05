@@ -6,9 +6,20 @@ namespace Resolink
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor
     {
-        const string k_ShowTargetsTooltip = "If enabled, shows any sub-targets found for every shortcut";
+        const string k_ShowTargetsTooltip = "If enabled, shows any sub-targets found for every shortcut. " +
+                                            " (not really used yet)";
         const string k_ShowUniqueIdsTooltip = 
             "If enabled, shows the unique identifier for the shortcut within the source map";
+        const string k_InputPathTooltip = 
+            "'Input' here means input into Resolume, not Unity.  This is the path we use to know " +
+            "which unique Resolume control this path is associated with.";
+        
+        const string k_TypeTooltip = "The type of data associated with this address' event";
+        const string k_IdTooltip = "The unique (within this map) identifier for this shortcut.";
+        const string k_SubTargetTooltip = "Sub-targets are different option values for a single path, " +
+                                          "associated with distinct controls in Resolume";
+
+        const string k_DataTypePrefix = "data type: ";
         
         ResolumeOscMap m_Map;
 
@@ -23,6 +34,14 @@ namespace Resolink
         readonly GUIContent m_ShowSubTargetsContent = new GUIContent("Show Sub-Targets", k_ShowTargetsTooltip);
         readonly GUIContent m_ShowIdsContent = new GUIContent("Show Unique IDs", k_ShowUniqueIdsTooltip);
         
+        readonly GUIContent m_IdContent = new GUIContent("ID", k_IdTooltip);
+        readonly GUIContent m_InputPathContent = new GUIContent("Input Path", k_InputPathTooltip);
+        readonly GUIContent m_TypeContent = new GUIContent("Type", k_TypeTooltip);
+        readonly GUIContent m_SubTargetContent = new GUIContent("Sub-Target", k_SubTargetTooltip);
+        readonly GUIContent m_SubTargetsContent = new GUIContent("Sub-Targets", k_SubTargetTooltip);
+
+        readonly GUILayoutOption m_LeftColumnWidth = GUILayout.Width(112);
+
         GUIStyle m_HeaderFoldout;
         
         GUIStyle HeaderFoldoutStyle 
@@ -48,12 +67,14 @@ namespace Resolink
         {
             if (m_Labels == null || m_Labels.Length != m_Map.Shortcuts.Count)
                 m_Labels = new string[m_Map.Shortcuts.Count];
+            
+            m_LabelsWithTooltips = new GUIContent[m_Map.Shortcuts.Count];
 
             for (int i = 0; i < m_Labels.Length; i++)
             {
                 var shortcut = m_Map.Shortcuts[i];
                 m_Labels[i] = shortcut.Output.Path;
-                m_LabelsWithTooltips[i] = new GUIContent();
+                m_LabelsWithTooltips[i] = new GUIContent(shortcut.Output.Path, k_DataTypePrefix + shortcut.TypeName);
             }
         }
 
@@ -88,7 +109,9 @@ namespace Resolink
         public void DrawShortcut(int index)
         {
             var foldoutState = m_FoldoutStates[index] != byte.MinValue;
-            var afterState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_Labels[index], HeaderFoldoutStyle);
+            var afterState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_LabelsWithTooltips[index], 
+                HeaderFoldoutStyle);
+            
             m_FoldoutStates[index] = afterState ? byte.MaxValue : byte.MinValue;
             if (!afterState)
             {
@@ -98,13 +121,26 @@ namespace Resolink
 
             var shortcut = m_Map.Shortcuts[index];
 
-            // TODO - draw data type
-            
-            if(m_ShowUniqueIds)
-                EditorGUILayout.LabelField("ID", shortcut.UniqueId.ToString(), EditorStyles.miniLabel);
-            
-            EditorGUILayout.LabelField("Input Path", shortcut.Input.Path);
-            EditorGUILayout.LabelField("Output Path", shortcut.Output.Path);
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(m_TypeContent, m_LeftColumnWidth);
+                EditorGUILayout.LabelField(shortcut.TypeName, EditorStyles.miniLabel);
+            }
+
+            if (m_ShowUniqueIds)
+            {
+                using (new EditorGUILayout.HorizontalScope())
+                {
+                    EditorGUILayout.LabelField(m_IdContent, m_LeftColumnWidth);
+                    EditorGUILayout.LabelField(shortcut.UniqueId.ToString(), EditorStyles.miniLabel);
+                }
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(m_InputPathContent, m_LeftColumnWidth);
+                EditorGUILayout.LabelField(shortcut.Input.Path, EditorStyles.miniLabel);
+            }
 
             if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0)
             {
@@ -118,9 +154,9 @@ namespace Resolink
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
 
-        static void DrawSubTarget(SubTarget subTarget)
+        void DrawSubTarget(SubTarget subTarget)
         {
-            EditorGUILayout.LabelField("Sub Target");
+            EditorGUILayout.LabelField(m_SubTargetContent);
             using (new EditorGUI.IndentLevelScope())
             {
                 EditorGUILayout.LabelField("Option Index", subTarget.OptionIndex.ToString());
@@ -128,9 +164,9 @@ namespace Resolink
             }
         }
         
-        static void DrawSubTargets(SubTarget[] subTargets)
+        void DrawSubTargets(SubTarget[] subTargets)
         {
-            EditorGUILayout.LabelField("Sub Targets");
+            EditorGUILayout.LabelField(m_SubTargetsContent);
             using (new EditorGUI.IndentLevelScope())
             {
                 foreach (var subTarget in subTargets)
@@ -144,7 +180,7 @@ namespace Resolink
             }
         }
         
-        static void DrawSubTargetsIfAny(SubTarget[] subTargets)
+        void DrawSubTargetsIfAny(SubTarget[] subTargets)
         {
             if(subTargets.Length == 1)
                 DrawSubTarget(subTargets[0]);
