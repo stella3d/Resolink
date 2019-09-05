@@ -10,14 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Video
+  m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 02030102020101
+  Types: 02020203030201020203
   InputPaths:
-  - /opacity
-  - /video/[rgba]scale
-  - /video/scaletofit
-  - /(video|effect)/height
-  - /(video|effect)/width
-  - /video/autosize
-  - /[a-z]+/mixer/blendmode
+  - /effect/modulo[xy]
+  - /effect/[rgb]delay
+  - /effect/[xy]
+  - /effect/flip[xy]
+  - /effect/flip[xy]/phase
+  - /effect/exposure
+  - /effect/channel
+  - /effect/contrast
+  - /effect/divisions
+  - /effect/blackbg

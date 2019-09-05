@@ -10,14 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Video
+  m_Name: Chroma Key Effect
   m_EditorClassIdentifier: 
-  Types: 02030102020101
-  InputPaths:
-  - /opacity
-  - /video/[rgba]scale
-  - /video/scaletofit
-  - /(video|effect)/height
-  - /(video|effect)/width
-  - /video/autosize
-  - /[a-z]+/mixer/blendmode
+  Types: 
+  InputPaths: []
