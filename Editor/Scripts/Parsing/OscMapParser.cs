@@ -233,8 +233,6 @@ namespace Resolink
                         m_RegexToTypeMapper.AddRegexToValue(regex, type);
                 }
             }
-
-            // EventComponentMapping.InputPathToEventType = InputPathToEventType;
         }
 
         static Type TypeFromEnum(TypeSelectionEnum selection)

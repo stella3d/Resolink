@@ -9,8 +9,14 @@ namespace Resolink
     [CreateAssetMenu]
     public class ResolumeEventMetaData : ScriptableObject
     {
+        /// <summary>
+        /// The type for each path in InputPaths
+        /// </summary>
         public List<TypeSelectionEnum> Types;
 
+        /// <summary>
+        /// All input paths (and regular expressions of paths) to use in trying to map shortcuts to types.
+        /// </summary>
         public List<string> InputPaths;
 
         void OnEnable()
