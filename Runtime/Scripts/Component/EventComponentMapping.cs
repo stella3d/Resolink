@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Resolink
 {
     [DisallowMultipleComponent]
+    [ExecuteAlways]
     public class EventComponentMapping : MonoBehaviour
     {
         static readonly List<IntOscEventHandler> k_IntHandlerComponents = new List<IntOscEventHandler>();
@@ -45,6 +46,8 @@ namespace Resolink
         public void OnEnable()
         {
             InitializeDictionaries();
+            HandleObjectDisableStates();
+//            HideAppUiReceiverObject();
         }
 
         void InitializeDictionaries()
@@ -86,6 +89,8 @@ namespace Resolink
                 ComponentForShortcut(go, shortcut);
                 count++;
             }
+
+            HandleObjectDisableStates();
         }
 
         GameObject ObjectForShortcut(ResolumeOscShortcut shortcut)
@@ -144,6 +149,25 @@ namespace Resolink
 
             if(component != null)
                 component.Shortcut = shortcut;
+        }
+        
+        void DisableIfNoHandlers(GameObject go)
+        {
+            var hasReceiver = go.GetComponent<OscEventHandler>() != null;
+            go.SetActive(hasReceiver);
+        }
+
+        void HandleObjectDisableStates()
+        {
+            DisableIfNoHandlers(TempoController);
+            DisableIfNoHandlers(ClipTransport);
+            DisableIfNoHandlers(ClipCuepoints);
+            DisableIfNoHandlers(Composition);
+            DisableIfNoHandlers(CompositionDashboard);
+            DisableIfNoHandlers(CompositionLayer);
+            DisableIfNoHandlers(CompositionLayerDashboard);
+            DisableIfNoHandlers(CompositionLayerEffects);
+            DisableIfNoHandlers(ApplicationUI);
         }
     }
 }
