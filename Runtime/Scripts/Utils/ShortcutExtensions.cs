@@ -49,9 +49,9 @@ namespace Resolink
         {
             var inputPath = shortcut.Input.Path;
             var dashboardOk = !inputPath.Contains("dashboard");
-            var hasEffect = inputPath.Contains("/effect/");
+            var hasEffects = inputPath.Contains("/effects/") || inputPath.Contains("/effect/");
             var hasLayer = inputPath.Contains("/layers/");
-            return dashboardOk && hasEffect && hasLayer;
+            return dashboardOk && hasEffects && hasLayer;
         }
         
         public static bool IsCompositionDashboardEvent(this ResolumeOscShortcut shortcut)
