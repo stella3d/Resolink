@@ -137,6 +137,11 @@ namespace Resolink
             var count = 0;
             foreach (var shortcut in OscMap.Shortcuts)
             {
+                var output = shortcut.Output;
+                // If the shortcut doesn't output from Resolume, we can't make an event to receive for it.
+                if (output == null || string.IsNullOrEmpty(output.Path))
+                    continue;
+                
                 var go = ObjectForShortcut(shortcut);
                 if (go == null) 
                     continue;

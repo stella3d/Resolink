@@ -16,6 +16,9 @@ namespace Resolink
             k_TargetGroup.Clear();
             foreach (var shortcut in map.Shortcuts)
             {
+                if (shortcut.SubTargets == null)
+                    continue;
+                
                 var outPath = shortcut.Output.Path;
                 if (shortcut.SubTargets == null)
                 {
