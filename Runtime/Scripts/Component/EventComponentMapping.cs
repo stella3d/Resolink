@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Resolink
 {
-    [Serializable]
+    [DisallowMultipleComponent]
     public class EventComponentMapping : MonoBehaviour
     {
         static readonly List<IntOscEventHandler> k_IntHandlerComponents = new List<IntOscEventHandler>();
