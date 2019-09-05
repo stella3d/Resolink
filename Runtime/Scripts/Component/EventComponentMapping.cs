@@ -31,6 +31,8 @@ namespace Resolink
         public GameObject Composition;
         [Tooltip(k_EventsRelated + "any or all layers in the Resolume composition")]
         public GameObject CompositionLayer;
+        [Tooltip(k_EventsRelated + "effects on any or all layers in the Resolume composition")]
+        public GameObject CompositionLayerEffects;
         [Tooltip(k_EventsRelated + "the Resolume composition dashboard")]
         public GameObject CompositionDashboard;
         [Tooltip(k_EventsRelated + "the any or all layer-specific dashboards" + k_Suffix)]
@@ -94,14 +96,16 @@ namespace Resolink
                 return ClipTransport;
             if (shortcut.IsCueEvent())
                 return ClipCuepoints;
-            if (shortcut.IsCompositionEvent())
-                return Composition;
+            if (shortcut.IsLayerEffectEvent())
+                return CompositionLayerEffects;
             if (shortcut.IsLayerEvent())
                 return CompositionLayer;
             if (shortcut.IsCompositionDashboardEvent())
                 return CompositionDashboard;
             if (shortcut.IsCompositionLayerDashboardEvent())
                 return CompositionLayerDashboard;
+            if (shortcut.IsCompositionEvent())
+                return Composition;
             if (shortcut.IsApplicationUiEvent())
                 return ApplicationUI;
 

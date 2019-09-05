@@ -45,6 +45,15 @@ namespace Resolink
             return inputPath.IndexOf(compLayers, StringComparison.CurrentCulture) == 0 && dashboardOk;
         }
         
+        public static bool IsLayerEffectEvent(this ResolumeOscShortcut shortcut)
+        {
+            var inputPath = shortcut.Input.Path;
+            var dashboardOk = !inputPath.Contains("dashboard");
+            var hasEffect = inputPath.Contains("/effect/");
+            var hasLayer = inputPath.Contains("/layers/");
+            return dashboardOk && hasEffect && hasLayer;
+        }
+        
         public static bool IsCompositionDashboardEvent(this ResolumeOscShortcut shortcut)
         {
             const string compDashboard = "composition/dashboard";

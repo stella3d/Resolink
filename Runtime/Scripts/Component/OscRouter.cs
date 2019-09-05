@@ -36,11 +36,13 @@ namespace Resolink
             Instance = this;
             AddPrimaryCallback(PrimaryCallback);
             m_PrimaryCallbackAdded = true;
+            HideOscEventReceiver();
         }
 
         void Awake()
         {
             Instance = this;
+            HideOscEventReceiver();
         }
 
         void Start()
@@ -170,6 +172,17 @@ namespace Resolink
             {
                 m_ActionInvocationBuffer.Add(callback, handle);
             }
+        }
+
+        // the event receiver component is basically internal to Resolink,
+        // and it's intended to register callbacks through its system, so hide receiver component.
+        void HideOscEventReceiver()
+        {
+            var receiver = GetComponent<OscEventReceiver>();
+            if (receiver == null)
+                return;
+
+            receiver.hideFlags = HideFlags.HideInInspector;
         }
 
         /// <summary>

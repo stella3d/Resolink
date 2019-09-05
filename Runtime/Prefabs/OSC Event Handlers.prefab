@@ -148,6 +148,7 @@ MonoBehaviour:
   ClipCuepoints: {fileID: 3448544746513536572}
   Composition: {fileID: 4714725749009031895}
   CompositionLayer: {fileID: 5744478920631697045}
+  CompositionLayerEffects: {fileID: 9195446918509069542}
   CompositionDashboard: {fileID: 3106361868688339697}
   CompositionLayerDashboard: {fileID: 6496682048279282555}
   ApplicationUI: {fileID: 8745360163990573143}

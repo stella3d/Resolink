@@ -27,6 +27,7 @@ namespace Resolink
         SerializedProperty m_ClipCuepointsProperty;
         SerializedProperty m_CompositionProperty;
         SerializedProperty m_CompositionLayerProperty;
+        SerializedProperty m_CompositionLayerEffectsProperty;
         SerializedProperty m_CompositionDashboardProperty;
         SerializedProperty m_CompositionLayerDashboardProperty;
         SerializedProperty m_ApplicationUIProperty;
@@ -44,6 +45,7 @@ namespace Resolink
             m_ClipCuepointsProperty = serializedObject.FindProperty("ClipCuepoints");
             m_CompositionProperty = serializedObject.FindProperty("Composition");
             m_CompositionLayerProperty = serializedObject.FindProperty("CompositionLayer");
+            m_CompositionLayerEffectsProperty = serializedObject.FindProperty("CompositionLayerEffects");
             m_CompositionDashboardProperty = serializedObject.FindProperty("CompositionDashboard");
             m_CompositionLayerDashboardProperty = serializedObject.FindProperty("CompositionLayerDashboard");
             m_ApplicationUIProperty = serializedObject.FindProperty("ApplicationUI");
@@ -55,8 +57,6 @@ namespace Resolink
         {
             serializedObject.Update();
             
-            EditorGUILayout.PropertyField(m_OscMapProperty);
-            
             m_EventObjectFoldoutState = EditorGUILayout.Foldout(m_EventObjectFoldoutState, m_EventFoldoutContent);
             if (m_EventObjectFoldoutState)
             {
@@ -65,14 +65,15 @@ namespace Resolink
                 EditorGUILayout.PropertyField(m_ClipCuepointsProperty);
                 EditorGUILayout.PropertyField(m_CompositionProperty);
                 EditorGUILayout.PropertyField(m_CompositionLayerProperty);
+                EditorGUILayout.PropertyField(m_CompositionLayerEffectsProperty);
                 EditorGUILayout.PropertyField(m_CompositionDashboardProperty);
                 EditorGUILayout.PropertyField(m_CompositionLayerDashboardProperty);
                 EditorGUILayout.PropertyField(m_ApplicationUIProperty);
             }
-
-            EditorGUILayout.Space();
-            EditorUtils.DrawBoxLine();
             
+            EditorUtils.DrawBoxLine();
+            EditorGUILayout.PropertyField(m_OscMapProperty);
+            //EditorGUILayout.Space();
             EditorGUILayout.HelpBox(k_HelpText, MessageType.Info);
             EditorGUILayout.Space();
 
