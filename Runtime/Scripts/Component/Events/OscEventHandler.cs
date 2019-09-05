@@ -23,7 +23,7 @@ namespace Resolink
             if (Event == null)
                 Event = new TEvent();
 
-            if (OscBrain.Instance != null && !m_Registered)
+            if (OscRouter.Instance != null && !m_Registered)
                 Register();
         }
 
@@ -40,13 +40,13 @@ namespace Resolink
         
         protected void Register()
         {
-            OscBrain.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
+            OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
             m_Registered = true;
         }
 
         protected void UnRegister()
         {
-            OscBrain.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
+            OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
             m_Registered = false;
         }
 

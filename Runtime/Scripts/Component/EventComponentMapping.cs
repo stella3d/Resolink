@@ -1,57 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
 
 namespace Resolink
 {
-    [Serializable]
-    public abstract class SerializableDictionary<TKey, TValue>
-    {
-        public List<TKey> Keys = new List<TKey>();
-        public List<TValue> Values = new List<TValue>();
-
-        public void Add(TKey key, TValue value)
-        {
-            Keys.Add(key);
-            Values.Add(value);
-        }
-
-        public void Clear()
-        {
-            Keys.Clear();
-            Values.Clear();
-        }
-
-        Dictionary<TKey, TValue> ToDictionary()
-        {
-            var dictionary = new Dictionary<TKey, TValue>();
-            for (var i = 0; i < Keys.Count; i++)
-                dictionary.Add(Keys[i], Values[i]);
-
-            return dictionary;
-        }
-    }
-
-    public class SerializableEventDictionary<TKey, TUnityEvent> : SerializableDictionary<TKey, TUnityEvent>
-        where TUnityEvent : UnityEventBase
-    {
-    }
-
-    public class UniqueIdEventDictionary<TEvent> : SerializableEventDictionary<string, TEvent> 
-        where TEvent : UnityEventBase
-    {
-        public static UniqueIdEventDictionary<TEvent> FromDictionary(Dictionary<string, TEvent> dictionary)
-        {
-            var self = new UniqueIdEventDictionary<TEvent>();
-            foreach (var kvp in dictionary)
-                self.Add(kvp.Key, kvp.Value);
-
-            return self;
-        }
-    }
-
     [Serializable]
     public class EventComponentMapping : MonoBehaviour
     {
@@ -66,13 +18,6 @@ namespace Resolink
         public Dictionary<string, IntOscEventHandler> IdToIntEvent;
         public Dictionary<string, FloatOscEventHandler> IdToFloatEvent;
         public Dictionary<string, BooleanOscEventHandler> IdToBoolEvent;
-
-        [SerializeField]
-        protected UniqueIdEventDictionary<IntUnityEvent> m_IntEvents = new UniqueIdEventDictionary<IntUnityEvent>();
-        [SerializeField]
-        protected UniqueIdEventDictionary<FloatUnityEvent> m_FloatEvents = new UniqueIdEventDictionary<FloatUnityEvent>();
-        [SerializeField]
-        protected UniqueIdEventDictionary<BoolUnityEvent> m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
 
         const string k_Suffix = " in Resolume";
         const string k_EventsRelated = "Events related to ";
@@ -108,13 +53,6 @@ namespace Resolink
             IdToBoolEvent = new Dictionary<string, BooleanOscEventHandler>();
         }
 
-        void InitializeSerializableDictionaries()
-        {
-            m_IntEvents = new UniqueIdEventDictionary<IntUnityEvent>();
-            m_FloatEvents = new UniqueIdEventDictionary<FloatUnityEvent>();
-            m_BoolEvents = new UniqueIdEventDictionary<BoolUnityEvent>();
-        }
-
         public EventComponentMapping(ResolumeOscMap map)
         {
             OscMap = map;
@@ -131,8 +69,6 @@ namespace Resolink
 
             if(IdToIntEvent == null)
                 InitializeDictionaries();
-            if (m_IntEvents == null)
-                InitializeSerializableDictionaries();
 
             var count = 0;
             foreach (var shortcut in OscMap.Shortcuts)

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Resolink
 {
     [ExecuteAlways]
-    public class OscBrain : MonoBehaviour
+    public class OscRouter : MonoBehaviour
     {
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
         
@@ -29,7 +29,7 @@ namespace Resolink
 
         readonly RegexActionMapper m_TemplateChecker = new RegexActionMapper();
         
-        public static OscBrain Instance { get; protected set; }
+        public static OscRouter Instance { get; protected set; }
 
         void OnEnable()
         {
