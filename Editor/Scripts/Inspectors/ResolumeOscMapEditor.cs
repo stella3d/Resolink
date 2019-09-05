@@ -6,15 +6,23 @@ namespace Resolink
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor
     {
+        const string k_ShowTargetsTooltip = "If enabled, shows any sub-targets found for every shortcut";
+        const string k_ShowUniqueIdsTooltip = 
+            "If enabled, shows the unique identifier for the shortcut within the source map";
+        
         ResolumeOscMap m_Map;
 
         byte[] m_FoldoutStates;
 
         string[] m_Labels;
+        GUIContent[] m_LabelsWithTooltips;
 
         bool m_ShowUniqueIds;
         bool m_ShowSubTargets;
 
+        readonly GUIContent m_ShowSubTargetsContent = new GUIContent("Show Sub-Targets", k_ShowTargetsTooltip);
+        readonly GUIContent m_ShowIdsContent = new GUIContent("Show Unique IDs", k_ShowUniqueIdsTooltip);
+        
         GUIStyle m_HeaderFoldout;
         
         GUIStyle HeaderFoldoutStyle 
@@ -45,6 +53,7 @@ namespace Resolink
             {
                 var shortcut = m_Map.Shortcuts[i];
                 m_Labels[i] = shortcut.Output.Path;
+                m_LabelsWithTooltips[i] = new GUIContent();
             }
         }
 
@@ -63,13 +72,13 @@ namespace Resolink
         {
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.PrefixLabel("Show Sub-Targets");
+                EditorGUILayout.PrefixLabel(m_ShowSubTargetsContent);
                 m_ShowSubTargets = EditorGUILayout.Toggle(m_ShowSubTargets);
             }
 
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.PrefixLabel("Show Shortcut IDs");
+                EditorGUILayout.PrefixLabel(m_ShowIdsContent);
                 m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
             }
             
