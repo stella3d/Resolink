@@ -6,8 +6,9 @@ namespace Resolink
     [CustomEditor(typeof(OscRouter))]
     public class OscRouterEditor : Editor
     {
-        const string k_HelpText = "This component handles routing OSC messages to your events, based on address.\n" +
-                                  "It also handles queueing event callbacks to happen on the main thread.";
+        const string k_HelpText = "This component handles routing OSC messages to your events, based on address, " +
+                                  "as well queueing them on the main thread.\n" +
+                                  "The EventReceiver component on this object just gets the OSC connection going.";
         
         public override void OnInspectorGUI()
         {
