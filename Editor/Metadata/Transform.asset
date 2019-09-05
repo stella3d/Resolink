@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 02020202
   InputPaths:
-  - /transform/position[xyz]
-  - /transform/rotation[xyz]
-  - /transform/scale?[wh]
-  - /transform/anchor[xyz]
+  - /(transform|effect)/position[xyz]
+  - /(transform|effect)/rotation[xyz]
+  - /(transform|effect)/scale?[wh]
+  - /(transform|effect)/anchor[xyz]

@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Edge Detection Effect
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 0202
+  InputPaths:
+  - /edgedetection/effect/(mode|multiplier)
+  - /edgedetection/effect/power

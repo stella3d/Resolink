@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Drop Shadow Effect
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 02020202
+  InputPaths:
+  - /dropshadow/effect/distance
+  - /dropshadow/effect/angle
+  - /dropshadow/effect/spread
+  - /dropshadow/effect/strength

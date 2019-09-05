@@ -121,6 +121,7 @@ namespace Resolink
             m_Map.Shortcuts.Sort();
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
+            m_Shortcuts.Clear();
         }
 
         void HandleNodeByName()

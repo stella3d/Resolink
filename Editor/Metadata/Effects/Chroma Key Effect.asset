@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Chroma Key Effect
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 000202020202
+  InputPaths:
+  - /chromakey/effect/keyhue
+  - /chromakey/effect/hue(softness|threshold)
+  - /chromakey/effect/white(softness|threshold)
+  - /chromakey/effect/black(softness|threshold)
+  - /chromakey/effect/spill(softness|threshold)
+  - /chromakey/effect/edge(shrink|blur)
