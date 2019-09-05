@@ -6,16 +6,6 @@ namespace Resolink
     [CustomEditor(typeof(ResolumeOscMap))]
     public class ResolumeOscMapEditor : Editor
     {
-        enum LabelIndexOptions : byte
-        {
-            One, 
-            Two, 
-            Three
-        }
-        
-        LabelIndexOptions m_LabelOption = LabelIndexOptions.Three;
-        LabelIndexOptions m_PreviousLabelOption;
-        
         ResolumeOscMap m_Map;
 
         byte[] m_FoldoutStates;
@@ -23,6 +13,7 @@ namespace Resolink
         string[] m_Labels;
 
         bool m_ShowUniqueIds;
+        bool m_ShowSubTargets;
 
         GUIStyle m_HeaderFoldout;
         
@@ -45,7 +36,6 @@ namespace Resolink
             GenerateLabels();
         }
 
-
         public void GenerateLabels()
         {
             if (m_Labels == null || m_Labels.Length != m_Map.Shortcuts.Count)
@@ -54,23 +44,7 @@ namespace Resolink
             for (int i = 0; i < m_Labels.Length; i++)
             {
                 var shortcut = m_Map.Shortcuts[i];
-                var outPath = shortcut.Output.Path;
-                var inPath = shortcut.Input.Path;
-
-                var suffix = "        -  " + shortcut.TypeName;
-                
-                switch (m_LabelOption)
-                {
-                    case LabelIndexOptions.One:
-                        m_Labels[i] = GetNiceLabel1Chunk(outPath) + suffix;
-                        break;
-                    case LabelIndexOptions.Two:
-                        m_Labels[i] = GetNiceLabel2Chunks(outPath) + suffix;
-                        break;
-                    case LabelIndexOptions.Three:
-                        m_Labels[i] = GetNiceLabel3Chunks(outPath) + suffix;
-                        break;
-                }
+                m_Labels[i] = shortcut.Output.Path;
             }
         }
 
@@ -87,15 +61,11 @@ namespace Resolink
 
         void DrawOptions()
         {
-            m_PreviousLabelOption = m_LabelOption;
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.PrefixLabel("Header Label Path Chunks");
-                m_LabelOption = (LabelIndexOptions) EditorGUILayout.EnumPopup(m_LabelOption);
+                EditorGUILayout.PrefixLabel("Show Sub-Targets");
+                m_ShowSubTargets = EditorGUILayout.Toggle(m_ShowSubTargets);
             }
-            
-            if(m_PreviousLabelOption != m_LabelOption)
-                GenerateLabels();
 
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -103,38 +73,7 @@ namespace Resolink
                 m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
             }
             
-            GUILayout.Box("", GUILayout.Height(1), GUILayout.Width(360));
-        }
-
-        static string GetNiceLabel1Chunk(string outPath)
-        {
-            var labelIndex = outPath.LastIndexOf('/') + 1;
-            return char.ToUpper(outPath[labelIndex]) + outPath.Substring(labelIndex + 1);
-        }
-        
-        static string GetNiceLabel2Chunks(string outPath)
-        {
-            int lastIndex = outPath.LastIndexOf('/');
-            int secondLastIndex = lastIndex > 0 ? outPath.LastIndexOf('/', lastIndex - 1) : -1;
-            var labelIndex = (secondLastIndex > 0 ? secondLastIndex : lastIndex) + 1;
-            return char.ToUpper(outPath[labelIndex]) + outPath.Substring(labelIndex + 1);
-        }
-        
-        static string GetNiceLabel3Chunks(string outPath)
-        {
-            int lastIndex = outPath.LastIndexOf('/');
-            int secondLastIndex = lastIndex > 0 ? outPath.LastIndexOf('/', lastIndex - 1) : -1;
-            int thirdLastIndex = secondLastIndex > 0 ? outPath.LastIndexOf('/', secondLastIndex - 1) : -1;
-
-            int labelIndex;
-            if (thirdLastIndex > 0)
-                labelIndex = thirdLastIndex + 1;
-            else if(secondLastIndex > 0)
-                labelIndex = secondLastIndex + 1;
-            else
-                labelIndex = lastIndex + 1;
-
-            return char.ToUpper(outPath[labelIndex]) + outPath.Substring(labelIndex + 1);
+            GUILayout.Box("", GUILayout.Height(1), GUILayout.ExpandWidth(true));
         }
 
         public void DrawShortcut(int index)
@@ -150,6 +89,8 @@ namespace Resolink
 
             var shortcut = m_Map.Shortcuts[index];
 
+            // TODO - draw data type
+            
             if(m_ShowUniqueIds)
                 EditorGUILayout.LabelField("ID", shortcut.UniqueId.ToString(), EditorStyles.miniLabel);
             
@@ -162,7 +103,8 @@ namespace Resolink
                 return;
             }
 
-            DrawSubTargetsIfAny(shortcut.SubTargets);
+            if(m_ShowSubTargets)
+                DrawSubTargetsIfAny(shortcut.SubTargets);
             
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
