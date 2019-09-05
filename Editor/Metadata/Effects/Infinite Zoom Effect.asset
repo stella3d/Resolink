@@ -10,19 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Effects
+  m_Name: Infinite Zoom Effect
   m_EditorClassIdentifier: 
-  Types: 020202030302010202030302
+  Types: 020202
   InputPaths:
-  - /effect/modulo[xy]
-  - /effect/[rgb]delay
-  - /effect/[xy]
-  - /effect/flip[xy]
-  - /effect/flip[xy]/phase
-  - /effect/exposure
-  - /effect/channel
-  - /effect/contrast
-  - /effect/divisions
-  - /effect/blackbg
-  - /effect/showmask
-  - /effect/alpha
+  - /infinitezoom2/effect/(range|zoom)
+  - /infinitezoom2/effect/rotationspeed
+  - /infinitezoom2/effect/numslices
