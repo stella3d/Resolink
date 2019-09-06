@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Resolink
 {
+    /// <summary>
+    /// Handles routing messages to the callbacks registered for each address
+    /// </summary>
     [ExecuteAlways]
     public class OscRouter : MonoBehaviour
     {
@@ -65,7 +68,12 @@ namespace Resolink
             // call all Actions buffered in response to messages since last frame
             m_ActionInvocationBuffer.InvokeAll();
 
-            // handle the existence of any next osc servers
+            // handle the existence of any new osc servers
+            HandleOscServerChanges();
+        }
+        
+        void HandleOscServerChanges()
+        {
             if (OscServer.ServerList.Count == m_PreviousServerCount) 
                 return;
             
@@ -127,16 +135,20 @@ namespace Resolink
         public static void RemoveCallback(string address, Action<OscDataHandle> callback)
         {
             if (Instance.m_AddressHandlers.TryGetValue(address, out var callbackList))
+            {
                 callbackList.Remove(callback);
+                if (callbackList.Count == 0)
+                    Instance.m_AddressHandlers.Remove(address);
+            }
         }
 
-        public static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
+        static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.AddCallback(string.Empty, callback);
         }
 
-        public static void RemovePrimaryCallback(OscMessageDispatcher.MessageCallback callback)
+        static void RemovePrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.RemoveCallback(string.Empty, callback);

@@ -73,7 +73,6 @@ namespace Resolink
             
             EditorUtils.DrawBoxLine();
             EditorGUILayout.PropertyField(m_OscMapProperty);
-            //EditorGUILayout.Space();
             EditorGUILayout.HelpBox(k_HelpText, MessageType.Info);
             EditorGUILayout.Space();
 

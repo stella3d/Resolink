@@ -7,7 +7,6 @@ namespace Resolink
         const string compLayers = "/composition/layers";
         const string k_Cuepoints = "/cuepoints/";
 
-
         public static bool IsTimeEvent(this ResolumeOscShortcut shortcut)
         {
             const string tempoController = "tempocontroller";
