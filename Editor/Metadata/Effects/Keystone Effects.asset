@@ -10,7 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Keystone Effect
+  m_Name: Keystone Effects
   m_EditorClassIdentifier: 
-  Types: 
-  InputPaths: []
+  Types: 020203
+  InputPaths:
+  - /keystone(crop|mask)?/effect/top(left|right)[xy]
+  - /keystone(crop|mask)?/effect/bot.(left|right)[xy]
+  - /keystone(crop|mask)?/effect/showgrid

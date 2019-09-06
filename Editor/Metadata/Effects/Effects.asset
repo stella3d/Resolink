@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 020202030302010202030302
+  Types: 02020203030201020203030203
   InputPaths:
   - /effect/modulo[xy]
   - /effect/[rgb]delay
@@ -26,3 +26,4 @@ MonoBehaviour:
   - /effect/blackbg
   - /effect/showmask
   - /effect/alpha
+  - /effect/reverse
