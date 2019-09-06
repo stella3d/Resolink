@@ -10,16 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Misc. Effects
+  m_Name: Kaleidoscope Effect
   m_EditorClassIdentifier: 
-  Types: 020201020303020202
-  InputPaths:
-  - /crop/effect/(left|right|top|bottom)
-  - /fisheye/effect/fisheye
-  - /displace/effect/mode
-  - /displace/effect/threshold
-  - /flip/effect/(horizontal|vertical)
-  - /freeze/effect/frozensolid
-  - /grid/effect/fuzzyness
-  - /circles/effect/size
-  - /heat/effect/heat
+  Types: 
+  InputPaths: []
