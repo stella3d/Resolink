@@ -2,10 +2,15 @@
     "name": "Resolink.Runtime",
     "references": [
         "GUID:7cdfac5ef1f961d4ebfe51361a2020bd",
-        "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2"
+        "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2",
+        "GUID:869cd83da8fd84e10a03986d495475fd"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor",
+        "macOSStandalone",
+        "WindowsStandalone64"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
