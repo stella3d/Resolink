@@ -33,7 +33,7 @@ namespace Resolink
 
         void InitHeaderStyle()
         {
-            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel);
+            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel) { wordWrap = true, clipping = TextClipping.Clip };
         }
     }
 }
