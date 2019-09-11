@@ -41,7 +41,6 @@ namespace Resolink
 
         public void HandlePauseEvent(bool eventValue)
         {
-            // Debug.Log("HandlePauseEvent");
             if (!m_Paused && eventValue)
             {
                 m_PauseQueued = true;
@@ -54,7 +53,6 @@ namespace Resolink
         
         public void HandleTempoEvent(float eventValue)
         {
-            // Debug.Log("HandleTempoEvent");
             BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
 
             if (m_IsFirstTempoEvent)
