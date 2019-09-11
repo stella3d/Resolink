@@ -32,12 +32,12 @@ namespace Resolink
         public void EnsureSendingComponent()
         {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            var foundComponent = CameraToShare.GetComponent<SpoutSender>();
-            if (foundComponent == null)
-            {
+            if (CameraToShare.GetComponent<SpoutSender>() == null)
                 CameraToShare.gameObject.AddComponent<SpoutSender>();
-            }
-#endif
+#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+            if (CameraToShare.GetComponent<SyphonServer>() == null)
+                CameraToShare.gameObject.AddComponent<SyphonServer>();    
+#endif            
         }
     }
 }

@@ -156,7 +156,7 @@ namespace Resolink
             var hasReceiver = go.GetComponent<OscEventHandler>() != null;
             go.SetActive(hasReceiver);
         }
-
+        
         void HandleObjectDisableStates()
         {
             DisableIfNoHandlers(TempoController);
