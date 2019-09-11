@@ -10,10 +10,12 @@ namespace Resolink
     {
         public static ResolinkSettings Instance { get; private set; }
         
-        public const string k_ResolinkSettingsPath = "Assets/ResolinkSettings.asset";
+        public const string k_ResolinkSettingsFallbackPath = "Assets/ResolinkSettings.asset";
 
+#pragma warning disable 649
         [SerializeField]
         bool m_ShowHelp;
+#pragma warning restore 649
 
         public bool ShowHelp => m_ShowHelp;
 
@@ -28,7 +30,7 @@ namespace Resolink
             if (settings == null)
             {
                 settings = CreateInstance<ResolinkSettings>();
-                AssetDatabase.CreateAsset(settings, k_ResolinkSettingsPath);
+                AssetDatabase.CreateAsset(settings, k_ResolinkSettingsFallbackPath);
                 AssetDatabase.SaveAssets();
             }
             return settings;

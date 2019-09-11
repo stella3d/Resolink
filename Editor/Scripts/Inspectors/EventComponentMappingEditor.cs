@@ -73,7 +73,7 @@ namespace Resolink
             
             EditorUtils.DrawBoxLine();
             EditorGUILayout.PropertyField(m_OscMapProperty);
-            EditorGUILayout.HelpBox(k_HelpText, MessageType.Info);
+            EditorUtils.Help(k_HelpText);
             EditorGUILayout.Space();
 
             var noMap = m_Target.OscMap == null;

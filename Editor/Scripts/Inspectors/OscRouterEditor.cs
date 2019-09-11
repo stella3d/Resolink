@@ -10,7 +10,7 @@ namespace Resolink
         
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.HelpBox(k_HelpText, MessageType.Info);
+            EditorUtils.Help(k_HelpText);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Resolink
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.HelpBox(k_HelpText, MessageType.Info);
+            EditorUtils.Help(k_HelpText);
             EditorGUILayout.PropertyField(m_CameraProperty);
             serializedObject.ApplyModifiedProperties();
         }
