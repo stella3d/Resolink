@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Resolink
 {
@@ -73,6 +74,8 @@ namespace Resolink
 
             if(IdToIntEvent == null)
                 InitializeDictionaries();
+
+            RemoveUnusedPrevious();
 
             var count = 0;
             foreach (var shortcut in OscMap.Shortcuts)
@@ -151,12 +154,43 @@ namespace Resolink
                 component.Shortcut = shortcut;
         }
         
-        void DisableIfNoHandlers(GameObject go)
+        static void DisableIfNoHandlers(GameObject go)
         {
-            var hasReceiver = go.GetComponent<OscEventHandler>() != null;
-            go.SetActive(hasReceiver);
+            go.SetActive(go.GetComponent<OscEventHandler>() != null);
         }
-        
+
+        void RemoveUnusedPrevious()
+        {
+            RemoveUnusedPrevious<IntOscEventHandler, IntUnityEvent, int>(OscMap, gameObject, k_IntHandlerComponents);
+            RemoveUnusedPrevious<FloatOscEventHandler, FloatUnityEvent, float>(OscMap, gameObject, k_FloatHandlerComponents);
+            RemoveUnusedPrevious<BooleanOscEventHandler, BoolUnityEvent, bool>(OscMap, gameObject, k_BoolHandlerComponents);
+            RemoveUnusedPrevious<StringOscEventHandler, StringUnityEvent, string>(OscMap, gameObject, k_StringHandlerComponents);
+        }
+
+        static void RemoveUnusedPrevious<THandler, TEvent, TData>(ResolumeOscMap map, 
+            GameObject go, List<THandler> components)
+            where TEvent : UnityEvent<TData>, new()
+            where THandler : OscEventHandler<TEvent, TData>
+        {
+            go.GetComponents(components);
+            foreach (var component in components)
+            {
+                var found = false;
+                foreach (var shortcut in map.Shortcuts)
+                {
+                    if (shortcut != component.Shortcut)
+                        continue;
+
+                    found = true;
+                    break;
+                }
+
+                // only destroy events not found in the current map that have 0 event listeners
+                if (!found && component.Event.GetPersistentEventCount() == 0) 
+                    Destroy(component);
+            }
+        }
+
         void HandleObjectDisableStates()
         {
             DisableIfNoHandlers(TempoController);
