@@ -4,6 +4,7 @@ using UnityEngine;
 namespace Resolink
 {
     [DisallowMultipleComponent]
+    [ExecuteAlways]
     public class CameraRenderSharing : MonoBehaviour
     {
         [Tooltip("The camera to share a render texture to Resolume from. Main Camera if not specified")]
