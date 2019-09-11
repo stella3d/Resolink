@@ -218,6 +218,7 @@ namespace Resolink
 
         public static void GroupSubTargets(ref List<ResolumeOscShortcut> shortcuts)
         {
+            k_NewShortcuts.Clear();
             k_ProcessedOutputs.Clear();
             k_TargetGroup.Clear();
             foreach (var shortcut in shortcuts)
