@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 020202030302010202030302030302010202020202020202030203
+  Types: 02020203030201020203030203030201020202020202020203020302
   InputPaths:
   - /effect/modulo[xy]
   - /effect/[rgb]delay
@@ -41,3 +41,4 @@ MonoBehaviour:
   - /effect/delayenabled
   - /effect/modulo[xy]
   - /effect/usealpha
+  - /effect/phase
