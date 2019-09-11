@@ -279,7 +279,7 @@ namespace Resolink
                     var type = TypeFromEnum(asset.Types[i]);
                     
                     if(type != null) 
-                        m_RegexToTypeMapper.AddRegexToValue(regex, type);
+                        m_RegexToTypeMapper.Add(regex, type);
                 }
             }
         }

@@ -18,7 +18,7 @@ namespace Resolink
             Values = new T[capacity];
         }
 
-        public void AddRegexToValue(Regex regex, T value)
+        public void Add(Regex regex, T value)
         {
             if (Count >= Values.Length)
             {
