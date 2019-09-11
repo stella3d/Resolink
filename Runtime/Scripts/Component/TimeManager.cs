@@ -4,7 +4,9 @@ namespace Resolink
 {
     public class TimeManager : MonoBehaviour
     {
-        public float BPM;
+        [SerializeField]
+        float m_Bpm = 144;
+        public float BPM => m_Bpm;
         
         bool m_PauseQueued;
         bool m_UnpauseQueued;
@@ -53,7 +55,7 @@ namespace Resolink
         
         public void HandleTempoEvent(float eventValue)
         {
-            BPM = Utils.ResolumeBpmEventToRealBpm(eventValue);
+            m_Bpm = Utils.ResolumeBpmEventToRealBpm(eventValue);
 
             if (m_IsFirstTempoEvent)
             {
