@@ -40,6 +40,8 @@ For sharing the render to Resolume,
 
 (on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
 
+###
+
 
 ### Time Sync
 
@@ -56,7 +58,7 @@ This relies on having an OSC output setup for the `Pause` button in Resolume.
 
 ##### Resolume BPM -> Unity Time Scale
 
-When you start a session, the BPM you are at in Resolume is equivalent to a time scale of 1.
+When you start a session & until you receive at least 2 tempo messages, the BPM you are at in Resolume is equivalent to a time scale of 1.
 
 As you change BPM in Resolume, Unity's `Time.timeScale` will follow along.
 
