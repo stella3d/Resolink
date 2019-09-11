@@ -7,7 +7,8 @@ namespace Resolink
     public class TimeManagerEditor : Editor
     {
         const string k_HelpText = "This component, along with the events below it, provide default behaviors for " +
-                                  "syncing Unity's time with Resolume's - pause and BPM sync.";
+                                  "syncing Unity's time with Resolume's - pause and BPM sync.\n\nThis will display the " +
+                                  "BPM once we receive tempo messages from resolume in Play mode";
 
         SerializedProperty m_BpmProperty;
         
