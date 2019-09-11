@@ -11,6 +11,7 @@ namespace Resolink
     }
 
     [Serializable]
+    [HelpURL(HelpLinks.TableOfContents)]
     public abstract class OscEventHandler<TEvent, T> : OscEventHandler
         where TEvent: UnityEvent<T>, new()
     {
