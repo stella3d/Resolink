@@ -7,6 +7,10 @@ namespace Resolink
     public class ResolumeEventMetaDataEditor : Editor
     {
         const int k_RightColumnWidth = 100;
+
+        const string k_HelpText = "Paths here match against a resolume shortcut's input path to determine its type.\n" +
+                                  "All paths are converted to a regular expression, and they assume that they will " +
+                                  "only match against the end of the path.  ";
         
         ResolumeEventMetaData m_Target;
         
@@ -25,6 +29,8 @@ namespace Resolink
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+            
+            EditorUtils.Help(k_HelpText);
             
             using (new EditorGUILayout.HorizontalScope())
             {
