@@ -16,10 +16,6 @@ namespace Resolink
         [Tooltip("A map of OSC events parsed from Resolume")]
         public ResolumeOscMap OscMap;
 
-        public Dictionary<string, IntOscEventHandler> IdToIntEvent;
-        public Dictionary<string, FloatOscEventHandler> IdToFloatEvent;
-        public Dictionary<string, BooleanOscEventHandler> IdToBoolEvent;
-
         const string k_Suffix = " in Resolume";
         const string k_EventsRelated = "Events related to ";
         
@@ -42,19 +38,9 @@ namespace Resolink
         [Tooltip(k_EventsRelated + "the Resolume application UI, not the composition")]
         public GameObject ApplicationUI;
         
-        public int Count => IdToFloatEvent.Count + IdToIntEvent.Count + IdToBoolEvent.Count;
-
         public void OnEnable()
         {
-            InitializeDictionaries();
             HandleObjectDisableStates();
-        }
-
-        void InitializeDictionaries()
-        {
-            IdToIntEvent = new Dictionary<string, IntOscEventHandler>();
-            IdToFloatEvent = new Dictionary<string, FloatOscEventHandler>();
-            IdToBoolEvent = new Dictionary<string, BooleanOscEventHandler>();
         }
 
         public EventComponentMapping(ResolumeOscMap map)
@@ -70,9 +56,6 @@ namespace Resolink
                 Debug.LogWarning("Cannot generate components without an OSC map asset!");
                 return;
             }
-
-            if(IdToIntEvent == null)
-                InitializeDictionaries();
 
             RemoveUnusedPrevious();
 
