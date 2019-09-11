@@ -49,9 +49,9 @@ namespace Resolink
         public static Regex RegexForPath(string path)
         {
             // as an input example,    /composition/layers/*/autopilot
-            // we want the regex like  ^\/composition\/layers\/[0-9]+\/autopilot$
-            var regexStr = path + "$";
-            regexStr = regexStr.Replace("/*/", "/[0-9]+/");
+            // we want the regex like  /composition/layers/[0-9]+/autopilot$
+            // Resolume always uses * to represent a number as far as i have seen
+            var regexStr = path.Replace("/*/", "/[0-9]+/") + "$";
             return new Regex(regexStr);
         }
     }
