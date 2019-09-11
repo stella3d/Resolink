@@ -48,7 +48,6 @@ namespace Resolink
         {
             InitializeDictionaries();
             HandleObjectDisableStates();
-//            HideAppUiReceiverObject();
         }
 
         void InitializeDictionaries()

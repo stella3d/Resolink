@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 
 namespace Resolink
 {
@@ -11,9 +12,9 @@ namespace Resolink
     [ExecuteAlways]
     public class OscMapParser : ScriptableObject
     {
-        public static OscMapParser instance;
-        
-        public static readonly Dictionary<Regex, Type> InputPathRegexToEventType = new Dictionary<Regex, Type>();
+        static readonly Dictionary<string, List<SubTarget>> k_TargetGroup = new Dictionary<string, List<SubTarget>>();
+        static readonly List<ResolumeOscShortcut> k_NewShortcuts = new List<ResolumeOscShortcut>();
+        static readonly HashSet<string> k_ProcessedOutputs = new HashSet<string>();
         
 #pragma warning disable 649
         [SerializeField] 
@@ -52,22 +53,14 @@ namespace Resolink
 
         void OnEnable()
         {
-            instance = this;
             m_XmlSettings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Parse };
             m_Shortcuts = new List<ResolumeOscShortcut>();
             GatherTypeMetaData();
-            
-        }
-
-        public void ParseDefaultFile()
-        {
-            var userPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var path = userPath + DefaultAvenuePath;
-            ParseFile(path);
         }
 
         public void ParseFile(string filePath)
         {
+            Profiler.BeginSample("Resolink Parse Osc Map");
             m_Shortcuts.Clear();
             GatherTypeMetaData();
             
@@ -88,8 +81,10 @@ namespace Resolink
             }
 
             if (m_Shortcuts.Count == 0)
+            {
+                Profiler.EndSample();
                 return;
-
+            }
 
             foreach (var shortcut in m_Shortcuts)
             {
@@ -99,7 +94,13 @@ namespace Resolink
 
                 shortcut.TypeName = typeForShortcut.Name;
             }
+            
+            GroupSubTargets(ref m_Shortcuts);
 
+            // sort by output path label
+            m_Shortcuts.Sort();
+
+            Profiler.EndSample();
             Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
             CreateAsset();
         }
@@ -114,11 +115,6 @@ namespace Resolink
             {
                 m_Map.Shortcuts.Add(shortcut);
             }
-            
-            m_Map.GroupSubTargets();
-            
-            // sort by output path label
-            m_Map.Shortcuts.Sort();
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
             m_Shortcuts.Clear();
@@ -219,6 +215,55 @@ namespace Resolink
             }
         }
 
+        public static void GroupSubTargets(ref List<ResolumeOscShortcut> shortcuts)
+        {
+            k_ProcessedOutputs.Clear();
+            k_TargetGroup.Clear();
+            foreach (var shortcut in shortcuts)
+            {
+                if (shortcut.SubTargets == null)
+                    continue;
+                
+                var outPath = shortcut.Output.Path;
+                if (shortcut.SubTargets == null)
+                {
+                    k_TargetGroup.Add(outPath, null);
+                    continue;
+                }
+
+                if (k_TargetGroup.TryGetValue(outPath, out var targetList))
+                    targetList.Add(shortcut.SubTargets[0]);
+                else
+                    k_TargetGroup.Add(outPath, new List<SubTarget> {shortcut.SubTargets[0]});
+            }
+
+            foreach (var kvp in k_TargetGroup)
+            {
+                var targets = kvp.Value;
+                if(targets == null || targets.Count == 1)
+                    continue;
+                
+                targets.Sort();
+            }
+
+            foreach (var shortcut in shortcuts)
+            {
+                var outPath = shortcut.Output.Path;
+                if (k_ProcessedOutputs.Contains(outPath))
+                    continue;
+
+                if (k_TargetGroup.TryGetValue(outPath, out var targetList))
+                {
+                    shortcut.SubTargets = targetList?.ToArray();
+                    k_NewShortcuts.Add(shortcut);
+                }
+
+                k_ProcessedOutputs.Add(outPath);
+            }
+            
+            shortcuts = k_NewShortcuts;
+        }
+        
         public void GatherTypeMetaData()
         {
             m_RegexToTypeMapper.Clear();
