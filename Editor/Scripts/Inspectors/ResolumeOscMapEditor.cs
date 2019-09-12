@@ -24,9 +24,16 @@ namespace Resolink
         ResolumeOscMap m_Map;
 
         byte[] m_FoldoutStates;
+        bool[] m_ColorGroupFoldoutStates;
+        bool[] m_Vec2FoldoutStates;
+        bool[] m_Vec3FoldoutStates;
 
         string[] m_Labels;
+        
         GUIContent[] m_LabelsWithTooltips;
+        GUIContent[] m_ColorGroupContents;
+        GUIContent[] m_Vector2GroupContents;
+        GUIContent[] m_Vector3GroupContents;
 
         bool m_ShowUniqueIds;
         bool m_ShowSubTargets;
@@ -60,6 +67,9 @@ namespace Resolink
         {
             m_Map = (ResolumeOscMap) target;
             m_FoldoutStates = new byte[m_Map.Shortcuts.Count];
+            m_ColorGroupFoldoutStates = new bool[m_Map.ColorGroups.Count];
+            m_Vec2FoldoutStates = new bool[m_Map.Vector2Groups.Count];
+            m_Vec3FoldoutStates = new bool[m_Map.Vector3Groups.Count];
             GenerateLabels();
         }
 
@@ -67,14 +77,35 @@ namespace Resolink
         {
             if (m_Labels == null || m_Labels.Length != m_Map.Shortcuts.Count)
                 m_Labels = new string[m_Map.Shortcuts.Count];
-            
-            m_LabelsWithTooltips = new GUIContent[m_Map.Shortcuts.Count];
 
+            m_LabelsWithTooltips = new GUIContent[m_Map.Shortcuts.Count];
             for (int i = 0; i < m_Labels.Length; i++)
             {
                 var shortcut = m_Map.Shortcuts[i];
                 m_Labels[i] = shortcut.Output.Path;
                 m_LabelsWithTooltips[i] = new GUIContent(shortcut.Output.Path, k_DataTypePrefix + shortcut.TypeName);
+            }
+
+            m_ColorGroupContents = new GUIContent[m_Map.ColorGroups.Count];
+            for (int i = 0; i < m_ColorGroupContents.Length; i++)
+            {
+                // TODO - titles based on prefix
+                m_ColorGroupContents[i] = new GUIContent("Color Group",
+                    "Four RGBA float events that make up a Color");
+            }
+
+            m_Vector2GroupContents = new GUIContent[m_Map.Vector2Groups.Count];
+            for (int i = 0; i < m_Vector2GroupContents.Length; i++)
+            {
+                m_Vector2GroupContents[i] = new GUIContent("Vector2 Group", 
+                    "Two XY float events that make up a Vector2");
+            }
+
+            m_Vector3GroupContents = new GUIContent[m_Map.Vector3Groups.Count];
+            for (int i = 0; i < m_Vector3GroupContents.Length; i++)
+            {
+                m_Vector3GroupContents[i] = new GUIContent("Vector3 Group", 
+                    "Three XYZ float events that make up a Vector2");
             }
         }
 
@@ -85,6 +116,18 @@ namespace Resolink
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
             {
                 DrawShortcut(i);
+                EditorGUILayout.Separator();
+            }
+        }
+
+        void DrawColorGroups()
+        {
+            for (var i = 0; i < m_Map.ColorGroups.Count; i++)
+            {
+                var foldoutState = m_ColorGroupFoldoutStates[i];
+                var afterState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_LabelsWithTooltips[i], 
+                    HeaderFoldoutStyle);
+
                 EditorGUILayout.Separator();
             }
         }
