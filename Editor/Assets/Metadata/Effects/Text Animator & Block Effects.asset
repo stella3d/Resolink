@@ -10,17 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Text Animator Effect
+  m_Name: Text Animator & Block Effects
   m_EditorClassIdentifier: 
-  Types: 04010103020201020201
+  Types: 010201030202010202
   InputPaths:
-  - /texteffect/effect/text
-  - /texteffect/effect/font
-  - /texteffect/effect/alignment
+  - /text(effect|block)/effect/style
+  - /text(effect|block)/effect/spacing[xy]
+  - /text(effect|block)/effect/alignment
   - /texteffect/effect/animated
   - /texteffect/effect/animatedposition[xy]
   - /texteffect/effect/delay
   - /texteffect/effect/order
-  - /texteffect/effect/size
-  - /texteffect/effect/spacing[xy]
-  - /texteffect/effect/style
+  - /text(effect|block)/effect/size
+  - /textblock/effect/linewidth
