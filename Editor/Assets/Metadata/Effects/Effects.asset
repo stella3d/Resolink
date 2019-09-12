@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 0202020303020102020303020303020102020202020202020302030202020202020203030202020202020202020202040102020202
+  Types: 020202030302010202030302030302010202020202020202030203020202020202020303020202020202020202020204010202020202
   InputPaths:
   - /effect/modulo[xy]
   - /effect/[rgb]delay
@@ -54,12 +54,12 @@ MonoBehaviour:
   - /effect/amount
   - /effect/speed(spread)?
   - /effect/zoom
-  - /effect/rotation?[xyz]
+  - /effect/rotation([xyz])?
   - /effect/resolution
   - /effect/frequency
   - /effect/(red|green|blue)
   - /effect/direction
-  - /effect/position?[xyz]
+  - /effect/position([xyz])?
   - /effect/anchor[xyz]
   - /effect/text
   - /effect/font
@@ -67,3 +67,4 @@ MonoBehaviour:
   - /effect/feedback
   - /effect/radius
   - /effect/pan[xy]
+  - /effect/size

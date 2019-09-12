@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Stripper Effect
   m_EditorClassIdentifier: 
-  Types: 02020202
+  Types: 0202020202
   InputPaths:
   - /stripper/effect/(mode|movementtype)
   - /stripper/effect/direction(spread)?
   - /stripper/effect/feather
   - /stripper/effect/(min|max|global)width
+  - /stripper/effect/number

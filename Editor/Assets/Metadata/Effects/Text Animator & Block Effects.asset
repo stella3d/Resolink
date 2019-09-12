@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Text Animator & Block Effects
   m_EditorClassIdentifier: 
-  Types: 010201030202010202
+  Types: 01020103020201020202
   InputPaths:
   - /text(effect|block)/effect/style
   - /text(effect|block)/effect/spacing[xy]
@@ -23,3 +23,4 @@ MonoBehaviour:
   - /texteffect/effect/order
   - /text(effect|block)/effect/size
   - /textblock/effect/linewidth
+  - /texteffect/effect/range
