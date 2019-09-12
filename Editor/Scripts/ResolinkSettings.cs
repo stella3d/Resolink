@@ -8,16 +8,33 @@ namespace Resolink
     [CreateAssetMenu]
     class ResolinkSettings : ScriptableObject
     {
-        public static ResolinkSettings Instance { get; private set; }
+        static ResolinkSettings s_Instance;
+        
+        public static ResolinkSettings Instance
+        {
+            get
+            {
+                if (s_Instance == null)
+                    s_Instance = GetOrCreateSettings();
+
+                return s_Instance;
+            }
+            private set => s_Instance = value;
+        }
         
         public const string k_ResolinkSettingsFallbackPath = "Assets/ResolinkSettings.asset";
 
 #pragma warning disable 649
         [SerializeField]
+        
         bool m_ShowHelp;
+        
+        [SerializeField] 
+        bool m_WarnOnUnknownType;
 #pragma warning restore 649
 
         public bool ShowHelp => m_ShowHelp;
+        public bool WarnOnUnknownType => m_WarnOnUnknownType;
 
         public void OnEnable()
         {
@@ -55,6 +72,9 @@ namespace Resolink
         static readonly GUIContent ShowHelpContent = new GUIContent("Show Help", 
             "If enabled, help boxes are shown on most Resolink components");
         
+        static readonly GUIContent TypeWarningContent = new GUIContent("Warn on Unknown Type", 
+            "If enabled, warnings will be shown in the console for Resolume shortcuts we don't know the data type for");
+        
         [SettingsProvider]
         public static SettingsProvider CreateResolinkSettingsProvider()
         {
@@ -67,7 +87,10 @@ namespace Resolink
                 guiHandler = (searchContext) =>
                 {
                     var settings = ResolinkSettings.GetSerializedSettings();
+                    settings.Update();
                     EditorGUILayout.PropertyField(settings.FindProperty("m_ShowHelp"), ShowHelpContent);
+                    EditorGUILayout.PropertyField(settings.FindProperty("m_WarnOnUnknownType"), TypeWarningContent);
+                    settings.ApplyModifiedProperties();
                 },
 
                 // Populate the search keywords to enable smart search filtering and label highlighting:
