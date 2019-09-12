@@ -17,7 +17,6 @@ namespace Resolink
         
         public TEvent Event;
         
-        [FormerlySerializedAs("m_Handlers")] 
         public THandler[] Handlers;
         
         protected bool m_Registered;

@@ -20,7 +20,7 @@ namespace Resolink
         
         public void SetX(float x) { Value.x = x; }
         
-        public void SetY(float y) { Value.y = y;  }
+        public void SetY(float y) { Value.y = y; }
         
         public void SetZ(float z) { Value.z = z; }
     }
