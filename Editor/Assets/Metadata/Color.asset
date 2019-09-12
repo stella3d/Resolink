@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Color
   m_EditorClassIdentifier: 
-  Types: 02020202
+  Types: 0202020201
   InputPaths:
   - /effect/color([0-9]+)?/(r|red)
   - /effect/color([0-9]+)?/(g|green)
   - /effect/color([0-9]+)?/(b|blue)
   - /effect/color([0-9]+)?/(a|alpha)
+  - /effect/color([0-9]+)?/palette/colors
