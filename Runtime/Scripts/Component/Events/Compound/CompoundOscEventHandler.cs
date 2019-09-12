@@ -61,6 +61,9 @@ namespace Resolink
         {
             foreach (var handler in Handlers)
             {
+                if (handler.Shortcut == null)
+                    continue;
+                
                 var action = GetWrapperForComponentEvent(handler);
                 OscRouter.AddCallback(handler.Shortcut.Output.Path, action);
             }
@@ -72,6 +75,9 @@ namespace Resolink
         {
             foreach (var handler in Handlers)
             {
+                if (handler.Shortcut == null)
+                    continue;
+                
                 var action = GetWrapperForComponentEvent(handler);
                 OscRouter.RemoveCallback(handler.Shortcut.Output.Path, action);
             }
