@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace Resolink
 {
@@ -20,6 +19,9 @@ namespace Resolink
         
         void FindColorGroups()
         {
+            if (!ResolinkEditorSettings.Instance.GroupColors)    
+                return;
+            
             k_ColorShortcutPrefixes.Clear();
             k_RedColorShortcuts.Clear();
             k_GreenColorShortcuts.Clear();
@@ -46,10 +48,8 @@ namespace Resolink
 
             foreach (var prefix in k_ColorShortcutPrefixes)
             {
-                Debug.Log($"checking color prefix : {prefix}");
                 if (AllColorComponentsFound(prefix))
                 {
-                    Debug.Log($"all components found for {prefix}!");
                     var group = new ColorShortcutGroup()
                     {
                         Red = s_CurrentRedShortcut,
