@@ -3,13 +3,13 @@ using OscJack;
 
 namespace Resolink
 {
-    public class OscFloatOscActionHandler : OscActionHandler<float>
+    public class FloatOscActionHandler : OscActionHandler<float>
     {
         protected override float GetMessageValue(OscDataHandle dataHandle)
         {
             return dataHandle.GetElementAsFloat(0);
         }
 
-        public OscFloatOscActionHandler(Action<float> action) : base(action) { }
+        public FloatOscActionHandler(Action<float> action) : base(action) { }
     }
 }
