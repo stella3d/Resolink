@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Meta Shape Effect
   m_EditorClassIdentifier: 
-  Types: 0101010302
+  Types: 010101030202
   InputPaths:
   - /metashape/effect/shape[12]
   - /metashape/effect/color
   - /metashape/effect/mode
   - /metashape/effect/scale
   - /metashape/effect/margin
+  - /metashape/effect/resolution
