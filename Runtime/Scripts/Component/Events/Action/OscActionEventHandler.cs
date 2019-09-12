@@ -4,7 +4,7 @@ using OscJack;
 namespace Resolink
 {
     /// <summary>
-    /// Just like OscEventHandler, but using plain c# events, for better performance at the cost of GUI convenience
+    /// Like OscEventHandler, but using plain c# events, for better performance at the cost of GUI convenience
     /// </summary>
     /// <typeparam name="T">The data type of the event</typeparam>
     [Serializable]
