@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 02020203030201020203030203030201020202020202020203020302020202
+  Types: 02020203030201020203030203030201020202020202020203020302020202020202
   InputPaths:
   - /effect/modulo[xy]
   - /effect/[rgb]delay
@@ -45,3 +45,6 @@ MonoBehaviour:
   - /effect/amplitude[hv]
   - /effect/frequency[hv]
   - /effect/noiseamount
+  - /effect/(d)?scale
+  - /effect/(d)?translate[xyz]
+  - /effect/(g)?rotate[xyz]
