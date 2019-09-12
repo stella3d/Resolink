@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace Resolink
 {
-    [CreateAssetMenu]
-    class ResolinkSettings : ScriptableObject
+    class ResolinkEditorSettings : ScriptableObject
     {
-        static ResolinkSettings s_Instance;
+        static ResolinkEditorSettings s_Instance;
         
-        public static ResolinkSettings Instance
+        public static ResolinkEditorSettings Instance
         {
             get
             {
@@ -21,11 +20,10 @@ namespace Resolink
             private set => s_Instance = value;
         }
         
-        public const string k_ResolinkSettingsFallbackPath = "Assets/ResolinkSettings.asset";
+        public const string k_ResolinkSettingsFallbackPath = "Assets/ResolinkEditorSettings.asset";
 
 #pragma warning disable 649
         [SerializeField]
-        
         bool m_ShowHelp;
         
         [SerializeField] 
@@ -40,12 +38,12 @@ namespace Resolink
             Instance = this;
         }
 
-        internal static ResolinkSettings GetOrCreateSettings()
+        internal static ResolinkEditorSettings GetOrCreateSettings()
         {
             var settings = GetSettingsFromAssets();
             if (settings == null)
             {
-                settings = CreateInstance<ResolinkSettings>();
+                settings = CreateInstance<ResolinkEditorSettings>();
                 AssetDatabase.CreateAsset(settings, k_ResolinkSettingsFallbackPath);
                 AssetDatabase.SaveAssets();
             }
@@ -57,12 +55,12 @@ namespace Resolink
             return new SerializedObject(GetOrCreateSettings());
         }
 
-        static ResolinkSettings GetSettingsFromAssets()
+        static ResolinkEditorSettings GetSettingsFromAssets()
         {
-            const string search = "t: ResolinkSettings";
+            const string search = "t: ResolinkEditorSettings";
             var guids = AssetDatabase.FindAssets(search);
             var firstPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-            return AssetDatabase.LoadAssetAtPath<ResolinkSettings>(firstPath);
+            return AssetDatabase.LoadAssetAtPath<ResolinkEditorSettings>(firstPath);
         }
     }
 
@@ -85,7 +83,7 @@ namespace Resolink
                 // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
                 guiHandler = (searchContext) =>
                 {
-                    var settings = ResolinkSettings.GetSerializedSettings();
+                    var settings = ResolinkEditorSettings.GetSerializedSettings();
                     settings.Update();
                     EditorGUILayout.PropertyField(settings.FindProperty("m_ShowHelp"), ShowHelpContent);
                     EditorGUILayout.PropertyField(settings.FindProperty("m_WarnOnUnknownType"), TypeWarningContent);

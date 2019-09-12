@@ -9,7 +9,7 @@ using UnityEngine.Profiling;
 
 namespace Resolink
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "NewOscMapParser.asset", menuName = "Resolink/Osc Map Parser", order = 2)]
     [ExecuteAlways]
     public class OscMapParser : ScriptableObject
     {
@@ -92,7 +92,7 @@ namespace Resolink
                 var inPath = shortcut.Input.Path;
                 if (!m_RegexToTypeMapper.Process(inPath, out var typeForShortcut))
                 {
-                    if(ResolinkSettings.Instance.WarnOnUnknownType)
+                    if(ResolinkEditorSettings.Instance.WarnOnUnknownType)
                         Debug.LogWarning($"data type for input path '{inPath}' is unknown! This can be fixed by adding " + 
                                         "a ResolumeEventMetaData entry with a regular expression that matches this path.");
                     continue;

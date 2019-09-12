@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Resolink Settings
   m_EditorClassIdentifier: 
   m_ShowHelp: 1
+  m_WarnOnUnknownType: 1

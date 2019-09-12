@@ -12,7 +12,7 @@ namespace Resolink
 
         public static void Help(string message, MessageType type = MessageType.Info)
         {
-            if(ResolinkSettings.Instance.ShowHelp)
+            if(ResolinkEditorSettings.Instance.ShowHelp)
                 EditorGUILayout.HelpBox(message, type);
         }
     }

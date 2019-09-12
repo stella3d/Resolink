@@ -6,7 +6,7 @@ namespace Resolink
     /// <summary>
     /// Used to store data about the data received for each event from Resolume
     /// </summary>
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "New Resolume Event MetaData", menuName = "Resolink/Event MetaData", order = 1)]
     public class ResolumeEventMetaData : ScriptableObject
     {
         /// <summary>
