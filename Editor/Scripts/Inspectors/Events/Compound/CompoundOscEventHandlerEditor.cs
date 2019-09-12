@@ -19,14 +19,18 @@ namespace Resolink
         protected TComponent m_Component;
         
         protected SerializedProperty m_EventProperty;
+        protected SerializedProperty m_ValueProperty;
 
         protected GUIStyle m_LabelStyle;
         protected GUIStyle m_MethodNameStyle;
+
+        protected bool m_HandlersFoldoutState = true;
 
         public void OnEnable()
         {
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
+            m_ValueProperty = serializedObject.FindProperty("Value");
 
             var handlers = m_Component.Handlers;
             if (handlers == null)
@@ -53,15 +57,21 @@ namespace Resolink
                 InitStyles();
             
             serializedObject.UpdateIfRequiredOrScript();
-            for (var i = 0; i < m_PathContents.Length; i++)
+
+            m_HandlersFoldoutState = EditorGUILayout.Foldout(m_HandlersFoldoutState, "Address Handlers");
+            if (m_HandlersFoldoutState)
             {
-                var contents = m_PathContents[i];
-                var action = m_EventContents[i];
-                DrawPathWithActionName(contents, action);
-                //EditorGUILayout.LabelField(contents, m_LabelStyle);
+                for (var i = 0; i < m_PathContents.Length; i++)
+                    DrawPathWithActionName(m_PathContents[i], m_EventContents[i]);
             }
 
+            using (new EditorGUI.DisabledScope(true))
+            {
+                EditorGUILayout.PropertyField(m_ValueProperty);
+            }
+            
             EditorGUILayout.PropertyField(m_EventProperty);
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -76,10 +86,13 @@ namespace Resolink
 
         void InitStyles()
         {
-            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel);
+            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel)
+            {
+                stretchWidth = true
+            };
             m_MethodNameStyle = new GUIStyle(EditorStyles.miniLabel)
             {
-                fixedWidth = 96f, 
+                fixedWidth = 84f, 
                 alignment = TextAnchor.MiddleRight
             };
         }
