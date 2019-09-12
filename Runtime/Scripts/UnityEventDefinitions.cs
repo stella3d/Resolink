@@ -16,5 +16,6 @@ namespace Resolink
     
     // these event types are handled by combining several primitive events
     [Serializable] public class Vector2UnityEvent : UnityEvent<Vector2> { }
+    [Serializable] public class Vector3UnityEvent : UnityEvent<Vector3> { }
     [Serializable] public class ColorUnityEvent : UnityEvent<Color> { }
 }
