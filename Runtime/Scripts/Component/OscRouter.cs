@@ -116,17 +116,6 @@ namespace Resolink
             callbackList.Add(callback);
         }
         
-        void AddCallbackInternal(string address, Action<OscDataHandle> callback)
-        {
-            if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
-            {
-                callbackList = new List<Action<OscDataHandle>>();
-                m_AddressHandlers[address] = callbackList;
-            }
-            
-            callbackList.Add(callback);
-        }
-        
         /// <summary>
         /// Remove a previously registered OSC message handler  
         /// </summary>
@@ -171,9 +160,14 @@ namespace Resolink
             {
                 // if we find a match in the template handlers, add a handler, otherwise ignore this address
                 if (m_TemplateChecker.Process(address, out var handler))
-                    AddCallbackInternal(address, handler);
+                {
+                    callbackList = new List<Action<OscDataHandle>> { handler };
+                    m_AddressHandlers[address] = callbackList;
+                }
                 else
+                {
                     m_AddressesToIgnore.Add(address);
+                }
 
                 return;
             }
