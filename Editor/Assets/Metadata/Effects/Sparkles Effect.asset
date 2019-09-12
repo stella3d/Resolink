@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Sparkles Effect
   m_EditorClassIdentifier: 
-  Types: 02020202
+  Types: 020202020303
   InputPaths:
   - /sparkles/effect/size
   - /sparkles/effect/color
   - /sparkles/effect/spread
   - /sparkles/effect/threshold
+  - /sparkles/effect/move
+  - /sparkles/effect/showimage
