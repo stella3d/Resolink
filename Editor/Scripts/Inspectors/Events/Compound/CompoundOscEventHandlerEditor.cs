@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +11,7 @@ namespace Resolink
         where TEvent : UnityEvent<TCombinedData>, new()
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
+        const string k_MethodTooltip = "The method on this script called when a message is received at this address";
 
         protected GUIContent[] m_PathContents;
         protected GUIContent[] m_EventContents;
@@ -47,7 +47,7 @@ namespace Resolink
                 var hasShortcut = handler.Shortcut?.Output != null;
                 var label = hasShortcut ? handler.Shortcut.Output.Path : "not set";
                 m_PathContents[i] = new GUIContent(label, k_PathTooltip);
-                m_EventContents[i] = new GUIContent(handler.Event.Method.Name);
+                m_EventContents[i] = new GUIContent(handler.Event.Method.Name, k_MethodTooltip);
             }
         }
 
