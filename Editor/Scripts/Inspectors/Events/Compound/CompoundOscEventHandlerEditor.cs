@@ -13,7 +13,7 @@ namespace Resolink
         where TCombinedData : IEquatable<TCombinedData>
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
-        const string k_MethodTooltip = "The method on this script called when a message is received at this address";
+        const string k_MethodTooltip = "The method called when a message is received at this address";
         const string k_HandlersTooltip = "What each address that makes up this control does";
 
         protected GUIContent[] m_PathContents;
