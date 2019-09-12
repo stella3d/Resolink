@@ -27,6 +27,7 @@ namespace Resolink
         /// <summary>The value before any messages that change it are received</summary>
         [Tooltip("The value before any messages that change it are received")]
         [SerializeField] TCompoundData m_DefaultValue;
+        public TCompoundData DefaultValue => m_DefaultValue;
         
         /// <summary>The UnityEvent that takes the complex data type</summary>
         public TEvent Event;
@@ -40,6 +41,7 @@ namespace Resolink
         public void OnEnable()
         {
             Setup();
+            Value = m_DefaultValue;
             
             if (Event == null)
                 Event = new TEvent();
@@ -114,6 +116,8 @@ namespace Resolink
                 m_Dirty = true;
             };
         }
+
+        public void AssignDefaultValue() { Value = m_DefaultValue; }
 
         public abstract void Setup();
     }

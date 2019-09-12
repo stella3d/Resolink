@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,9 +10,11 @@ namespace Resolink
         where TComponent: CompoundOscEventHandler<TSubHandler, TEvent, TCombinedData, TComponentData>
         where TSubHandler : OscActionHandler<TComponentData>
         where TEvent : UnityEvent<TCombinedData>, new()
+        where TCombinedData : IEquatable<TCombinedData>
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
         const string k_MethodTooltip = "The method on this script called when a message is received at this address";
+        const string k_HandlersTooltip = "What each address that makes up this control does";
 
         protected GUIContent[] m_PathContents;
         protected GUIContent[] m_EventContents;
@@ -25,7 +28,12 @@ namespace Resolink
         protected GUIStyle m_LabelStyle;
         protected GUIStyle m_MethodNameStyle;
 
+        protected readonly GUIContent m_AddressHandlersContent = new GUIContent("Address Handlers", k_HandlersTooltip);
+
         protected bool m_HandlersFoldoutState = true;
+
+        protected TCombinedData m_PreviousDefaultValue;
+        protected TCombinedData m_CurrentDefaultValue;
 
         public void OnEnable()
         {
@@ -58,9 +66,9 @@ namespace Resolink
             if (m_LabelStyle == null || m_MethodNameStyle == null)
                 InitStyles();
             
-            serializedObject.UpdateIfRequiredOrScript();
+            serializedObject.Update();
 
-            m_HandlersFoldoutState = EditorGUILayout.Foldout(m_HandlersFoldoutState, "Address Handlers");
+            m_HandlersFoldoutState = EditorGUILayout.Foldout(m_HandlersFoldoutState, m_AddressHandlersContent);
             if (m_HandlersFoldoutState)
             {
                 for (var i = 0; i < m_PathContents.Length; i++)
@@ -70,7 +78,13 @@ namespace Resolink
             }
 
             using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
+            {
+                m_PreviousDefaultValue = m_CurrentDefaultValue;
                 EditorGUILayout.PropertyField(m_DefaultValueProperty);
+                m_CurrentDefaultValue = m_Component.DefaultValue;
+                if (!m_CurrentDefaultValue.Equals(m_PreviousDefaultValue))
+                    m_Component.AssignDefaultValue();
+            }
 
             using (new EditorGUI.DisabledScope(true))
                 EditorGUILayout.PropertyField(m_ValueProperty);
