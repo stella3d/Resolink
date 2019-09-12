@@ -23,10 +23,13 @@ namespace Resolink
         /// <summary>The value that will be passed to the UnityEvent</summary>
         [Tooltip("The current value that will be passed to the event")]
         public TCompoundData Value;
-                
+        
+#pragma warning disable 649           
         /// <summary>The value before any messages that change it are received</summary>
         [Tooltip("The value before any messages that change it are received")]
         [SerializeField] TCompoundData m_DefaultValue;
+#pragma warning restore 649           
+
         public TCompoundData DefaultValue => m_DefaultValue;
         
         /// <summary>The UnityEvent that takes the complex data type</summary>
