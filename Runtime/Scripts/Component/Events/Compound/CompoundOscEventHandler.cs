@@ -8,7 +8,7 @@ namespace Resolink
     public abstract class CompoundOscEventHandler : MonoBehaviour { }
     
     /// <summary>
-    /// Handles grouping together primitive events into an event of a more complex data type
+    /// Groups together primitive events into an event of a more complex data type
     /// </summary>
     /// <typeparam name="THandler">The type of Action-based address handler for each sub-event</typeparam>
     /// <typeparam name="TEvent">The type of UnityEvent-based handler for the single complex event</typeparam>
@@ -21,14 +21,19 @@ namespace Resolink
         where THandler: OscActionHandler<TComponentData>
     {
         /// <summary>The value that will be passed to the UnityEvent</summary>
+        [Tooltip("The current value that will be passed to the event")]
         public TCompoundData Value;
+                
+        /// <summary>The value before any messages that change it are received</summary>
+        [Tooltip("The value before any messages that change it are received")]
+        [SerializeField] TCompoundData m_DefaultValue;
         
         /// <summary>The UnityEvent that takes the complex data type</summary>
         public TEvent Event;
         
         /// <summary>All handlers for sub-events, associated with a Resolume shortcut</summary>
         public THandler[] Handlers;
-        
+
         protected bool m_Registered;
         protected bool m_Dirty;
         

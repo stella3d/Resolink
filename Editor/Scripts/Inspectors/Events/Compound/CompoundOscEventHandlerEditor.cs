@@ -20,6 +20,7 @@ namespace Resolink
         
         protected SerializedProperty m_EventProperty;
         protected SerializedProperty m_ValueProperty;
+        protected SerializedProperty m_DefaultValueProperty;
 
         protected GUIStyle m_LabelStyle;
         protected GUIStyle m_MethodNameStyle;
@@ -31,6 +32,7 @@ namespace Resolink
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
             m_ValueProperty = serializedObject.FindProperty("Value");
+            m_DefaultValueProperty = serializedObject.FindProperty("m_DefaultValue");
 
             var handlers = m_Component.Handlers;
             if (handlers == null)
@@ -63,12 +65,15 @@ namespace Resolink
             {
                 for (var i = 0; i < m_PathContents.Length; i++)
                     DrawPathWithActionName(m_PathContents[i], m_EventContents[i]);
+                
+                EditorUtils.DrawBoxLine();
             }
 
+            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
+                EditorGUILayout.PropertyField(m_DefaultValueProperty);
+
             using (new EditorGUI.DisabledScope(true))
-            {
                 EditorGUILayout.PropertyField(m_ValueProperty);
-            }
             
             EditorGUILayout.PropertyField(m_EventProperty);
 
