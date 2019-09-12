@@ -1,7 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
 using OscJack;
-using UnityEngine;
 
 namespace Resolink
 {
@@ -62,7 +61,13 @@ namespace Resolink
         }
     }
     
+    /// <summary>
+    /// Used at runtime to match incoming messages against wildcard handlers
+    /// </summary>
     public class RegexActionMapper : RegexMapper<Action<OscDataHandle>> { }
-        
+       
+    /// <summary>
+    /// Used at edit time to match shortcut's input paths to a type
+    /// </summary>
     public class RegexTypeMapper : RegexMapper<Type> { }
 }
