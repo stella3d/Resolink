@@ -13,6 +13,8 @@ namespace Resolink
         static readonly List<BooleanOscEventHandler> k_BoolHandlerComponents = new List<BooleanOscEventHandler>();
         static readonly List<StringOscEventHandler> k_StringHandlerComponents = new List<StringOscEventHandler>();
         
+        static readonly List<ColorOscEventHandler> k_ColorHandlerComponents = new List<ColorOscEventHandler>();
+        
         [Tooltip("A map of OSC events parsed from Resolume")]
         public ResolumeOscMap OscMap;
 
@@ -74,6 +76,19 @@ namespace Resolink
                 ComponentForShortcut(go, shortcut);
                 count++;
             }
+            
+            Debug.Log($"{OscMap.ColorGroups.Count} color groups in map");
+            foreach (var group in OscMap.ColorGroups)
+            {
+                var red = group.Red;
+                var go = ObjectForShortcut(red);
+                if (go == null) 
+                    continue;
+                
+                AddColorComponentIfAbsent(go, group, k_ColorHandlerComponents);
+                count += 4;
+            }
+
 
             HandleObjectDisableStates();
         }
@@ -134,6 +149,44 @@ namespace Resolink
 
             if(component != null)
                 component.Shortcut = shortcut;
+        }
+        
+        void AddColorComponentIfAbsent(GameObject go, ColorShortcutGroup group, 
+            List<ColorOscEventHandler> components) 
+        {
+            go.GetComponents(components);
+            var found = false;
+            ColorOscEventHandler component = null;
+
+            foreach (var c in components)
+            {
+                if (c.Handlers == null)
+                    continue;
+                if (c.Handlers[0].Shortcut != group.Red)
+                    continue;
+                if (c.Handlers[1].Shortcut != group.Green)
+                    continue;
+                if (c.Handlers[2].Shortcut != group.Blue)
+                    continue;
+                if (c.Handlers[3].Shortcut != group.Alpha)
+                    continue;
+
+                found = true;
+                break;
+            }
+
+            if (!found)
+            {
+                component = go.AddComponent<ColorOscEventHandler>();
+                component.Setup();
+            }
+
+            component.Handlers[0].Shortcut = group.Red;
+            component.Handlers[1].Shortcut = group.Green;
+            component.Handlers[2].Shortcut = group.Blue;
+            component.Handlers[3].Shortcut = group.Alpha;
+            
+            Debug.Log($"successfully setup color component on object {go.name}");
         }
         
         static void DisableIfNoHandlers(GameObject go)

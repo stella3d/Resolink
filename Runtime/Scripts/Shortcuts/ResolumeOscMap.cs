@@ -19,5 +19,10 @@ namespace Resolink
         /// All active 'shortcuts' (events) in the configuration
         /// </summary>
         public List<ResolumeOscShortcut> Shortcuts = new List<ResolumeOscShortcut>();
+
+        /// <summary>
+        /// All shortcuts that make up r/g/b/a components of a color, grouped together
+        /// </summary>
+        public List<ColorShortcutGroup> ColorGroups = new List<ColorShortcutGroup>();
     }
 }

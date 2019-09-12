@@ -77,10 +77,10 @@ namespace Resolink
 
         void DrawPathWithActionName(GUIContent pathContent, GUIContent actionContent)
         {
-            using (new EditorGUILayout.HorizontalScope())
+            using (new EditorGUILayout.HorizontalScope(GUILayout.ExpandWidth(true)))
             {
-                EditorGUILayout.LabelField(pathContent, m_LabelStyle);
-                EditorGUILayout.LabelField(actionContent, m_MethodNameStyle);
+                EditorGUILayout.LabelField(pathContent, m_LabelStyle, GUILayout.ExpandWidth(true));
+                EditorGUILayout.LabelField(actionContent, m_MethodNameStyle, GUILayout.Width(84));
             }
         }
 
