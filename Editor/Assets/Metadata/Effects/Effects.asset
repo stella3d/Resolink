@@ -54,12 +54,12 @@ MonoBehaviour:
   - /effect/amount
   - /effect/speed(spread)?
   - /effect/zoom
-  - /effect/rotation[xyz]
+  - /effect/rotation?[xyz]
   - /effect/resolution
   - /effect/frequency
   - /effect/(red|green|blue)
   - /effect/direction
-  - /effect/position[xyz]
+  - /effect/position?[xyz]
   - /effect/anchor[xyz]
   - /effect/text
   - /effect/font
