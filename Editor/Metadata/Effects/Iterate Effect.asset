@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 020202020202020202
   InputPaths:
-  - /iterate/effect/transformstrength
-  - /iterate/effect/iterations
-  - /iterate/effect/startopacity
-  - /iterate/effect/opacitychange
-  - /iterate/effect/translate[xyz]
-  - /iterate/effect/dtranslate[xyz]
-  - /iterate/effect/dopacitychange
-  - /iterate/effect/[gd]rotate[xyz]
-  - /iterate/effect/dscale
+  - /iterate(2)?/effect/transformstrength
+  - /iterate(2)?/effect/iterations
+  - /iterate(2)?/effect/startopacity
+  - /iterate(2)?/effect/opacitychange
+  - /iterate(2)?/effect/translate[xyz]
+  - /iterate(2)?/effect/dtranslate[xyz]
+  - /iterate(2)?/effect/dopacitychange
+  - /iterate(2)?/effect/[gd]rotate[xyz]
+  - /iterate(2)?/effect/dscale

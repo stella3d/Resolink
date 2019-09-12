@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Colorize Effect
   m_EditorClassIdentifier: 
-  Types: 030302
+  Types: 03030201
   InputPaths:
   - /colorize/effect/weighted
   - /colorize/effect/greyskeep
   - /colorize/effect/greystolerance
+  - /colorize/effect/mode
