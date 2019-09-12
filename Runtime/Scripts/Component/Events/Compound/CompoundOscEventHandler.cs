@@ -21,6 +21,8 @@ namespace Resolink
         public THandler[] Handlers;
         
         protected bool m_Registered;
+
+        protected bool m_Dirty;
         
         public void OnEnable()
         {
@@ -38,6 +40,17 @@ namespace Resolink
             if (!m_Registered)
                 Register();
         }
+        
+        public void Update()
+        {
+            if (m_Dirty)
+            {            
+                // if any of the sub-handlers modified the value since last frame,
+                // fire the UnityEvent that takes the compound data
+                Event.Invoke(Value);
+                m_Dirty = false;
+            }
+        }
 
         public void OnDisable()
         {
@@ -48,7 +61,7 @@ namespace Resolink
         {
             foreach (var handler in Handlers)
             {
-                var action = GetCombinedInvokeForComponentEvent(handler);
+                var action = GetWrapperForComponentEvent(handler);
                 OscRouter.AddCallback(handler.Shortcut.Output.Path, action);
             }
 
@@ -59,7 +72,7 @@ namespace Resolink
         {
             foreach (var handler in Handlers)
             {
-                var action = GetCombinedInvokeForComponentEvent(handler);
+                var action = GetWrapperForComponentEvent(handler);
                 OscRouter.RemoveCallback(handler.Shortcut.Output.Path, action);
             }
 
@@ -67,24 +80,20 @@ namespace Resolink
         }
 
         /// <summary>
-        /// When one of the component handlers fires, we also want to fire the combined handler.
-        /// This way, we can fire events that take non-primitive types or vectors
-        /// when we change one of their primitive components via OSC
+        /// When one of the component handlers fires, we also want to set the dirty state so the combined event fires.
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
-        Action<OscDataHandle> GetCombinedInvokeForComponentEvent(OscActionEventHandler<TComponentData> handler)
+        Action<OscDataHandle> GetWrapperForComponentEvent(OscActionEventHandler<TComponentData> handler)
         {
             return handle =>
             {
+                // invoking the sub-handler should modify our Value
                 handler.InvokeFromHandle(handle);
-                Event.Invoke(Value);
+                m_Dirty = true;
             };
         }
 
         public abstract void Setup();
-
-        // the empty update function is here so the inspector has the disable checkbox
-        public void Update() { }
     }
 }
