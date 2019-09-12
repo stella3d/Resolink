@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition Layer
   m_EditorClassIdentifier: 
-  Types: 02030301020104010202
+  Types: 0203030102010401020203
   InputPaths:
   - /composition/layers/[0-9]+/master
   - /composition/layers/[0-9]+/select
@@ -24,3 +24,4 @@ MonoBehaviour:
   - /composition/layers/[0-9]+/crossfadergroup
   - /composition/layers/[0-9]+/transition/duration
   - /composition/layers/[0-9]+/position
+  - /composition/layers/[0-9]+/clips/[0-9]+connect
