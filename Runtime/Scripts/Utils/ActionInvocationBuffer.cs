@@ -21,6 +21,11 @@ namespace Resolink
             Values = new T[capacity];
         }
 
+        /// <summary>
+        /// Called in the osc handling thread to queue a callback
+        /// </summary>
+        /// <param name="action"></param>
+        /// <param name="value"></param>
         public void Add(Action<T> action, T value)
         {
             if (Count >= Actions.Length)
@@ -34,6 +39,9 @@ namespace Resolink
             Count++;
         }
 
+        /// <summary>
+        /// Called on the main thread to perform all queued actions
+        /// </summary>
         public void InvokeAll()
         {
             for (int i = 0; i < Count; i++)
