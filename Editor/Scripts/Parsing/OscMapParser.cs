@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using UnityEditor;
 using UnityEngine;
@@ -106,7 +105,10 @@ namespace Resolink
             // sort by output path label
             m_Shortcuts.Sort();
 
+            // find all groupings of primitive controls that make up a more complex control
             FindColorGroups();
+            FindVector2Groups();
+            FindVector3Groups();
 
             Profiler.EndSample();
             CreateAsset();
@@ -119,11 +121,11 @@ namespace Resolink
 
             m_Map.Shortcuts.Clear();
             foreach (var shortcut in m_Shortcuts)
-            {
                 m_Map.Shortcuts.Add(shortcut);
-            }
 
-            m_Map.ColorGroups = k_ColorGroups.ToList();     // copy the list
+            m_Map.ColorGroups = k_ColorGroups.ToList();     // copy the list in case we mutate the original
+            m_Map.Vector2Groups = k_Vector2Groups.ToList();     
+            m_Map.Vector3Groups = k_Vector3Groups.ToList();     
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
             m_Shortcuts.Clear();
@@ -143,7 +145,7 @@ namespace Resolink
                     ParseShortcutPath();
                     break;
                 case k_SubTargetNodeName:
-                    // on initial parsing, we don't group subtargets that we find in multiple Shortcut nodes
+                    // on initial parsing, we don't group sub-targets that we find in multiple Shortcut nodes
                     m_CurrentShortcut.SubTargets = new[] { ParseSubTarget() };
                     break;
             }

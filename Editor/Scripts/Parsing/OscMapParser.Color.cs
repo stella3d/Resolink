@@ -41,10 +41,10 @@ namespace Resolink
                     k_AlphaColorShortcuts.Add(shortcut);
             }
 
-            AddToPrefixSet(k_RedColorShortcuts);
-            AddToPrefixSet(k_GreenColorShortcuts);
-            AddToPrefixSet(k_BlueColorShortcuts);
-            AddToPrefixSet(k_AlphaColorShortcuts);
+            AddToColorPrefixSet(k_RedColorShortcuts);
+            AddToColorPrefixSet(k_GreenColorShortcuts);
+            AddToColorPrefixSet(k_BlueColorShortcuts);
+            AddToColorPrefixSet(k_AlphaColorShortcuts);
 
             foreach (var prefix in k_ColorShortcutPrefixes)
             {
@@ -91,15 +91,10 @@ namespace Resolink
             return false;
         }
 
-        static void AddToPrefixSet(List<ResolumeOscShortcut> shortcuts)
+        static void AddToColorPrefixSet(List<ResolumeOscShortcut> shortcuts)
         {
             foreach (var shortcut in shortcuts)
-            {
-                var inPath = shortcut.Input.Path;
-                var lastSplit = inPath.LastIndexOf('/');
-                var prefix = inPath.Substring(0, lastSplit);
-                k_ColorShortcutPrefixes.Add(prefix);
-            }
+                k_ColorShortcutPrefixes.Add(PrefixFromShortcut(shortcut));
         }
     }
 }
