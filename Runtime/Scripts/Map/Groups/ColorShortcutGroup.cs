@@ -1,8 +1,6 @@
-using System;
-
 namespace Resolink
 {
-    [Serializable]
+    [System.Serializable]
     public class ColorShortcutGroup
     {
         public ResolumeOscShortcut Red;
