@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Sphere Effect
+  m_Name: Stingy Sphere Effect
   m_EditorClassIdentifier: 
-  Types: 02020201
+  Types: 030202
   InputPaths:
-  - /sphere/effect/size
-  - /sphere/effect/extrusion
-  - /sphere/effect/noisephase
-  - /sphere/effect/noisetype
+  - /stingysphere/effect/wired
+  - /stingysphere/effect/extrusion
+  - /stingysphere/effect/spheresize

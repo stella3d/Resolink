@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Effects
   m_EditorClassIdentifier: 
-  Types: 0202020303020102020303020303020102020202020202020302030202020202020203030202020202
+  Types: 020202030302010202030302030302010202020202020202030203020202020202020303020202020202
   InputPaths:
   - /effect/modulo[xy]
   - /effect/[rgb]delay
@@ -55,3 +55,4 @@ MonoBehaviour:
   - /effect/speed
   - /effect/zoom
   - /effect/rotation[xyz]
+  - /effect/resolution
