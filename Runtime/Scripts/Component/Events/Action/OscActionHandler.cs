@@ -8,13 +8,13 @@ namespace Resolink
     /// </summary>
     /// <typeparam name="T">The data type of the event</typeparam>
     [Serializable]
-    public abstract class OscActionEventHandler<T>
+    public abstract class OscActionHandler<T>
     {
         public ResolumeOscShortcut Shortcut;
 
         public Action<T> Event;
 
-        public OscActionEventHandler(Action<T> action)
+        public OscActionHandler(Action<T> action)
         {
             Event = action;
         }

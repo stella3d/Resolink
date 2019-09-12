@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Resolink
 {
-    public class ColorOscEventHandler : CompoundOscEventHandler<FloatOscActionEventHandler, 
+    public class ColorOscEventHandler : CompoundOscEventHandler<OscFloatOscActionHandler, 
         ColorUnityEvent, Color, float>
     {
         public override void Setup()
@@ -11,10 +11,10 @@ namespace Resolink
             {
                 Handlers = new[]
                 {
-                    new FloatOscActionEventHandler(SetRed),
-                    new FloatOscActionEventHandler(SetGreen),
-                    new FloatOscActionEventHandler(SetBlue),
-                    new FloatOscActionEventHandler(SetAlpha),
+                    new OscFloatOscActionHandler(SetRed),
+                    new OscFloatOscActionHandler(SetGreen),
+                    new OscFloatOscActionHandler(SetBlue),
+                    new OscFloatOscActionHandler(SetAlpha),
                 };
             }
         }

@@ -4,5 +4,5 @@ namespace Resolink
 {
     [UnityEditor.CustomEditor(typeof(ColorOscEventHandler))]
     public class ColorOscEventHandlerEditor : CompoundOscEventHandlerEditor
-        <ColorOscEventHandler, FloatOscActionEventHandler, ColorUnityEvent, Color, float> { }
+        <ColorOscEventHandler, OscFloatOscActionHandler, ColorUnityEvent, Color, float> { }
 }

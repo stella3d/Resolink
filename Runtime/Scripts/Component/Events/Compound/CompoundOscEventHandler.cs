@@ -11,7 +11,7 @@ namespace Resolink
     [HelpURL(HelpLinks.TableOfContents)]
     public abstract class CompoundOscEventHandler<THandler, TEvent, TCompoundData, TComponentData> : CompoundOscEventHandler
         where TEvent: UnityEvent<TCompoundData>, new()
-        where THandler: OscActionEventHandler<TComponentData>
+        where THandler: OscActionHandler<TComponentData>
     {
         public TCompoundData Value;
         
@@ -90,7 +90,7 @@ namespace Resolink
         /// </summary>
         /// <param name="handler"></param>
         /// <returns></returns>
-        Action<OscDataHandle> GetWrapperForComponentEvent(OscActionEventHandler<TComponentData> handler)
+        Action<OscDataHandle> GetWrapperForComponentEvent(OscActionHandler<TComponentData> handler)
         {
             return handle =>
             {

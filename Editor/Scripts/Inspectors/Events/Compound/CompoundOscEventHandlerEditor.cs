@@ -8,7 +8,7 @@ namespace Resolink
     public abstract class CompoundOscEventHandlerEditor<TComponent, TSubHandler, TEvent, TCombinedData, TComponentData> 
         : Editor
         where TComponent: CompoundOscEventHandler<TSubHandler, TEvent, TCombinedData, TComponentData>
-        where TSubHandler : OscActionEventHandler<TComponentData>
+        where TSubHandler : OscActionHandler<TComponentData>
         where TEvent : UnityEvent<TCombinedData>, new()
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
