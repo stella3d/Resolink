@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Composition
   m_EditorClassIdentifier: 
-  Types: 0202010103030303030101
+  Types: 020201010303030303010103
   InputPaths:
   - /composition/master
   - /composition/speed
@@ -25,3 +25,4 @@ MonoBehaviour:
   - /composition/paused
   - /composition/crossfader/behaviour
   - /composition/crossfader/curve
+  - /composition/recorder/record
