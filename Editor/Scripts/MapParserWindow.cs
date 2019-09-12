@@ -10,7 +10,7 @@ namespace Resolink
         static string s_OscMapPath;
 
         string PreviousOutPath;
-        string OutputPath = "Assets/Resolink/Map.asset";
+        string OutputPath = "Assets/Resolink/DefaultOscMap.asset";
 
         string m_OutputDirectory;
         bool m_OutputDirExists = true;

@@ -107,7 +107,6 @@ namespace Resolink
             m_Shortcuts.Sort();
 
             Profiler.EndSample();
-            Debug.Log($"{m_Shortcuts.Count} Resolume OSC shortcuts found in map");
             CreateAsset();
         }
 
