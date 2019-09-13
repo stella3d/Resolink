@@ -54,6 +54,19 @@ namespace Resolink
         bool m_ColorGroupTopFoldout;
         bool m_Vec2GroupTopFoldout;
         bool m_Vec3GroupTopFoldout;
+        bool m_DrawSeparatorsForGrouped;
+
+        const string k_AddressFor = "The message address for ";
+        const string k_VectorAddress = k_AddressFor + "the vector's ";
+        readonly GUIContent m_XLabel = new GUIContent("X", k_VectorAddress + "X component");
+        readonly GUIContent m_YLabel = new GUIContent("Y", k_VectorAddress + "Y component");
+        readonly GUIContent m_ZLabel = new GUIContent("Z", k_VectorAddress + "Z component");
+        
+        const string k_ColorAddress = k_AddressFor + "the color's ";
+        readonly GUIContent m_RedLabel = new GUIContent("Red", k_ColorAddress + "red component");
+        readonly GUIContent m_GreenLabel = new GUIContent("Green", k_ColorAddress + "green component");
+        readonly GUIContent m_BlueLabel = new GUIContent("Blue", k_ColorAddress + "blue component");
+        readonly GUIContent m_AlphaLabel = new GUIContent("Alpha", k_ColorAddress + "alpha component");
         
         readonly GUIContent m_ControlGroupsHeaderContent = new GUIContent("Control Groups", k_ControlGroupsTip);
         readonly GUIContent m_ColorGroupsFoldContent = new GUIContent("Color", k_ColorGroupsFoldTip);
@@ -121,7 +134,7 @@ namespace Resolink
             for (int i = 0; i < m_Vector2GroupContents.Length; i++)
             {
                 var group = m_Map.Vector2Groups[i];
-                var prefix = OscMapParser.PrefixFromShortcut(group.X);
+                var prefix = RemoveLastChar(group.X.Input.Path);
                 m_Vector2GroupContents[i] = new GUIContent(prefix, k_Vec2GroupTip);
             }
 
@@ -129,7 +142,7 @@ namespace Resolink
             for (int i = 0; i < m_Vector3GroupContents.Length; i++)
             {
                 var group = m_Map.Vector3Groups[i];
-                var prefix = OscMapParser.PrefixFromShortcut(group.X);
+                var prefix = RemoveLastChar(group.X.Input.Path);
                 m_Vector3GroupContents[i] = new GUIContent(prefix, k_Vec3GroupTip);
             }
         }
@@ -172,7 +185,7 @@ namespace Resolink
                     if (!foldoutState)
                     {
                         EditorGUILayout.EndFoldoutHeaderGroup();
-                        return;
+                        continue;
                     }
 
                     drawSingle(list[i]);
@@ -191,14 +204,13 @@ namespace Resolink
 
         void DrawColorGroup(ColorShortcutGroup group)
         {
-            DrawType(group.Red);
-            DrawGroupedShortcut(group.Red);
-            EditorGUILayout.Separator();
-            DrawGroupedShortcut(group.Green);
-            EditorGUILayout.Separator();
-            DrawGroupedShortcut(group.Blue);
-            EditorGUILayout.Separator();
-            DrawGroupedShortcut(group.Alpha);
+            DrawGroupedShortcut(group.Red, m_RedLabel);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Green, m_GreenLabel);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Blue, m_BlueLabel);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Alpha, m_AlphaLabel);
         }
 
         void DrawVector2Groups()
@@ -209,7 +221,9 @@ namespace Resolink
 
         void DrawVector2Group(Vector2ShortcutGroup group)
         {
-            
+            DrawGroupedShortcut(group.X);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Y);
         }
 
         void DrawVector3Groups()
@@ -220,7 +234,11 @@ namespace Resolink
         
         void DrawVector3Group(Vector3ShortcutGroup group)
         {
-            
+            DrawGroupedShortcut(group.X, m_XLabel);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Y, m_YLabel);
+            MaybeSeparator();
+            DrawGroupedShortcut(group.Z, m_ZLabel);
         }
 
         void DrawOptions()
@@ -236,8 +254,15 @@ namespace Resolink
                 EditorGUILayout.PrefixLabel(m_ShowIdsContent);
                 m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
             }
-            
+
+            m_DrawSeparatorsForGrouped = m_ShowSubTargets || m_ShowUniqueIds;
             EditorUtils.DrawBoxLine();
+        }
+
+        void MaybeSeparator()
+        {
+            if(m_DrawSeparatorsForGrouped)
+                EditorGUILayout.Separator();
         }
 
         void DrawShortcutIndex(int index)
@@ -280,16 +305,16 @@ namespace Resolink
             
             EditorGUILayout.EndFoldoutHeaderGroup();
         }
-        
-        public void DrawGroupedShortcut(ResolumeOscShortcut shortcut)
-        {
-            DrawUniqueId(shortcut);
 
+        public void DrawGroupedShortcut(ResolumeOscShortcut shortcut, GUIContent customLabel = null)
+        {
             using (new EditorGUILayout.HorizontalScope())
             {
-                EditorGUILayout.LabelField(m_InputPathContent, m_LeftColumnWidth);
+                EditorGUILayout.LabelField(customLabel ?? m_InputPathContent, m_LeftColumnWidth);
                 EditorGUILayout.LabelField(shortcut.Input.Path, EditorStyles.miniLabel);
             }
+            
+            DrawUniqueId(shortcut);
 
             if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0)
             {
@@ -361,6 +386,11 @@ namespace Resolink
         bool AnyGroupsInMap()
         {
             return m_Map.ColorGroups.Count > 0 || m_Map.Vector2Groups.Count > 0 || m_Map.Vector3Groups.Count > 0;
+        }
+        
+        public static string RemoveLastChar(string input)
+        {
+            return input.Substring(0, input.Length - 1);
         }
     }
 }

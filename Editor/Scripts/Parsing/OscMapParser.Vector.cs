@@ -121,7 +121,7 @@ namespace Resolink
         {
             var xFound = PrefixFoundInList(prefix, k_XShortcuts, ref s_XShortcut);       
             var yFound = PrefixFoundInList(prefix, k_YShortcuts, ref s_YShortcut);       
-            var zFound = PrefixFoundInList(prefix, k_YShortcuts, ref s_ZShortcut);       
+            var zFound = PrefixFoundInList(prefix, k_ZShortcuts, ref s_ZShortcut);       
             return xFound && yFound && zFound;
         }
 
@@ -143,5 +143,6 @@ namespace Resolink
             var lastSplit = inPath.LastIndexOf('/');
             return inPath.Substring(0, lastSplit);
         }
+
     }
 }

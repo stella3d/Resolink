@@ -50,6 +50,7 @@ namespace Resolink
         
         public static class Vector2
         {
+            // TODO - add regexes for vec2 components
             public static Regex[] All { get; } = { };
         }
 
@@ -57,13 +58,10 @@ namespace Resolink
         
         const string k_LayerNumberRegexPattern = "layers/([0-9]+)/";
         
-        
-        
-        
-        public static Regex RedColorComponent { get; } = new Regex("/effect/color([0-9]+)?/red$");
-        public static Regex GreenColorComponent { get; } = new Regex("/effect/color([0-9]+)?/green$");
-        public static Regex BlueColorComponent { get; } = new Regex("/effect/color([0-9]+)?/blue$");
-        public static Regex AlphaColorComponent { get; } = new Regex("/effect/color([0-9]+)?/alpha$");
+        public static Regex RedColorComponent { get; } = new Regex("/effect/color([0-9]+)?/(r|red)$");
+        public static Regex GreenColorComponent { get; } = new Regex("/effect/color([0-9]+)?/(g|green)$");
+        public static Regex BlueColorComponent { get; } = new Regex("/effect/color([0-9]+)?/(b|blue)$");
+        public static Regex AlphaColorComponent { get; } = new Regex("/effect/color([0-9]+)?/(a|alpha)$");
         
         public static Regex WildcardNumber { get; } = new Regex(k_NumberRegexPattern);
         public static Regex LayerNumber { get; } = new Regex(k_LayerNumberRegexPattern);
