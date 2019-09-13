@@ -24,4 +24,4 @@ MonoBehaviour:
   - /composition/layers/[0-9]+/crossfadergroup
   - /composition/layers/[0-9]+/transition/duration
   - /composition/layers/[0-9]+/position
-  - /composition/layers/[0-9]+/clips/[0-9]+connect
+  - /composition/layers/[0-9]+/clips/[0-9]+/connect

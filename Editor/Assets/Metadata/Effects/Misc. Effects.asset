@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Misc. Effects
   m_EditorClassIdentifier: 
-  Types: 02020202030302
+  Types: 0202020203030202
   InputPaths:
   - /crop/effect/(left|right|top|bottom)
   - /fisheye/effect/fisheye
@@ -21,3 +21,4 @@ MonoBehaviour:
   - /flip/effect/(horizontal|vertical)
   - /freeze/effect/frozensolid
   - /grid/effect/fuzzyness
+  - /colorpass/effect/hue[12]
