@@ -130,13 +130,13 @@ namespace Resolink
         static void AddToVector2PrefixSet(List<ResolumeOscShortcut> shortcuts)
         {
             foreach (var shortcut in shortcuts)
-                k_Vector2ShortcutPrefixes.Add(PrefixFromShortcut(shortcut));
+                k_Vector2ShortcutPrefixes.Add(RemoveLastChar(shortcut.Input.Path));
         }
         
         static void AddToVector3PrefixSet(List<ResolumeOscShortcut> shortcuts)
         {
             foreach (var shortcut in shortcuts)
-                k_Vector3ShortcutPrefixes.Add(PrefixFromShortcut(shortcut));
+                k_Vector3ShortcutPrefixes.Add(RemoveLastChar(shortcut.Input.Path));
         }
 
         public static string PrefixFromShortcut(ResolumeOscShortcut shortcut)

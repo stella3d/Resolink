@@ -314,5 +314,10 @@ namespace Resolink
             
             return null;
         }
+        
+        public static string RemoveLastChar(string input)
+        {
+            return input.Substring(0, input.Length - 1);
+        }
     }
 }

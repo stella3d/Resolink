@@ -141,7 +141,7 @@ namespace Resolink
             for (int i = 0; i < m_Vector2GroupContents.Length; i++)
             {
                 var group = m_Map.Vector2Groups[i];
-                var prefix = RemoveLastChar(group.X.Input.Path);
+                var prefix = OscMapParser.RemoveLastChar(group.X.Input.Path);
                 m_Vector2GroupContents[i] = new GUIContent(prefix, k_Vec2GroupTip);
             }
 
@@ -149,7 +149,7 @@ namespace Resolink
             for (int i = 0; i < m_Vector3GroupContents.Length; i++)
             {
                 var group = m_Map.Vector3Groups[i];
-                var prefix = RemoveLastChar(group.X.Input.Path);
+                var prefix = OscMapParser.RemoveLastChar(group.X.Input.Path);
                 m_Vector3GroupContents[i] = new GUIContent(prefix, k_Vec3GroupTip);
             }
         }
@@ -404,9 +404,6 @@ namespace Resolink
             return m_Map.ColorGroups.Count > 0 || m_Map.Vector2Groups.Count > 0 || m_Map.Vector3Groups.Count > 0;
         }
         
-        public static string RemoveLastChar(string input)
-        {
-            return input.Substring(0, input.Length - 1);
-        }
+        
     }
 }
