@@ -88,10 +88,9 @@ namespace Resolink
         readonly GUIContent m_SubTargetContent = new GUIContent("Sub-Target", k_SubTargetTip);
         readonly GUIContent m_SubTargetsContent = new GUIContent("Sub-Targets", k_SubTargetTip);
 
-        readonly GUILayoutOption m_LeftColumnWidth = GUILayout.Width(112);
+        readonly GUILayoutOption m_LeftColumnWidth = GUILayout.Width(110);
 
         GUIStyle m_HeaderFoldout;
-        GUIStyle m_LargeHeaderFoldout;
         
         GUIStyle HeaderFoldoutStyle 
         {
@@ -99,8 +98,7 @@ namespace Resolink
             {
                 if (m_HeaderFoldout != null) 
                     return m_HeaderFoldout;
-
-                m_HeaderFoldout = new GUIStyle(EditorStyles.foldoutHeader) {stretchWidth = true};
+                m_HeaderFoldout = new GUIStyle(EditorStyles.foldoutHeader) { stretchWidth = true };
                 return m_HeaderFoldout;
             }
         }
@@ -370,7 +368,7 @@ namespace Resolink
             EditorGUILayout.LabelField(m_SubTargetContent);
             using (new EditorGUI.IndentLevelScope())
             {
-                EditorGUILayout.LabelField("Option Index", subTarget.OptionIndex.ToString());
+                EditorGUILayout.LabelField("Index", subTarget.OptionIndex.ToString());
                 EditorGUILayout.LabelField("Type", subTarget.Type.ToString());
             }
         }
@@ -403,7 +401,5 @@ namespace Resolink
         {
             return m_Map.ColorGroups.Count > 0 || m_Map.Vector2Groups.Count > 0 || m_Map.Vector3Groups.Count > 0;
         }
-        
-        
     }
 }
