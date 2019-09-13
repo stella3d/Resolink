@@ -137,7 +137,7 @@ namespace Resolink
                 k_Vector3ShortcutPrefixes.Add(PrefixFromShortcut(shortcut));
         }
 
-        static string PrefixFromShortcut(ResolumeOscShortcut shortcut)
+        public static string PrefixFromShortcut(ResolumeOscShortcut shortcut)
         {
             var inPath = shortcut.Input.Path;
             var lastSplit = inPath.LastIndexOf('/');
