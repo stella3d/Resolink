@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Sources
   m_EditorClassIdentifier: 
-  Types: 03020102020202020202
+  Types: 0302010202020202020203
   InputPaths:
   - /source/[a-z0-9]+/blackbg
   - /source/checkered/num[xy]
@@ -24,3 +24,4 @@ MonoBehaviour:
   - /source/[a-z0-9]+/noiseamount
   - /source/[a-z0-9]+/size
   - /source/[a-z0-9]+/[a-z0-9]+/size
+  - /source/[a-z0-9]+/mirror
