@@ -78,7 +78,7 @@ namespace Resolink
         
         const string k_ControlShortcutTip = 
             "'Shortcut' is how Resolume refers to a control associated with an OSC address";
-        readonly GUIContent m_ShortcutsHeaderContent = new GUIContent("Control Shortcuts", k_ControlGroupsTip);
+        readonly GUIContent m_ShortcutsHeaderContent = new GUIContent("Control Shortcuts", k_ControlShortcutTip);
         
         readonly GUIContent m_ShowSubTargetsContent = new GUIContent("Show Sub-Targets", k_ShowTargetsTip);
         readonly GUIContent m_ShowIdsContent = new GUIContent("Show Unique IDs", k_ShowUniqueIdsTip);
