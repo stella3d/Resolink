@@ -10,14 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
-  m_Name: Sources
+  m_Name: Shaper Source
   m_EditorClassIdentifier: 
-  Types: 03020102020202
-  InputPaths:
-  - /source/[a-z0-9]+/blackbg
-  - /source/checkered/num[xy]
-  - /source/gradient/type
-  - /source/[a-z0-9]+/speed
-  - /source/[a-z0-9]+/(fuzzy|jaggi)ness
-  - /source/[a-z0-9]+/(position|rotation)([xyz])?
-  - /source/[a-z0-9]+/size
+  Types: 
+  InputPaths: []

@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ShowHelp: 1
   m_WarnOnUnknownType: 1
+  m_GroupColors: 1
+  m_GroupVector2s: 1
+  m_GroupVector3s: 1

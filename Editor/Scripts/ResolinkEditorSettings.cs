@@ -94,13 +94,9 @@ namespace Resolink
         [SettingsProvider]
         public static SettingsProvider CreateResolinkSettingsProvider()
         {
-            
-            // First parameter is the path in the Settings window.
-            var provider = new SettingsProvider("Project/Resolink", SettingsScope.User)
+            return new SettingsProvider("Project/Resolink", SettingsScope.User)
             {
-                // By default the last token of the path is used as display name if no label is provided.
                 label = "Resolink",
-                // Create the SettingsProvider and initialize its drawing (IMGUI) function in place:
                 guiHandler = (searchContext) =>
                 {
                     var settings = ResolinkEditorSettings.GetSerializedSettings();
@@ -125,11 +121,8 @@ namespace Resolink
                     settings.ApplyModifiedProperties();
                 },
 
-                // Populate the search keywords to enable smart search filtering and label highlighting:
-                keywords = new HashSet<string>(new[] { "Resolink", "Resolume" })
+                keywords = new HashSet<string>(new[] { "Resolink", "Resolume", "OSC" })
             };
-
-            return provider;
         }
     }
 }
