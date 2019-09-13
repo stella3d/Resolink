@@ -12,12 +12,12 @@ namespace Resolink
         const string k_ColorGroupTip = "4 RGBA float events that make up a Color";
         const string k_Vec2GroupTip = "2 XY float events that make up a Vector2";
         const string k_Vec3GroupTip = "3 XYZ float events that make up a Vector3";
-
+        
         const string k_GroupsOf = "All groups of ";
         const string k_ColorGroupsFoldTip = k_GroupsOf + k_ColorGroupTip;
         const string k_Vec2GroupsFoldTip = k_GroupsOf + k_Vec2GroupTip;
         const string k_Vec3GroupsFoldTip = k_GroupsOf + k_Vec3GroupTip;
-        
+
         const string k_ShowTargetsTip = "If enabled, shows any sub-targets found for every shortcut. " +
                                             " (not really used yet)";
         const string k_ShowUniqueIdsTip = 
@@ -35,7 +35,7 @@ namespace Resolink
         
         ResolumeOscMap m_Map;
 
-        byte[] m_FoldoutStates;
+        bool[] m_FoldoutStates;
         bool[] m_ColorGroupFoldoutStates;
         bool[] m_Vec2FoldoutStates;
         bool[] m_Vec3FoldoutStates;
@@ -55,7 +55,10 @@ namespace Resolink
         bool m_Vec2GroupTopFoldout;
         bool m_Vec3GroupTopFoldout;
         bool m_DrawSeparatorsForGrouped;
+        bool m_ShowOptions;
 
+        readonly GUIContent m_OptionsFoldContent = new GUIContent("View Options", "Controls for showing more fields");
+        
         const string k_AddressFor = "The message address for ";
         const string k_VectorAddress = k_AddressFor + "the vector's ";
         readonly GUIContent m_XLabel = new GUIContent("X", k_VectorAddress + "X component");
@@ -72,6 +75,10 @@ namespace Resolink
         readonly GUIContent m_ColorGroupsFoldContent = new GUIContent("Color", k_ColorGroupsFoldTip);
         readonly GUIContent m_Vec2GroupsFoldContent = new GUIContent("Vector2", k_Vec2GroupsFoldTip);
         readonly GUIContent m_Vec3GroupsFoldContent = new GUIContent("Vector3", k_Vec3GroupsFoldTip);
+        
+        const string k_ControlShortcutTip = 
+            "'Shortcut' is how Resolume refers to a control associated with an OSC address";
+        readonly GUIContent m_ShortcutsHeaderContent = new GUIContent("Control Shortcuts", k_ControlGroupsTip);
         
         readonly GUIContent m_ShowSubTargetsContent = new GUIContent("Show Sub-Targets", k_ShowTargetsTip);
         readonly GUIContent m_ShowIdsContent = new GUIContent("Show Unique IDs", k_ShowUniqueIdsTip);
@@ -101,7 +108,7 @@ namespace Resolink
         public void OnEnable()
         {
             m_Map = (ResolumeOscMap) target;
-            m_FoldoutStates = new byte[m_Map.Shortcuts.Count];
+            m_FoldoutStates = new bool[m_Map.Shortcuts.Count];
             m_ColorGroupFoldoutStates = new bool[m_Map.ColorGroups.Count];
             m_Vec2FoldoutStates = new bool[m_Map.Vector2Groups.Count];
             m_Vec3FoldoutStates = new bool[m_Map.Vector3Groups.Count];
@@ -150,6 +157,7 @@ namespace Resolink
         public override void OnInspectorGUI()
         {
             DrawOptions();
+            
             if (m_AnyGroupsInMap)
             {
                 EditorGUILayout.LabelField(m_ControlGroupsHeaderContent, EditorStyles.boldLabel);
@@ -159,8 +167,34 @@ namespace Resolink
                 EditorUtils.DrawBoxLine();
             }
 
+            EditorGUILayout.LabelField(m_ShortcutsHeaderContent, EditorStyles.boldLabel);
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
                 DrawShortcutIndex(i);
+        }
+        
+        void DrawOptions()
+        {
+            m_ShowOptions = EditorGUILayout.Foldout(m_ShowOptions, m_OptionsFoldContent);
+            if (!m_ShowOptions)
+            {
+                EditorUtils.DrawBoxLine();
+                return;
+            }
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel(m_ShowSubTargetsContent);
+                m_ShowSubTargets = EditorGUILayout.Toggle(m_ShowSubTargets);
+            }
+            
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel(m_ShowIdsContent);
+                m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
+            }
+            
+            m_DrawSeparatorsForGrouped = m_ShowSubTargets || m_ShowUniqueIds;
+            EditorUtils.DrawBoxLine();
         }
 
         static void DrawGroup<T>(List<T> list, GUIContent foldContent, GUIContent[] contents, 
@@ -241,24 +275,6 @@ namespace Resolink
             DrawGroupedShortcut(group.Z, m_ZLabel);
         }
 
-        void DrawOptions()
-        {
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.PrefixLabel(m_ShowSubTargetsContent);
-                m_ShowSubTargets = EditorGUILayout.Toggle(m_ShowSubTargets);
-            }
-
-            using (new EditorGUILayout.HorizontalScope())
-            {
-                EditorGUILayout.PrefixLabel(m_ShowIdsContent);
-                m_ShowUniqueIds = EditorGUILayout.Toggle(m_ShowUniqueIds);
-            }
-
-            m_DrawSeparatorsForGrouped = m_ShowSubTargets || m_ShowUniqueIds;
-            EditorUtils.DrawBoxLine();
-        }
-
         void MaybeSeparator()
         {
             if(m_DrawSeparatorsForGrouped)
@@ -267,12 +283,12 @@ namespace Resolink
 
         void DrawShortcutIndex(int index)
         {
-            var foldoutState = m_FoldoutStates[index] != byte.MinValue;
-            var afterState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_LabelsWithTips[index], 
+            var foldoutState = m_FoldoutStates[index];
+            foldoutState = EditorGUILayout.BeginFoldoutHeaderGroup(foldoutState, m_LabelsWithTips[index], 
                 HeaderFoldoutStyle);
             
-            m_FoldoutStates[index] = afterState ? byte.MaxValue : byte.MinValue;
-            if (!afterState)
+            m_FoldoutStates[index] = foldoutState;
+            if (!foldoutState)
             {
                 EditorGUILayout.EndFoldoutHeaderGroup();
                 return;
@@ -286,13 +302,13 @@ namespace Resolink
         {
             DrawType(shortcut);
 
-            DrawUniqueId(shortcut);
-
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(m_InputPathContent, m_LeftColumnWidth);
                 EditorGUILayout.LabelField(shortcut.Input.Path, EditorStyles.miniLabel);
             }
+            
+            DrawUniqueId(shortcut);
 
             if (shortcut.SubTargets == null || shortcut.SubTargets.Length == 0)
             {
