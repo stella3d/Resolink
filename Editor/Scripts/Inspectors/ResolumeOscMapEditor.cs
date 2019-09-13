@@ -84,18 +84,6 @@ namespace Resolink
                 return m_HeaderFoldout;
             }
         }
-        
-        GUIStyle LargeHeaderFoldoutStyle 
-        {
-            get
-            {
-                if (m_LargeHeaderFoldout != null) 
-                    return m_LargeHeaderFoldout;
-
-                m_LargeHeaderFoldout = new GUIStyle(EditorStyles.foldout);
-                return m_LargeHeaderFoldout;
-            }
-        }
 
         public void OnEnable()
         {
@@ -161,8 +149,6 @@ namespace Resolink
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
                 DrawShortcutIndex(i);
         }
-
-        
 
         static void DrawGroup<T>(List<T> list, GUIContent foldContent, GUIContent[] contents, 
             bool[] foldStates, ref bool topFoldState, Action<T> drawSingle)
