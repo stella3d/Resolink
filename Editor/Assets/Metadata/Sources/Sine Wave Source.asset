@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 020102020102020202
   InputPaths:
-  - /sinewave/amplitude
+  - /sinewave/(amplitude|frequency)
   - /sinewave/direction
   - /sinewave/linewidth
   - /sinewave/mainspeed

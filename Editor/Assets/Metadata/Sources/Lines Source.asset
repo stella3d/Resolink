@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 0202
   InputPaths:
-  - /source/lines/amount
-  - /source/lines/width
+  - /lines/amount
+  - /lines/width

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Shaper Source
   m_EditorClassIdentifier: 
-  Types: 020201030102
+  Types: 0202010301020202
   InputPaths:
   - /shaper/outlinecolor/(red|green|blue|alpha)
   - /shaper/outline
@@ -20,3 +20,5 @@ MonoBehaviour:
   - /shaper/shape[12]/enabled
   - /shaper/shape[12]/type
   - /shaper/scale
+  - /shaper/shape[12]/size
+  - /shaper/noise(speed|amount)

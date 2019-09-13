@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Rings Source
   m_EditorClassIdentifier: 
-  Types: 020201020302
+  Types: 02020102030202
   InputPaths:
-  - /source/rings/numrings
-  - /source/rings/spacing
-  - /source/rings/style
-  - /source/rings/gap
-  - /source/rings/rotationalternate
-  - /source/rings/rotationstep
+  - /rings/numrings
+  - /rings/spacing
+  - /rings/style
+  - /rings/gap
+  - /rings/rotationalternate
+  - /rings/rotationstep
+  - /rings/linewidth

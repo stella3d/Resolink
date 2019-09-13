@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 010202
   InputPaths:
-  - /source/metaballs/blend
-  - /source/metaballs/(distance|radius)
-  - /source/metaballs/grid
+  - /metaballs/blend
+  - /metaballs/(distance|radius)
+  - /metaballs/grid

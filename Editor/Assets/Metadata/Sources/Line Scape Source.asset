@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 0202020202020302
   InputPaths:
-  - /source/linescape/attenuation
-  - /source/linescape/direction
-  - /source/linescape/wobble
-  - /source/linescape/height
-  - /source/linescape/linewidth
-  - /source/linescape/positiony
-  - /source/linescape/showknots
-  - /source/linescape/tilt
+  - /linescape/attenuation
+  - /linescape/direction
+  - /linescape/wobble
+  - /linescape/height
+  - /linescape/linewidth
+  - /linescape/positiony
+  - /linescape/showknots
+  - /linescape/tilt

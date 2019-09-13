@@ -16,5 +16,5 @@ MonoBehaviour:
   InputPaths:
   - /(transform|effect)/position[xyz]
   - /(transform|effect)/rotation[xyz]
-  - /(transform|effect)/scale?[wh]
+  - /(transform|effect)/scale([wh])?
   - /(transform|effect)/anchor[xyz]
