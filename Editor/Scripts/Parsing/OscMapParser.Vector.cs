@@ -24,6 +24,7 @@ namespace Resolink
                 return;
 
             ClearXyzShortcuts();
+            k_Vector2Groups.Clear();
             k_Vector2ShortcutPrefixes.Clear();
             
             foreach (var shortcut in m_Shortcuts)
@@ -71,6 +72,7 @@ namespace Resolink
                 return;
 
             ClearXyzShortcuts();
+            k_Vector3Groups.Clear();
             k_Vector3ShortcutPrefixes.Clear();
 
             foreach (var shortcut in m_Shortcuts)
