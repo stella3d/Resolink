@@ -93,7 +93,10 @@ namespace Resolink
                 var inPath = shortcut.Input.Path;
                 if (!m_RegexToTypeMapper.Process(inPath, out var typeForShortcut))
                 {
-                    if(ResolinkEditorSettings.Instance.WarnOnUnknownType)
+                    if(inPath.EndsWith("/color"))
+                        Debug.LogWarning($"The color control at path '{inPath}' is only supported by enabling all of " +
+                                         "its RGBA components.\nEnable those (if they aren't already) and remove this one!");
+                    else if(ResolinkEditorSettings.Instance.WarnOnUnknownType)
                         Debug.LogWarning($"data type for input path '{inPath}' is unknown! This can be fixed by adding " + 
                                         "a ResolumeEventMetaData entry with a regular expression that matches this path.");
                     continue;
