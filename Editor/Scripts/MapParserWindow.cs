@@ -7,6 +7,8 @@ namespace Resolink
 {
     public class MapParserWindow : EditorWindow
     {
+        static string s_UserPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        static string s_DefaultFilePath;
         static string s_OscMapPath;
 
         string PreviousOutPath;
@@ -15,28 +17,30 @@ namespace Resolink
         string m_OutputDirectory;
         bool m_OutputDirExists = true;
         
-        ResolumeType m_ResolumeType;
+        static ResolumeType s_ResolumeType;
+        static ResolumeType s_PreviousResolumeType;
         
         readonly GUIContent m_ResolumeTypeContent = new GUIContent("Resolume Type", "Changes the default map path");
 
-        GUILayoutOption m_SmallColumnWidth;
+        readonly GUILayoutOption m_SmallColumnWidth = GUILayout.Width(100);
 
-        [MenuItem("Resolume/Map Parser")]
+        [MenuItem("Window/Resolink/Map Parser")]
         static void InitWindow()
         {
-            s_OscMapPath = OscMapParser.DefaultAvenuePath;
+            s_OscMapPath = GetDefaultMapPath();
             MapParserWindow window = (MapParserWindow) GetWindow(typeof(MapParserWindow));
             window.Show();
         }
 
         public void OnGUI()
         {
-            m_SmallColumnWidth = GUILayout.Width(100);
-            
             using (new GUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel(m_ResolumeTypeContent);
-                m_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(m_ResolumeType, m_SmallColumnWidth);
+                s_PreviousResolumeType = s_ResolumeType;
+                s_ResolumeType = (ResolumeType) EditorGUILayout.EnumPopup(s_ResolumeType, m_SmallColumnWidth);
+                if (s_PreviousResolumeType != s_ResolumeType)
+                    s_OscMapPath = "";
             }
             
             s_OscMapPath = GetMapPath();
@@ -94,19 +98,18 @@ namespace Resolink
         public string GetMapPath()
         {
             if (GUILayout.Button("Select Resolume OSC Map File"))
-                return EditorUtility.OpenFilePanel("Select Resolume OSC map", OscMapParser.DefaultAvenuePath, "xml");
+                return EditorUtility.OpenFilePanel("Select Resolume OSC map", s_DefaultFilePath, "xml");
 
-            var userPath = string.IsNullOrEmpty(s_OscMapPath) ? GetDefaultMapPath() : s_OscMapPath;
-            var folder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            var replaced = userPath.Replace("~", folder);
-            return replaced;
+            return string.IsNullOrEmpty(s_OscMapPath) ? GetDefaultMapPath() : s_OscMapPath;
         }
         
-        public string GetDefaultMapPath()
+        public static string GetDefaultMapPath()
         {
-            return m_ResolumeType == ResolumeType.Avenue 
-                ? $"~{OscMapParser.DefaultAvenuePath}" 
-                : $"~{OscMapParser.DefaultArenaPath}";
+            s_DefaultFilePath = s_ResolumeType == ResolumeType.Avenue 
+                ? $"{s_UserPath}{OscMapParser.DefaultAvenuePath}" 
+                : $"{s_UserPath}{OscMapParser.DefaultArenaPath}";
+
+            return s_DefaultFilePath;
         }
     }
 }
