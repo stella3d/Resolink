@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OSCShortcutPreset name="Single Color" presetId="774069896">
+	<versionInfo name="Resolume Avenue" majorVersion="7" minorVersion="0" microVersion="2" revision="64989"/>
+	<ShortcutManager name="OSCShortcutManagerShortcuts">
+		<Shortcut name="Shortcut" uniqueId="1568409619533" paramNodeName="ParamRange" behaviour="26" hasCustomOutputPath="0">
+			<ShortcutPath name="InputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/green" translationType="1" allowedTranslationTypes="-1"/>
+			<ShortcutPath name="OutputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/green" translationType="1" allowedTranslationTypes="-1"/>
+			<Subtarget type="5" optionIndex="-1"/>
+			<RawInputMessage name="RawInputMessage" key="452164828807511792" value="1"/>
+		</Shortcut>
+		<Shortcut name="Shortcut" uniqueId="1568409619535" paramNodeName="ParamRange" behaviour="26" hasCustomOutputPath="0">
+			<ShortcutPath name="InputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/blue" translationType="1" allowedTranslationTypes="-1"/>
+			<ShortcutPath name="OutputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/blue" translationType="1" allowedTranslationTypes="-1"/>
+			<Subtarget type="5" optionIndex="-1"/>
+			<RawInputMessage name="RawInputMessage" key="470250629887112961" value="1"/>
+		</Shortcut>
+		<Shortcut name="Shortcut" uniqueId="1568409619537" paramNodeName="ParamRange" behaviour="26" hasCustomOutputPath="0">
+			<ShortcutPath name="InputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/alpha" translationType="1" allowedTranslationTypes="-1"/>
+			<ShortcutPath name="OutputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/alpha" translationType="1" allowedTranslationTypes="-1"/>
+			<Subtarget type="5" optionIndex="-1"/>
+			<RawInputMessage name="RawInputMessage" key="457537904002304503" value="1"/>
+		</Shortcut>
+		<Shortcut name="Shortcut" uniqueId="1568409619531" paramNodeName="ParamRange" behaviour="26" hasCustomOutputPath="0">
+			<ShortcutPath name="InputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/red" translationType="1" allowedTranslationTypes="-1"/>
+			<ShortcutPath name="OutputPath" path="/composition/layers/1/clips/1/video/source/solidcolor/color/red" translationType="1" allowedTranslationTypes="-1"/>
+			<Subtarget type="5" optionIndex="-1"/>
+			<RawInputMessage name="RawInputMessage" key="483343653269835696" value="1"/>
+		</Shortcut>
+	</ShortcutManager>
+</OSCShortcutPreset>

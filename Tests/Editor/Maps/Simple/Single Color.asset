@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e14f70de9dbc4a4bac9cd94009fe9ac2, type: 3}
+  m_Name: Single Color
+  m_EditorClassIdentifier: 
+  Version:
+    Major: 7
+    Minor: 0
+    Micro: 2
+  Shortcuts: []
+  ColorGroups:
+  - Red:
+      UniqueId: 1568409619531
+      Input:
+        Name: InputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/red
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      Output:
+        Name: OutputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/red
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      SubTargets:
+      - Type: 5
+        OptionIndex: -1
+      TypeName: Single
+    Green:
+      UniqueId: 1568409619533
+      Input:
+        Name: InputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/green
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      Output:
+        Name: OutputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/green
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      SubTargets:
+      - Type: 5
+        OptionIndex: -1
+      TypeName: Single
+    Blue:
+      UniqueId: 1568409619535
+      Input:
+        Name: InputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/blue
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      Output:
+        Name: OutputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/blue
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      SubTargets:
+      - Type: 5
+        OptionIndex: -1
+      TypeName: Single
+    Alpha:
+      UniqueId: 1568409619537
+      Input:
+        Name: InputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/alpha
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      Output:
+        Name: OutputPath
+        Path: /composition/layers/1/clips/1/video/source/solidcolor/color/alpha
+        TranslationType: 1
+        AllowedTranslationTypes: -1
+      SubTargets:
+      - Type: 5
+        OptionIndex: -1
+      TypeName: Single
+  Vector2Groups: []
+  Vector3Groups: []
