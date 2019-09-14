@@ -1,5 +1,5 @@
 {
-    "name": "Resolink.Runtime",
+    "name": "com.stella3d.resolink.Runtime",
     "references": [
         "GUID:7cdfac5ef1f961d4ebfe51361a2020bd",
         "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2",

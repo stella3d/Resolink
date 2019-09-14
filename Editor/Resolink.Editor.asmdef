@@ -1,10 +1,12 @@
 {
-    "name": "Resolink.Editor",
+    "name": "com.stella3d.resolink.Editor",
     "references": [
-        "Resolink.Runtime"
+        "GUID:fa037716f9e1b434ea9124af6b48ef9a"
     ],
     "optionalUnityReferences": [],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
