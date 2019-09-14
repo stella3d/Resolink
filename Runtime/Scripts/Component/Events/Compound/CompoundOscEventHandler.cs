@@ -15,6 +15,7 @@ namespace Resolink
     /// <typeparam name="TCompoundData">The complex type of data TEvent takes</typeparam>
     /// <typeparam name="TComponentData">The primitive type of data sub-events take</typeparam>
     [HelpURL(HelpLinks.TableOfContents)]
+    [ExecuteAlways]
     public abstract class CompoundOscEventHandler<THandler, TEvent, TCompoundData, TComponentData> : 
         CompoundOscEventHandler
         where TEvent: UnityEvent<TCompoundData>, new()
