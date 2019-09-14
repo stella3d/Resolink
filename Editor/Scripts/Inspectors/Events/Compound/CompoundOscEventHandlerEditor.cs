@@ -96,7 +96,7 @@ namespace Resolink
             using (new EditorGUI.DisabledScope(true))
                 EditorGUILayout.PropertyField(m_ValueProperty);
             
-#if RESOLINK_DEBUG_COMPOUND_EVENTS || true
+#if RESOLINK_DEBUG_COMPOUND_EVENTS
             DrawDebugUI();
 #endif
             EditorGUILayout.PropertyField(m_EventProperty);
