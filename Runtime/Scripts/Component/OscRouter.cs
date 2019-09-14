@@ -153,7 +153,7 @@ namespace Resolink
         /// <param name="handle">A handle to access the value of the message</param>
         protected void PrimaryCallback(string address, OscDataHandle handle)
         {
-#if RESOLINK_DEBUG_OSC
+#if RESOLINK_DEBUG_OSC || true
             Debug.Log(address + " " + handle.GetElementAsString(0));
 #endif
             if (m_AddressesToIgnore.Contains(address))

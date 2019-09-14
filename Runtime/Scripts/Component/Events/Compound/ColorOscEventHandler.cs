@@ -24,6 +24,13 @@ namespace Resolink
                 Handlers[2].Event = SetBlue;
                 Handlers[3].Event = SetAlpha;
             }
+
+            // default to full alpha if unset, as resolume doesn't always send alpha while picking colors
+            if (Mathf.Approximately(DefaultValue.a, 0f))
+            {
+                m_DefaultValue.a = 1f;
+                Value.a = 1f;
+            }
         }
 
         public void SetHandlers(ColorShortcutGroup group)
@@ -36,16 +43,19 @@ namespace Resolink
 
         public void SetRed(float r)
         {
+            Debug.Log($"set r {r}");
             Value.r = r;
         }
         
         public void SetGreen(float g)
         {
+            Debug.Log($"set g {g}");
             Value.g = g;
         }
         
         public void SetBlue(float b)
         {
+            Debug.Log($"set b {b}");
             Value.b = b;
         }
         

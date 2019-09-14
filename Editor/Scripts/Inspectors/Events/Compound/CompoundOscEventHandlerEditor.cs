@@ -80,18 +80,25 @@ namespace Resolink
                 EditorUtils.DrawBoxLine();
             }
 
-            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
+            var allowDefaultEdit = !EditorApplication.isPlayingOrWillChangePlaymode;
+            using (new EditorGUI.DisabledScope(!allowDefaultEdit))
             {
                 m_PreviousDefaultValue = m_CurrentDefaultValue;
                 EditorGUILayout.PropertyField(m_DefaultValueProperty);
-                m_CurrentDefaultValue = m_Component.DefaultValue;
-                if (!m_CurrentDefaultValue.Equals(m_PreviousDefaultValue))
-                    m_Component.AssignDefaultValue();
+                if (allowDefaultEdit)
+                {
+                    m_CurrentDefaultValue = m_Component.DefaultValue;
+                    if (!m_CurrentDefaultValue.Equals(m_PreviousDefaultValue))
+                        m_Component.AssignDefaultValue();
+                }
             }
 
             using (new EditorGUI.DisabledScope(true))
                 EditorGUILayout.PropertyField(m_ValueProperty);
             
+#if RESOLINK_DEBUG_COMPOUND_EVENTS || true
+            DrawDebugUI();
+#endif
             EditorGUILayout.PropertyField(m_EventProperty);
 
             serializedObject.ApplyModifiedProperties();
@@ -118,5 +125,15 @@ namespace Resolink
                 alignment = TextAnchor.MiddleRight
             };
         }
+        
+        protected static float ToFloat255(float float01)
+        {
+            return Mathf.Lerp(0, 255f, float01);
+        }
+
+        /// <summary>
+        /// Implement this in a derived class and define RESOLINK_DEBUG_COMPOUND_EVENTS to draw debug ui
+        /// </summary>
+        protected virtual void DrawDebugUI() { }
     }
 }
