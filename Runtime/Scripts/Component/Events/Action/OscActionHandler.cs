@@ -19,22 +19,6 @@ namespace Resolink
             Event = action;
         }
 
-        protected void Register()
-        {
-            if (Shortcut == null)
-                return;
-            
-            OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
-        }
-
-        protected void UnRegister()
-        {
-            if (Shortcut == null)
-                return;
-            
-            OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
-        }
-
         /// <summary>
         /// Extract a typed value from a data handle. 
         /// </summary>

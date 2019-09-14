@@ -36,6 +36,7 @@ namespace Resolink
         public TEvent Event;
         
         /// <summary>All handlers for sub-events, associated with a Resolume shortcut</summary>
+        [SerializeField]
         public THandler[] Handlers;
 
         protected bool m_Registered;
