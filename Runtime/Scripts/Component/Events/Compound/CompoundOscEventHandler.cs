@@ -61,9 +61,7 @@ namespace Resolink
                 Register();
         }
         
-        // We use LateUpdate instead of Update here so that we can be sure it runs after the OscRouter.
-        // The OscRouter runs all of the callbacks that might set the dirty flag in Update.
-        public void LateUpdate()
+        public void Update()
         {
             if (m_Dirty)
             {            
@@ -86,8 +84,8 @@ namespace Resolink
                 if (handler.Shortcut == null)
                     continue;
                 
-                var action = GetWrapperForComponentEvent(handler);
-                OscRouter.AddCallback(handler.Shortcut.Output.Path, action);
+                var action = ReadAndSetDirty(handler);
+                OscRouter.AddCallbacks(handler.Shortcut.Output.Path, action, null);
             }
 
             m_Registered = true;
@@ -100,19 +98,13 @@ namespace Resolink
                 if (handler.Shortcut == null)
                     continue;
                 
-                var action = GetWrapperForComponentEvent(handler);
-                OscRouter.RemoveCallback(handler.Shortcut.Output.Path, action);
+                OscRouter.RemoveCallbacks(handler.Shortcut.Output.Path);
             }
 
             m_Registered = false;
         }
-
-        /// <summary>
-        /// When one of the component handlers fires, we also want to set the dirty state so the combined event fires.
-        /// </summary>
-        /// <param name="handler">The event handler to wrap</param>
-        /// <returns>A method that calls the wrapped function and sets the dirty flag</returns>
-        Action<OscDataHandle> GetWrapperForComponentEvent(OscActionHandler<TComponentData> handler)
+        
+        Action<OscDataHandle> ReadAndSetDirty(OscActionHandler<TComponentData> handler)
         {
             return handle =>
             {

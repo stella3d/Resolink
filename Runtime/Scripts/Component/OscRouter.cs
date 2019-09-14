@@ -5,6 +5,18 @@ using UnityEngine;
 
 namespace Resolink
 {
+    public class OscActionPair
+    {
+        public Action<OscDataHandle> ValueRead;
+        public Action UserCallback;
+
+        public OscActionPair(Action<OscDataHandle> valueRead, Action userCallback)
+        {
+            ValueRead = valueRead;
+            UserCallback = userCallback;
+        }
+    }
+
     /// <summary>
     /// Handles routing messages to the callbacks registered for each address
     /// </summary>
@@ -12,9 +24,16 @@ namespace Resolink
     public class OscRouter : MonoBehaviour
     {
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
+
+        const int k_DefaultCapacity = 24;
+        
+        public readonly Dictionary<string, OscActionPair> NewAddressHandlers = 
+            new Dictionary<string, OscActionPair>(k_DefaultCapacity);
+
+        static int s_CallbackAddIndex;
         
         internal readonly Dictionary<string, List<Action<OscDataHandle>>> m_AddressHandlers = 
-            new Dictionary<string, List<Action<OscDataHandle>>>(32);
+            new Dictionary<string, List<Action<OscDataHandle>>>(k_DefaultCapacity);
         
         internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
             new Dictionary<string, Action<OscDataHandle>>(8);
@@ -26,11 +45,14 @@ namespace Resolink
         
         readonly ActionInvocationBuffer<OscDataHandle> m_ActionInvocationBuffer = 
             new ActionInvocationBuffer<OscDataHandle>();
+        
+        readonly ActionInvocationBuffer m_NewActionInvocationBuffer = new ActionInvocationBuffer();
 
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
         readonly RegexActionMapper m_TemplateChecker = new RegexActionMapper();
+        readonly RegexDoubleActionMapper m_NewTemplateChecker = new RegexDoubleActionMapper();
         
         public static OscRouter Instance { get; protected set; }
 
@@ -55,6 +77,7 @@ namespace Resolink
         {
             if (!m_PrimaryCallbackAdded)
             {
+                //AddPrimaryCallback(PrimaryCallback);
                 AddPrimaryCallback(PrimaryCallback);
                 m_PrimaryCallbackAdded = true;
             }
@@ -69,7 +92,7 @@ namespace Resolink
         void Update()
         {
             // call all Actions buffered in response to messages since last frame
-            m_ActionInvocationBuffer.InvokeAll();
+            m_NewActionInvocationBuffer.InvokeAll();
 
             // handle the existence of any new osc servers
             HandleOscServerChanges();
@@ -118,7 +141,29 @@ namespace Resolink
             
             callbackList.Add(callback);
         }
-        
+
+        public static void AddCallbacks(string address, OscActionPair actionPair)
+        {
+            if (PathUtils.IsWildcardTemplate(address))
+            {
+                if (Instance.m_WildcardAddressHandlers.ContainsKey(address))
+                {
+                    Debug.LogWarning($"A wildcard handler for {address} has already been registered");
+                    return;
+                }
+
+                Instance.m_WildcardAddressHandlers[address] = actionPair.ValueRead;
+            }
+
+            Instance.NewAddressHandlers[address] = actionPair;
+        }
+
+        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
+        {
+            var actionPair = new OscActionPair(valueRead, userCallback);
+            AddCallbacks(address, actionPair);
+        }
+
         /// <summary>
         /// Remove a previously registered OSC message handler  
         /// </summary>
@@ -132,6 +177,11 @@ namespace Resolink
                 if (callbackList.Count == 0)
                     Instance.m_AddressHandlers.Remove(address);
             }
+        }
+        
+        public static bool RemoveCallbacks(string address)
+        {
+            return Instance.NewAddressHandlers.Remove(address);
         }
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
@@ -153,38 +203,37 @@ namespace Resolink
         /// <param name="handle">A handle to access the value of the message</param>
         protected void PrimaryCallback(string address, OscDataHandle handle)
         {
-#if RESOLINK_DEBUG_OSC || true
+#if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));
 #endif
             if (m_AddressesToIgnore.Contains(address))
                 return;
             
-            if (!m_AddressHandlers.TryGetValue(address, out var callbackList))
+            if (!NewAddressHandlers.TryGetValue(address, out var actionPair))
             {
                 // if we find a match in the template handlers, add a handler, otherwise ignore this address
-                if (m_TemplateChecker.Process(address, out var handler))
+                if (m_NewTemplateChecker.Process(address, out var newActionPair))
                 {
-                    callbackList = new List<Action<OscDataHandle>> { handler };
-                    m_AddressHandlers[address] = callbackList;
+                    AddCallbacks(address, newActionPair);
+                    actionPair = newActionPair;
                 }
                 else
                 {
                     m_AddressesToIgnore.Add(address);
+                    return;
                 }
-
-                return;
             }
 
-            // This callback will be called on another thread, but UnityEvents can only be called on the main thread.
-            // So we buffer all the actions here and call them at the start of next frame
-            foreach (var callback in callbackList)
-            {
-                m_ActionInvocationBuffer.Add(callback, handle);
-            }
+            // immediately read the value from the OSC buffer to prevent values going to the wrong controls
+            actionPair.ValueRead(handle);
+            
+            // queue user action here and call them next frame, on the main thread.
+            // if the callback is null, that means it's a compound control, which will fire its own user callback
+            if(actionPair.UserCallback != null)
+                m_NewActionInvocationBuffer.Add(actionPair.UserCallback);
         }
 
-        // the event receiver component is basically internal to Resolink,
-        // and it's intended to register callbacks through its system, so hide receiver component.
+        // the event receiver component from OscJack is basically internal to Resolink, so we hide it
         void HideOscEventReceiver()
         {
             var receiver = GetComponent<OscEventReceiver>();

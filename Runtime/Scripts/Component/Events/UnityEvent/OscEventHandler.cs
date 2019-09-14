@@ -18,6 +18,8 @@ namespace Resolink
     {
         public TEvent Event;
 
+        protected T Value;
+        
         protected bool m_Registered;
         
         public void OnEnable()
@@ -42,13 +44,15 @@ namespace Resolink
         
         protected void Register()
         {
-            OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
+            //OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
+            OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
             m_Registered = true;
         }
 
         protected void UnRegister()
         {
-            OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
+            //OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
+            OscRouter.RemoveCallbacks(Shortcut.Output.Path);
             m_Registered = false;
         }
 
@@ -58,6 +62,16 @@ namespace Resolink
         /// <param name="dataHandle">The handle to extract from</param>
         /// <returns>The message value</returns>
         protected abstract T GetMessageValue(OscDataHandle dataHandle);
+
+        public void ReadData(OscDataHandle handle)
+        {
+            Value = GetMessageValue(handle);
+        }
+        
+        public void Invoke()
+        {
+            Event.Invoke(Value);
+        }
 
         public void InvokeFromHandle(OscDataHandle dataHandle)
         {

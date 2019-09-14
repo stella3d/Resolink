@@ -25,7 +25,7 @@ namespace Resolink
         /// <param name="dataHandle">The handle to extract from</param>
         /// <returns>The message value</returns>
         protected abstract T GetMessageValue(OscDataHandle dataHandle);
-        
+
         public void InvokeFromHandle(OscDataHandle dataHandle)
         {
             Event.Invoke(GetMessageValue(dataHandle));

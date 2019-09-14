@@ -41,27 +41,12 @@ namespace Resolink
             Handlers[3].Shortcut = group.Alpha;
         }
 
-        public void SetRed(float r)
-        {
-            Debug.Log($"set r {r}");
-            Value.r = r;
-        }
+        public void SetRed(float r) { Value.r = r; }
         
-        public void SetGreen(float g)
-        {
-            Debug.Log($"set g {g}");
-            Value.g = g;
-        }
+        public void SetGreen(float g) { Value.g = g; }
         
-        public void SetBlue(float b)
-        {
-            Debug.Log($"set b {b}");
-            Value.b = b;
-        }
+        public void SetBlue(float b) { Value.b = b; }
         
-        public void SetAlpha(float a)
-        {
-            Value.a = a;
-        }
+        public void SetAlpha(float a) { Value.a = a; }
     }
 }

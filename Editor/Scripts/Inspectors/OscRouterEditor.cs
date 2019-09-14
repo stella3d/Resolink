@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ namespace Resolink
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(m_HandlerCountLabelContent);
-                EditorGUILayout.LabelField(m_Router.AddressHandlers.Count.ToString());
+                EditorGUILayout.LabelField(m_Router.NewAddressHandlers.Count.ToString());
             }
         }
     }

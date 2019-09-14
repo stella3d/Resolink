@@ -65,6 +65,11 @@ namespace Resolink
     /// Used at runtime to match incoming messages against wildcard handlers
     /// </summary>
     public class RegexActionMapper : RegexMapper<Action<OscDataHandle>> { }
+    
+    /// <summary>
+    /// Used at runtime to match incoming messages against wildcard handlers
+    /// </summary>
+    public class RegexDoubleActionMapper : RegexMapper<OscActionPair> { }
        
     /// <summary>
     /// Used at edit time to match shortcut's input paths to a type
