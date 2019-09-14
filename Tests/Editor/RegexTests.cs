@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using NUnit.Framework;
 
 namespace Resolink.Tests
 {
     public class RegexTests
     {
+        [TestCase("/composition/layers/*/autopilot", "^\\/composition\\/layers\\/[0-9]+\\/autopilot$")]
+        [TestCase("/composition/layers/*/clips/*/select", "^\\/composition\\/layers\\/[0-9]+\\/clips\\/[0-9]+\\/select$")]
+        [TestCase("/composition/layers/4/autopilot", null)]
+        public void RegexForWildcardPath(string path, string expectedPattern)
+        {
+            var regex = PathUtils.RegexForWildcardPath(path);
+            if(regex == null)
+                Assert.Null(expectedPattern);
+            else
+                Assert.AreEqual(expectedPattern, regex.ToString());
+        }
+        
         [TestCase("/composition/layers/4/connectprevclip")]
         [TestCase("/composition/layers/3/connectnextclip")]
         [TestCase("/composition/layers/2/connectspecificclip")]
