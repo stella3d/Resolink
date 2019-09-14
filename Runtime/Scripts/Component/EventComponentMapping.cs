@@ -14,6 +14,8 @@ namespace Resolink
         static readonly List<StringOscEventHandler> k_StringHandlerComponents = new List<StringOscEventHandler>();
         
         static readonly List<ColorOscEventHandler> k_ColorHandlerComponents = new List<ColorOscEventHandler>();
+        static readonly List<Vector2OscEventHandler> k_Vector2HandlerComponents = new List<Vector2OscEventHandler>();
+        static readonly List<Vector3OscEventHandler> k_Vector3HandlerComponents = new List<Vector3OscEventHandler>();
         
         [Tooltip("A map of OSC events parsed from Resolume")]
         public ResolumeOscMap OscMap;
@@ -42,13 +44,9 @@ namespace Resolink
         
         public void OnEnable()
         {
+#if UNITY_EDITOR
             HandleObjectDisableStates();
-        }
-
-        public EventComponentMapping(ResolumeOscMap map)
-        {
-            OscMap = map;
-            PopulateEvents();
+#endif
         }
 
         public void PopulateEvents()
@@ -61,7 +59,6 @@ namespace Resolink
 
             RemoveUnusedPrevious();
 
-            var count = 0;
             foreach (var shortcut in OscMap.Shortcuts)
             {
                 var output = shortcut.Output;
@@ -74,21 +71,28 @@ namespace Resolink
                     continue;
                 
                 ComponentForShortcut(go, shortcut);
-                count++;
             }
             
-            Debug.Log($"{OscMap.ColorGroups.Count} color groups in map");
             foreach (var group in OscMap.ColorGroups)
             {
-                var red = group.Red;
-                var go = ObjectForShortcut(red);
-                if (go == null) 
-                    continue;
-                
+                var go = ObjectForShortcut(group.Red);
+                if (go == null) continue;
                 AddColorComponentIfAbsent(go, group, k_ColorHandlerComponents);
-                count += 4;
             }
-
+            
+            foreach (var group in OscMap.Vector2Groups)
+            {
+                var go = ObjectForShortcut(group.X);
+                if (go == null) continue;
+                AddVector2ComponentIfAbsent(go, group, k_Vector2HandlerComponents);
+            }
+            
+            foreach (var group in OscMap.Vector3Groups)
+            {
+                var go = ObjectForShortcut(group.X);
+                if (go == null) continue;
+                AddVector3ComponentIfAbsent(go, group, k_Vector3HandlerComponents);
+            }
 
             HandleObjectDisableStates();
         }
@@ -156,42 +160,80 @@ namespace Resolink
         {
             go.GetComponents(components);
             var found = false;
-            ColorOscEventHandler component = null;
-
             foreach (var c in components)
             {
-                if (c.Handlers == null)
-                    continue;
-                if (c.Handlers[0].Shortcut != group.Red)
-                    continue;
-                if (c.Handlers[1].Shortcut != group.Green)
-                    continue;
-                if (c.Handlers[2].Shortcut != group.Blue)
-                    continue;
-                if (c.Handlers[3].Shortcut != group.Alpha)
-                    continue;
-
+                if (c.Handlers == null) continue;
+                if (c.Handlers[0].Shortcut != group.Red) continue;
+                if (c.Handlers[1].Shortcut != group.Green) continue;
+                if (c.Handlers[2].Shortcut != group.Blue) continue;
+                if (c.Handlers[3].Shortcut != group.Alpha) continue;
                 found = true;
                 break;
             }
 
             if (!found)
             {
-                component = go.AddComponent<ColorOscEventHandler>();
+                var component = go.AddComponent<ColorOscEventHandler>();
                 component.Setup();
+                component.SetHandlers(group);
+            }
+        }
+        
+        void AddVector2ComponentIfAbsent(GameObject go, Vector2ShortcutGroup group, 
+            List<Vector2OscEventHandler> components) 
+        {
+            go.GetComponents(components);
+            var found = false;
+            foreach (var c in components)
+            {
+                if (c.Handlers == null) continue;
+                if (c.Handlers[0].Shortcut != group.X) continue;
+                if (c.Handlers[1].Shortcut != group.Y) continue;
+                found = true;
+                break;
             }
 
-            component.Handlers[0].Shortcut = group.Red;
-            component.Handlers[1].Shortcut = group.Green;
-            component.Handlers[2].Shortcut = group.Blue;
-            component.Handlers[3].Shortcut = group.Alpha;
-            
-            Debug.Log($"successfully setup color component on object {go.name}");
+            if (!found)
+            {
+                var component = go.AddComponent<Vector2OscEventHandler>();
+                component.Setup();
+                component.SetHandlers(group);
+            }
+        }
+        
+        void AddVector3ComponentIfAbsent(GameObject go, Vector3ShortcutGroup group, 
+            List<Vector3OscEventHandler> components) 
+        {
+            go.GetComponents(components);
+            var found = false;
+            foreach (var c in components)
+            {
+                if (c.Handlers == null) continue;
+                if (c.Handlers[0].Shortcut != group.X) continue;
+                if (c.Handlers[1].Shortcut != group.Y) continue;
+                if (c.Handlers[2].Shortcut != group.Z) continue;
+                found = true;
+                break;
+            }
+
+            if (!found)
+            {
+                var component = go.AddComponent<Vector3OscEventHandler>();
+                component.Setup();
+                component.SetHandlers(group);
+            }
         }
         
         static void DisableIfNoHandlers(GameObject go)
         {
-            go.SetActive(go.GetComponent<OscEventHandler>() != null);
+            if (go.GetComponent<OscEventHandler>() != null)
+            {
+                go.SetActive(true);
+                return;
+            }
+
+            if(go.GetComponent<CompoundOscEventHandler>() != null)
+                go.SetActive(true);
         }
 
         void RemoveUnusedPrevious()

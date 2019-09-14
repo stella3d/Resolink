@@ -18,7 +18,15 @@ namespace Resolink
                 };
             }
         }
-        
+
+        public void SetHandlers(ColorShortcutGroup group)
+        {
+            Handlers[0].Shortcut = group.Red; 
+            Handlers[1].Shortcut = group.Green;
+            Handlers[2].Shortcut = group.Blue;
+            Handlers[3].Shortcut = group.Alpha;
+        }
+
         public void SetRed(float r)
         {
             Value.r = r;

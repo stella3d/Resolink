@@ -18,6 +18,13 @@ namespace Resolink
             }
         }
         
+        public void SetHandlers(Vector3ShortcutGroup group)
+        {
+            Handlers[0].Shortcut = group.X; 
+            Handlers[1].Shortcut = group.Y;
+            Handlers[2].Shortcut = group.Z;
+        }
+        
         public void SetX(float x) { Value.x = x; }
         
         public void SetY(float y) { Value.y = y; }
