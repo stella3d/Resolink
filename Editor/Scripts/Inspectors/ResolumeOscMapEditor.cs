@@ -409,7 +409,7 @@ namespace Resolink
             {
                 foreach (var subTarget in subTargets)
                 {
-                    EditorGUILayout.PrefixLabel("Option Index " + subTarget.OptionIndex);
+                    EditorGUILayout.PrefixLabel("Index" + subTarget.OptionIndex);
                     using (new EditorGUI.IndentLevelScope())
                     {
                         EditorGUILayout.LabelField("Type", subTarget.Type.ToString());
