@@ -40,7 +40,7 @@ namespace Resolink
         ResolumeOscMap m_Map;
         ResolumeVersion m_Version;
 
-        RegexTypeMapper m_RegexToTypeMapper = new RegexTypeMapper();
+        readonly RegexTypeMapper m_RegexToTypeMapper = new RegexTypeMapper();
         
         public string OutputPath { get; set; }
 
@@ -57,12 +57,15 @@ namespace Resolink
             m_Shortcuts = new List<ResolumeOscShortcut>();
             GatherTypeMetaData();
         }
-
+        
         public void ParseFile(string filePath)
         {
             Profiler.BeginSample("Resolink Parse Osc Map");
+
             m_Shortcuts.Clear();
-            GatherTypeMetaData();
+            k_ColorGroups.Clear();
+            k_Vector2Groups.Clear();
+            k_Vector3Groups.Clear();
             
             m_Reader = XmlReader.Create(filePath, m_XmlSettings);
             m_Reader.MoveToContent();
@@ -293,7 +296,6 @@ namespace Resolink
                     var path = asset.InputPaths[i];
                     var regex = PathUtils.RegexForPath(path);
                     var type = TypeFromEnum(asset.Types[i]);
-                    
                     if(type != null) 
                         m_RegexToTypeMapper.Add(regex, type);
                 }
