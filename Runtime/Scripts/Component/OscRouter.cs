@@ -5,18 +5,6 @@ using UnityEngine;
 
 namespace Resolink
 {
-    public class OscActionPair
-    {
-        public Action<OscDataHandle> ValueRead;
-        public Action UserCallback;
-
-        public OscActionPair(Action<OscDataHandle> valueRead, Action userCallback)
-        {
-            ValueRead = valueRead;
-            UserCallback = userCallback;
-        }
-    }
-
     /// <summary>
     /// Handles routing messages to the callbacks registered for each address
     /// </summary>
@@ -27,13 +15,10 @@ namespace Resolink
 
         const int k_DefaultCapacity = 24;
         
-        public readonly Dictionary<string, OscActionPair> NewAddressHandlers = 
+        public readonly Dictionary<string, OscActionPair> AddressHandlers = 
             new Dictionary<string, OscActionPair>(k_DefaultCapacity);
 
         static int s_CallbackAddIndex;
-        
-        internal readonly Dictionary<string, List<Action<OscDataHandle>>> m_AddressHandlers = 
-            new Dictionary<string, List<Action<OscDataHandle>>>(k_DefaultCapacity);
         
         internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
             new Dictionary<string, Action<OscDataHandle>>(8);
@@ -51,12 +36,10 @@ namespace Resolink
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
-        readonly RegexActionMapper m_TemplateChecker = new RegexActionMapper();
         readonly RegexDoubleActionMapper m_NewTemplateChecker = new RegexDoubleActionMapper();
         
         public static OscRouter Instance { get; protected set; }
 
-        public Dictionary<string, List<Action<OscDataHandle>>> AddressHandlers => m_AddressHandlers;
         public Dictionary<string, Action<OscDataHandle>> WildcardAddressHandlers => m_WildcardAddressHandlers;
 
         void OnEnable()
@@ -77,7 +60,6 @@ namespace Resolink
         {
             if (!m_PrimaryCallbackAdded)
             {
-                //AddPrimaryCallback(PrimaryCallback);
                 AddPrimaryCallback(PrimaryCallback);
                 m_PrimaryCallbackAdded = true;
             }
@@ -114,34 +96,12 @@ namespace Resolink
 
             m_PreviousServerCount = OscServer.ServerList.Count;
         }
-        
+
         /// <summary>
-        /// Register a new OSC message handler  
+        /// Register a new pair of OSC message handlers
         /// </summary>
         /// <param name="address">The URL path to handle messages for</param>
-        /// <param name="callback">The action to take when the message is received</param>
-        public static void AddCallback(string address, Action<OscDataHandle> callback)
-        {
-            if (PathUtils.IsWildcardTemplate(address))
-            {
-                if (Instance.m_WildcardAddressHandlers.ContainsKey(address))
-                {
-                    Debug.LogWarning($"A wildcard handler for {address} has already been registered");
-                    return;
-                }
-
-                Instance.m_WildcardAddressHandlers[address] = callback;
-            }
-
-            if (!Instance.m_AddressHandlers.TryGetValue(address, out var callbackList))
-            {
-                callbackList = new List<Action<OscDataHandle>>();
-                Instance.m_AddressHandlers[address] = callbackList;
-            }
-            
-            callbackList.Add(callback);
-        }
-
+        /// <param name="actionPair">The value read action & user callback to execute</param>
         public static void AddCallbacks(string address, OscActionPair actionPair)
         {
             if (PathUtils.IsWildcardTemplate(address))
@@ -155,33 +115,27 @@ namespace Resolink
                 Instance.m_WildcardAddressHandlers[address] = actionPair.ValueRead;
             }
 
-            Instance.NewAddressHandlers[address] = actionPair;
-        }
-
-        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
-        {
-            var actionPair = new OscActionPair(valueRead, userCallback);
-            AddCallbacks(address, actionPair);
+            Instance.AddressHandlers[address] = actionPair;
         }
 
         /// <summary>
-        /// Remove a previously registered OSC message handler  
+        /// Register a new pair of OSC message handlers
         /// </summary>
         /// <param name="address">The URL path to handle messages for</param>
-        /// <param name="callback">The action to remove</param>
-        public static void RemoveCallback(string address, Action<OscDataHandle> callback)
+        /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
+        /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
+        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
         {
-            if (Instance.m_AddressHandlers.TryGetValue(address, out var callbackList))
-            {
-                callbackList.Remove(callback);
-                if (callbackList.Count == 0)
-                    Instance.m_AddressHandlers.Remove(address);
-            }
+            AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
         
+        /// <summary>
+        /// Remove a previously registered OSC message handler  
+        /// </summary>
+        /// <param name="address">The URL path to stop handling messages for</param>
         public static bool RemoveCallbacks(string address)
         {
-            return Instance.NewAddressHandlers.Remove(address);
+            return Instance.AddressHandlers.Remove(address);
         }
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
@@ -209,7 +163,7 @@ namespace Resolink
             if (m_AddressesToIgnore.Contains(address))
                 return;
             
-            if (!NewAddressHandlers.TryGetValue(address, out var actionPair))
+            if (!AddressHandlers.TryGetValue(address, out var actionPair))
             {
                 // if we find a match in the template handlers, add a handler, otherwise ignore this address
                 if (m_NewTemplateChecker.Process(address, out var newActionPair))
