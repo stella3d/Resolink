@@ -1,3 +1,4 @@
+using System.Collections;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -5,18 +6,26 @@ namespace Resolink.Tests
 {
     public class ParsingIntegrationTests : ScriptableObject
     {
-        public ExpectedParseResult[] AllTests;
+        public static ExpectedParseResult[] AllTests;
 
-        public void OnEnable()
-        {
-            AllTests = EditorUtils.LoadAllAssets<ExpectedParseResult>();
+        [TestCaseSource(typeof(Data), nameof(Data.All))]
+        public void All(ExpectedParseResult testCase)
+        { 
+            testCase.AssertExpectedResult();
         }
 
-        [Test]
-        public void SingleColorControl()
+
+        public static class Data
         {
-            foreach (var test in AllTests)
-                test.AssertExpectedResult();
+            public static IEnumerable All
+            {
+                get
+                {
+                    AllTests = EditorUtils.LoadAllAssets<ExpectedParseResult>();
+                    foreach (var t in AllTests)
+                        yield return new TestCaseData(t);
+                }
+            }
         }
     }
 }
