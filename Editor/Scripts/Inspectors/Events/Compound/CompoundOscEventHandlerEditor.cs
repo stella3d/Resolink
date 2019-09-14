@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 namespace Resolink
 {
-    public abstract class CompoundOscEventHandlerEditor<TComponent, TSubHandler, TEvent, TCombinedData, TComponentData> 
+    public abstract class CompoundOscEventHandlerEditor<TComponent, TSubHandler, TEvent, TCombinedData, TComponentData>
         : Editor
-        where TComponent: CompoundOscEventHandler<TSubHandler, TEvent, TCombinedData, TComponentData>
+        where TComponent : CompoundOscEventHandler<TSubHandler, TEvent, TCombinedData, TComponentData>
         where TSubHandler : OscActionHandler<TComponentData>
         where TEvent : UnityEvent<TCombinedData>, new()
         where TCombinedData : IEquatable<TCombinedData>
@@ -20,7 +20,7 @@ namespace Resolink
         protected GUIContent[] m_EventContents;
 
         protected TComponent m_Component;
-        
+
         protected SerializedProperty m_EventProperty;
         protected SerializedProperty m_ValueProperty;
         protected SerializedProperty m_DefaultValueProperty;
@@ -35,7 +35,9 @@ namespace Resolink
         protected TCombinedData m_PreviousDefaultValue;
         protected TCombinedData m_CurrentDefaultValue;
 
-        public void OnEnable()
+        protected bool OverridePropertyDrawer { get; set; }
+
+        public virtual void OnEnable()
         {
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
@@ -49,7 +51,7 @@ namespace Resolink
         {
             if (m_Component == null)
                 return;
-            
+
             m_PathContents = new GUIContent[m_Component.Handlers.Length];
             m_EventContents = new GUIContent[m_Component.Handlers.Length];
             for (var i = 0; i < m_Component.Handlers.Length; i++)
@@ -66,9 +68,9 @@ namespace Resolink
         {
             if (m_LabelStyle == null || m_MethodNameStyle == null)
                 InitStyles();
-            if(m_PathContents == null || m_EventContents == null)
+            if (m_PathContents == null || m_EventContents == null)
                 InitContents();
-            
+
             serializedObject.Update();
 
             m_HandlersFoldoutState = EditorGUILayout.Foldout(m_HandlersFoldoutState, m_AddressHandlersContent);
@@ -76,7 +78,7 @@ namespace Resolink
             {
                 for (var i = 0; i < m_PathContents.Length; i++)
                     DrawPathWithActionName(m_PathContents[i], m_EventContents[i]);
-                
+
                 EditorUtils.DrawBoxLine();
             }
 
@@ -94,8 +96,13 @@ namespace Resolink
             }
 
             using (new EditorGUI.DisabledScope(true))
-                EditorGUILayout.PropertyField(m_ValueProperty);
-            
+            {
+                if(OverridePropertyDrawer)
+                    DrawValue("Value", m_Component.Value);
+                else
+                    EditorGUILayout.PropertyField(m_ValueProperty);
+            }
+
 #if RESOLINK_DEBUG_COMPOUND_EVENTS
             DrawDebugUI();
 #endif
@@ -121,15 +128,17 @@ namespace Resolink
             };
             m_MethodNameStyle = new GUIStyle(EditorStyles.miniLabel)
             {
-                fixedWidth = 84f, 
+                fixedWidth = 84f,
                 alignment = TextAnchor.MiddleRight
             };
         }
-        
+
         protected static float ToFloat255(float float01)
         {
             return Mathf.Lerp(0, 255f, float01);
         }
+
+        protected virtual void DrawValue(string label, TCombinedData value) { }
 
         /// <summary>
         /// Implement this in a derived class and define RESOLINK_DEBUG_COMPOUND_EVENTS to draw debug ui

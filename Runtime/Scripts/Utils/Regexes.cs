@@ -20,6 +20,25 @@ namespace Resolink
     public static class Regexes
     {
         const string transEffect = "/(transform|effect)/";
+
+        public static bool MatchesAny(this Regex[] regexes, string input)
+        {
+            foreach (var t in regexes)
+            {
+                if (t.IsMatch(input))
+                    return true;
+            }
+
+            return false;
+        }
+        
+        public static class Rotations
+        {
+            public static Regex[] All { get; } =
+            {
+                Vector3.RotationXYZ, Vector3.RotateXYZ, Vector3.FragRotationXYZ
+            };
+        }
         
         public static class Vector3
         {

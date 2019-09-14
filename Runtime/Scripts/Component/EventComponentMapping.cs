@@ -16,6 +16,7 @@ namespace Resolink
         static readonly List<ColorOscEventHandler> k_ColorHandlerComponents = new List<ColorOscEventHandler>();
         static readonly List<Vector2OscEventHandler> k_Vector2HandlerComponents = new List<Vector2OscEventHandler>();
         static readonly List<Vector3OscEventHandler> k_Vector3HandlerComponents = new List<Vector3OscEventHandler>();
+        static readonly List<RotationOscEventHandler> k_RotationHandlerComponents = new List<RotationOscEventHandler>();
         
         [Tooltip("A map of OSC events parsed from Resolume")]
         public ResolumeOscMap OscMap;
@@ -91,7 +92,12 @@ namespace Resolink
             {
                 var go = ObjectForShortcut(group.X);
                 if (go == null) continue;
-                AddVector3ComponentIfAbsent(go, group, k_Vector3HandlerComponents);
+                
+                // translate Vector3 rotation controls into Quaternion ones
+                if (Regexes.Rotations.All.MatchesAny(group.X.Input.Path))
+                    AddRotationComponentIfAbsent(go, group, k_RotationHandlerComponents);
+                else
+                    AddVector3ComponentIfAbsent(go, group, k_Vector3HandlerComponents);
             }
 
             HandleObjectDisableStates();
@@ -133,7 +139,7 @@ namespace Resolink
                 AddShortcutComponentIfAbsent(go, shortcut, k_StringHandlerComponents);
         }
         
-        void AddShortcutComponentIfAbsent<T>(GameObject go, ResolumeOscShortcut shortcut, List<T> components) 
+        static void AddShortcutComponentIfAbsent<T>(GameObject go, ResolumeOscShortcut shortcut, List<T> components) 
             where T: OscEventHandler
         {
             go.GetComponents(components);
@@ -155,7 +161,7 @@ namespace Resolink
                 component.Shortcut = shortcut;
         }
         
-        void AddColorComponentIfAbsent(GameObject go, ColorShortcutGroup group, 
+        static void AddColorComponentIfAbsent(GameObject go, ColorShortcutGroup group, 
             List<ColorOscEventHandler> components) 
         {
             go.GetComponents(components);
@@ -179,7 +185,7 @@ namespace Resolink
             }
         }
         
-        void AddVector2ComponentIfAbsent(GameObject go, Vector2ShortcutGroup group, 
+        static void AddVector2ComponentIfAbsent(GameObject go, Vector2ShortcutGroup group, 
             List<Vector2OscEventHandler> components) 
         {
             go.GetComponents(components);
@@ -201,7 +207,7 @@ namespace Resolink
             }
         }
         
-        void AddVector3ComponentIfAbsent(GameObject go, Vector3ShortcutGroup group, 
+        static void AddVector3ComponentIfAbsent(GameObject go, Vector3ShortcutGroup group, 
             List<Vector3OscEventHandler> components) 
         {
             go.GetComponents(components);
@@ -223,6 +229,29 @@ namespace Resolink
                 component.SetHandlers(group);
             }
         }
+
+        static void AddRotationComponentIfAbsent(GameObject go, Vector3ShortcutGroup group, 
+            List<RotationOscEventHandler> components) 
+        {
+            go.GetComponents(components);
+            var found = false;
+            foreach (var c in components)
+            {
+                if (c.Handlers == null) continue;
+                if (c.Handlers[0].Shortcut != group.X) continue;
+                if (c.Handlers[1].Shortcut != group.Y) continue;
+                if (c.Handlers[2].Shortcut != group.Z) continue;
+                found = true;
+                break;
+            }
+
+            if (!found)
+            {
+                var component = go.AddComponent<RotationOscEventHandler>();
+                component.Setup();
+                component.SetHandlers(group);
+            }
+        }
         
         static void DisableIfNoHandlers(GameObject go)
         {
@@ -240,6 +269,8 @@ namespace Resolink
             RemoveUnusedPrevious<FloatOscEventHandler, FloatUnityEvent, float>(OscMap, gameObject, k_FloatHandlerComponents);
             RemoveUnusedPrevious<BooleanOscEventHandler, BoolUnityEvent, bool>(OscMap, gameObject, k_BoolHandlerComponents);
             RemoveUnusedPrevious<StringOscEventHandler, StringUnityEvent, string>(OscMap, gameObject, k_StringHandlerComponents);
+            
+            // TODO - this, for compound events
         }
 
         static void RemoveUnusedPrevious<THandler, TEvent, TData>(ResolumeOscMap map, 
