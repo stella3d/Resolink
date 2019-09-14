@@ -18,14 +18,15 @@ namespace Resolink
         const string k_Vec2GroupsFoldTip = k_GroupsOf + k_Vec2GroupTip;
         const string k_Vec3GroupsFoldTip = k_GroupsOf + k_Vec3GroupTip;
 
-        const string k_ShowTargetsTip = "If enabled, shows any sub-targets found for every shortcut. " +
+        const string k_ShowTargetsTip = "If enabled, shows any sub-targets found for every shortcut." +
                                             " (not really used yet)";
         const string k_ShowUniqueIdsTip = 
             "If enabled, shows the unique identifier for the shortcut within the source map";
         const string k_InputPathTip = 
             "'Input' here means input into Resolume, not Unity.  This is the path we use to know " +
             "which unique Resolume control this path is associated with.";
-        
+
+        const string k_ShowVersionTip = "If enabled, display the version of Resolume that created this OSC map";
         const string k_TypeTip = "The type of data associated with this address' event";
         const string k_IdTip = "The unique (within this map) identifier for this shortcut.";
         const string k_SubTargetTip = "Sub-targets are different option values for a single path, " +
@@ -41,6 +42,7 @@ namespace Resolink
         bool[] m_Vec3FoldoutStates;
 
         string[] m_Labels;
+        string m_VersionLabel;
         
         GUIContent[] m_LabelsWithTips;
         GUIContent[] m_ColorGroupContents;
@@ -50,6 +52,7 @@ namespace Resolink
         bool m_AnyGroupsInMap;
         bool m_ShowUniqueIds;
         bool m_ShowSubTargets;
+        bool m_ShowVersion;
 
         bool m_ColorGroupTopFoldout;
         bool m_Vec2GroupTopFoldout;
@@ -81,12 +84,16 @@ namespace Resolink
         readonly GUIContent m_ShortcutsHeaderContent = new GUIContent("Control Shortcuts", k_ControlShortcutTip);
         
         readonly GUIContent m_ShowSubTargetsContent = new GUIContent("Show Sub-Targets", k_ShowTargetsTip);
+        readonly GUIContent m_ShowVersionContent = new GUIContent("Show Resolume Version", k_ShowVersionTip);
         readonly GUIContent m_ShowIdsContent = new GUIContent("Show Unique IDs", k_ShowUniqueIdsTip);
         readonly GUIContent m_IdContent = new GUIContent("ID", k_IdTip);
         readonly GUIContent m_InputPathContent = new GUIContent("Input Path", k_InputPathTip);
         readonly GUIContent m_TypeContent = new GUIContent("Type", k_TypeTip);
         readonly GUIContent m_SubTargetContent = new GUIContent("Sub-Target", k_SubTargetTip);
         readonly GUIContent m_SubTargetsContent = new GUIContent("Sub-Targets", k_SubTargetTip);
+        
+        readonly GUIContent m_VersionKeyContent = new GUIContent("Created by Resolume version");
+        GUIContent m_VersionContent;
 
         readonly GUILayoutOption m_LeftColumnWidth = GUILayout.Width(110);
 
@@ -119,6 +126,8 @@ namespace Resolink
             if (m_Labels == null || m_Labels.Length != m_Map.Shortcuts.Count)
                 m_Labels = new string[m_Map.Shortcuts.Count];
 
+            m_VersionContent = new GUIContent(m_Map.Version.ToString());
+            
             m_LabelsWithTips = new GUIContent[m_Map.Shortcuts.Count];
             for (int i = 0; i < m_Labels.Length; i++)
             {
@@ -169,14 +178,33 @@ namespace Resolink
             for (var i = 0; i < m_Map.Shortcuts.Count; i++)
                 DrawShortcutIndex(i);
         }
-        
+
+        void DrawVersion()
+        {
+            if (!m_ShowVersion)
+                return;
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.LabelField(m_VersionKeyContent);
+                EditorGUILayout.LabelField(m_VersionContent);
+            }
+        }
+
         void DrawOptions()
         {
             m_ShowOptions = EditorGUILayout.Foldout(m_ShowOptions, m_OptionsFoldContent);
             if (!m_ShowOptions)
             {
+                DrawVersion();
                 EditorUtils.DrawBoxLine();
                 return;
+            }
+            
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                EditorGUILayout.PrefixLabel(m_ShowVersionContent);
+                m_ShowVersion = EditorGUILayout.Toggle(m_ShowVersion);
             }
 
             using (new EditorGUILayout.HorizontalScope())
@@ -192,6 +220,7 @@ namespace Resolink
             }
             
             m_DrawSeparatorsForGrouped = m_ShowSubTargets || m_ShowUniqueIds;
+            DrawVersion();
             EditorUtils.DrawBoxLine();
         }
 
