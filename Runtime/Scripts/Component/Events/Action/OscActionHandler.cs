@@ -14,7 +14,7 @@ namespace Resolink
 
         public Action<T> Event;
 
-        public OscActionHandler(Action<T> action)
+        protected OscActionHandler(Action<T> action)
         {
             Event = action;
         }
@@ -30,8 +30,5 @@ namespace Resolink
         {
             Event.Invoke(GetMessageValue(dataHandle));
         }
-        
-        // the empty update function is here so the inspector has the disable checkbox
-        public void Update() { }
     }
 }

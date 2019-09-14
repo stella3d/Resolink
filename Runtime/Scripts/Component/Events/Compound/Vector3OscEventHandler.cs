@@ -7,7 +7,7 @@ namespace Resolink
     {
         public override void Setup()
         {
-            if (Handlers == null)
+            if (Handlers == null || Handlers.Length == 0)
             {
                 Handlers = new[]
                 {
