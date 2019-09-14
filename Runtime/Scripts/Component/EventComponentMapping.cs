@@ -227,13 +227,11 @@ namespace Resolink
         static void DisableIfNoHandlers(GameObject go)
         {
             if (go.GetComponent<OscEventHandler>() != null)
-            {
                 go.SetActive(true);
-                return;
-            }
-
-            if(go.GetComponent<CompoundOscEventHandler>() != null)
+            else if(go.GetComponent<CompoundOscEventHandler>() != null)
                 go.SetActive(true);
+            else
+                go.SetActive(false);
         }
 
         void RemoveUnusedPrevious()
