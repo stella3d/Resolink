@@ -49,11 +49,19 @@ namespace Resolink
                 return;
             }
 
-            m_PathContents = new GUIContent[handlers.Length];
-            m_EventContents = new GUIContent[handlers.Length];
-            for (var i = 0; i < handlers.Length; i++)
+            InitContents();
+        }
+
+        void InitContents()
+        {
+            if (m_Component == null)
+                return;
+            
+            m_PathContents = new GUIContent[m_Component.Handlers.Length];
+            m_EventContents = new GUIContent[m_Component.Handlers.Length];
+            for (var i = 0; i < m_Component.Handlers.Length; i++)
             {
-                var handler = handlers[i];
+                var handler = m_Component.Handlers[i];
                 var hasShortcut = handler.Shortcut?.Output != null;
                 var label = hasShortcut ? handler.Shortcut.Output.Path : "not set";
                 m_PathContents[i] = new GUIContent(label, k_PathTooltip);
@@ -65,6 +73,8 @@ namespace Resolink
         {
             if (m_LabelStyle == null || m_MethodNameStyle == null)
                 InitStyles();
+            if(m_PathContents == null || m_EventContents == null)
+                InitContents();
             
             serializedObject.Update();
 
