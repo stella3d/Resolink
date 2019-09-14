@@ -37,27 +37,31 @@ namespace Resolink
             Handlers[2].Shortcut = group.Z;
         }
 
-        const float min = -180f;
-        const float max = 180f;
+        // only convert euler -> quaternion once per frame before invoking the user callback
+        protected override void ProcessBeforeInvoke()
+        {
+            Value = Quaternion.Euler(m_EulerAngles);
+        }
         
+        const float minAngle = -180f;
+        const float maxAngle = 180f;
+
+        // Resolume outputs rotations in Euler angles as a 0-1 float,
+        // where 0 is -180 and 1 is 180, so we lerp between those to get actual angles.
+        // this also means that skipping the 0-1 clamp on input is safe
         public void SetEulerX(float x)
         {
-            m_EulerAngles.x = -180f + 360f * Mathf.Clamp01(x);    // lerp
-            Value = Quaternion.Euler(m_EulerAngles);
+            m_EulerAngles.x = minAngle + 360f * x;  
         }
 
         public void SetEulerY(float y)
         {
-            //m_EulerAngles.y = -180f + 360f * Mathf.Clamp01(y);
-            m_EulerAngles.y = 180f - 360f * Mathf.Clamp01(y);
-            Value = Quaternion.Euler(m_EulerAngles);
+            m_EulerAngles.y = maxAngle - 360f * y;
         }
 
         public void SetEulerZ(float z)
         {
-            m_EulerAngles.z = 180f - 360f * Mathf.Clamp01(z);
-            //m_EulerAngles.z = -180f + 360f * Mathf.Clamp01(z);
-            Value = Quaternion.Euler(m_EulerAngles);
+            m_EulerAngles.z = maxAngle - 360f * z;
         }
     }
 }

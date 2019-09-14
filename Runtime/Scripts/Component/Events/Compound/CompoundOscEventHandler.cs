@@ -2,6 +2,7 @@ using System;
 using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Profiling;
 
 namespace Resolink
 {
@@ -21,28 +22,36 @@ namespace Resolink
         where TEvent: UnityEvent<TCompoundData>, new()
         where THandler: OscActionHandler<TComponentData>
     {
-        /// <summary>The value that will be passed to the UnityEvent</summary>
+        /// <summary>
+        /// The value that will be passed to the UnityEvent
+        /// </summary>
         [Tooltip("The current value that will be passed to the event")]
         public TCompoundData Value;
         
 #pragma warning disable 649           
-        /// <summary>The value before any messages that change it are received</summary>
+        /// <summary>
+        /// The value before any messages that change it are received
+        /// </summary>
         [Tooltip("The value before any messages that change it are received")]
         [SerializeField] protected TCompoundData m_DefaultValue;
 #pragma warning restore 649           
 
         public TCompoundData DefaultValue => m_DefaultValue;
         
-        /// <summary>The UnityEvent that takes the complex data type</summary>
+        /// <summary>
+        /// The UnityEvent that takes the complex data type
+        /// </summary>
         public TEvent Event;
         
-        /// <summary>All handlers for sub-events, associated with a Resolume shortcut</summary>
+        /// <summary>
+        /// All handlers for sub-events, associated with a Resolume shortcut
+        /// </summary>
         [SerializeField]
         public THandler[] Handlers;
 
         protected bool m_Registered;
         protected bool m_Dirty;
-        
+
         public void OnEnable()
         {
             Setup();
@@ -61,16 +70,24 @@ namespace Resolink
                 Register();
         }
         
-        public void Update()
+        public virtual void Update()
         {
             if (m_Dirty)
-            {            
+            {
+                ProcessBeforeInvoke();
                 // if any of the sub-handlers modified the value since last frame,
                 // fire the UnityEvent that takes the compound data
                 Event.Invoke(Value);
                 m_Dirty = false;
             }
         }
+        
+        public abstract void Setup();
+
+        /// <summary>
+        /// Do any processing necessary before invoking the user callback
+        /// </summary>
+        protected virtual void ProcessBeforeInvoke() { }
 
         public void OnDisable()
         {
@@ -115,7 +132,5 @@ namespace Resolink
         }
 
         public void AssignDefaultValue() { Value = m_DefaultValue; }
-
-        public abstract void Setup();
     }
 }

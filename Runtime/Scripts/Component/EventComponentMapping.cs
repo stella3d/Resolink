@@ -302,9 +302,9 @@ namespace Resolink
             DisableIfNoHandlers(TempoController);
             DisableIfNoHandlers(ClipTransport);
             DisableIfNoHandlers(ClipCuepoints);
-            DisableIfNoHandlers(Composition);
+            //DisableIfNoHandlers(Composition);
             DisableIfNoHandlers(CompositionDashboard);
-            DisableIfNoHandlers(CompositionLayer);
+            //DisableIfNoHandlers(CompositionLayer);
             DisableIfNoHandlers(CompositionLayerDashboard);
             DisableIfNoHandlers(CompositionLayerEffects);
             DisableIfNoHandlers(ApplicationUI);
