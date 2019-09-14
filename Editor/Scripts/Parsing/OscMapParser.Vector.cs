@@ -42,7 +42,7 @@ namespace Resolink
             AddToVector2PrefixSet(k_XShortcuts);
             AddToVector2PrefixSet(k_YShortcuts);
 
-            foreach (var prefix in k_Vector3ShortcutPrefixes)
+            foreach (var prefix in k_Vector2ShortcutPrefixes)
             {
                 if (!AllVector2ComponentsFound(prefix))
                     continue;

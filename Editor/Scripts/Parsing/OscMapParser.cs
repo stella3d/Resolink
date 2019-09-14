@@ -110,8 +110,9 @@ namespace Resolink
 
             // find all groupings of primitive controls that make up a more complex control
             FindColorGroups();
-            FindVector2Groups();
+            // find vec3 groups before vec2 so we don't mistake a vec3 for a vec2
             FindVector3Groups();
+            FindVector2Groups();
 
             Profiler.EndSample();
             CreateAsset();
