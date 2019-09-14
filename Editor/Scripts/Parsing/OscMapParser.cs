@@ -57,8 +57,14 @@ namespace Resolink
             m_Shortcuts = new List<ResolumeOscShortcut>();
             GatherTypeMetaData();
         }
-        
-        public void ParseFile(string filePath)
+
+        public static ResolumeOscMap Parse(string filePath, bool createAsset = true)
+        {
+            var parser = LoadAsset();
+            return parser.ParseFile(filePath, createAsset);
+        }
+
+        public ResolumeOscMap ParseFile(string filePath, bool createAsset = true)
         {
             Profiler.BeginSample("Resolink Parse Osc Map");
 
@@ -86,7 +92,7 @@ namespace Resolink
             if (m_Shortcuts.Count == 0)
             {
                 Profiler.EndSample();
-                return;
+                return null;
             }
 
             foreach (var shortcut in m_Shortcuts)
@@ -117,12 +123,6 @@ namespace Resolink
             FindVector3Groups();
             FindVector2Groups();
 
-            Profiler.EndSample();
-            CreateAsset();
-        }
-
-        void CreateAsset()
-        {
             m_Map = CreateInstance<ResolumeOscMap>();
             m_Map.Version = m_Version;
 
@@ -132,8 +132,17 @@ namespace Resolink
 
             m_Map.ColorGroups = k_ColorGroups.ToList();     // copy the list in case we mutate the original
             m_Map.Vector2Groups = k_Vector2Groups.ToList();     
-            m_Map.Vector3Groups = k_Vector3Groups.ToList();     
+            m_Map.Vector3Groups = k_Vector3Groups.ToList();  
 
+            Profiler.EndSample();
+            if(createAsset)
+                CreateAsset();
+
+            return m_Map;
+        }
+
+        void CreateAsset()
+        {
             AssetDatabase.CreateAsset(m_Map, OutputPath);
             SelectAssetAtPath();
             m_Shortcuts.Clear();

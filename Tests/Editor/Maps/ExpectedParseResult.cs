@@ -1,20 +1,33 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using NUnit.Framework;
+using UnityEngine;
 
 namespace Resolink.Tests
 {
     [CreateAssetMenu]
     public class ExpectedParseResult : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
-        {
+        public string XmlPath;
 
+        public ResolumeOscMap ExpectedResult;
+
+        public ResolumeOscMap Parse()
+        {
+            var fullPath = Application.dataPath + XmlPath;
+            if (!File.Exists(fullPath))
+            {
+                Debug.LogWarning($"{fullPath} does not seem to exist!");
+                return null;
+            }
+
+            return OscMapParser.Parse(fullPath, false);
         }
 
-        // Update is called once per frame
-        void Update()
+        public void AssertExpectedResult()
         {
-
+            var parsed = Parse();
+            Assert.NotNull(parsed);
+            parsed.AssertDeepEqual(ExpectedResult);
         }
     }
 }
