@@ -135,7 +135,16 @@ namespace Resolink
             m_Map.Vector3Groups = k_Vector3Groups.ToList();     
 
             AssetDatabase.CreateAsset(m_Map, OutputPath);
+            SelectAssetAtPath();
             m_Shortcuts.Clear();
+        }
+
+        void SelectAssetAtPath()
+        {
+            var asset = AssetDatabase.LoadAssetAtPath<ResolumeOscMap>(OutputPath);
+            if (asset == null) return;
+            Selection.activeObject = asset;
+            EditorGUIUtility.PingObject(asset);
         }
 
         void HandleNodeByName()
