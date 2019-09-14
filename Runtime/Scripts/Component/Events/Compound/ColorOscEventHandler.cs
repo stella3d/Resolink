@@ -17,6 +17,13 @@ namespace Resolink
                     new FloatOscActionHandler(SetAlpha),
                 };
             }
+            else
+            {
+                Handlers[0].Event = SetRed;
+                Handlers[1].Event = SetGreen;
+                Handlers[2].Event = SetBlue;
+                Handlers[3].Event = SetAlpha;
+            }
         }
 
         public void SetHandlers(ColorShortcutGroup group)

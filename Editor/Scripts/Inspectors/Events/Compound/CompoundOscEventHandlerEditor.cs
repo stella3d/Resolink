@@ -41,14 +41,7 @@ namespace Resolink
             m_EventProperty = serializedObject.FindProperty("Event");
             m_ValueProperty = serializedObject.FindProperty("Value");
             m_DefaultValueProperty = serializedObject.FindProperty("m_DefaultValue");
-
-            var handlers = m_Component.Handlers;
-            if (handlers == null)
-            {
-                m_Component.Setup();
-                return;
-            }
-
+            m_Component.Setup();
             InitContents();
         }
 
@@ -65,7 +58,7 @@ namespace Resolink
                 var hasShortcut = handler.Shortcut?.Output != null;
                 var label = hasShortcut ? handler.Shortcut.Output.Path : "not set";
                 m_PathContents[i] = new GUIContent(label, k_PathTooltip);
-                m_EventContents[i] = new GUIContent(handler.Event.Method.Name, k_MethodTooltip);
+                m_EventContents[i] = new GUIContent(handler.Event?.Method.Name, k_MethodTooltip);
             }
         }
 

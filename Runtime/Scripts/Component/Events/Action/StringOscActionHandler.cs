@@ -3,6 +3,7 @@ using OscJack;
 
 namespace Resolink
 {
+    [Serializable]
     public class StringOscActionHandler : OscActionHandler<string>
     {
         protected override string GetMessageValue(OscDataHandle dataHandle)

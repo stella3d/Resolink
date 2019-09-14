@@ -16,6 +16,12 @@ namespace Resolink
                     new FloatOscActionHandler(SetZ),
                 };
             }
+            else
+            {
+                Handlers[0].Event = SetX;
+                Handlers[1].Event = SetY;
+                Handlers[2].Event = SetZ;
+            }
         }
         
         public void SetHandlers(Vector3ShortcutGroup group)
