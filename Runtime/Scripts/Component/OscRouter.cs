@@ -34,6 +34,9 @@ namespace Resolink
         
         public static OscRouter Instance { get; protected set; }
 
+        public Dictionary<string, List<Action<OscDataHandle>>> AddressHandlers => m_AddressHandlers;
+        public Dictionary<string, Action<OscDataHandle>> WildcardAddressHandlers => m_WildcardAddressHandlers;
+
         void OnEnable()
         {
             Instance = this;
