@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Resolink.Tests
 {
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "New Expected Parse Result", menuName = "Resolink/Test/Parse Result", order = 5)]
     public class ExpectedParseResult : ScriptableObject
     {
         public string XmlPath;
