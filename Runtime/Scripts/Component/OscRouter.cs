@@ -27,11 +27,8 @@ namespace Resolink
         /// Every incoming osc address we tried to find a template handler for and failed
         /// </summary>
         readonly HashSet<string> m_AddressesToIgnore = new HashSet<string>();
-        
-        readonly ActionInvocationBuffer<OscDataHandle> m_ActionInvocationBuffer = 
-            new ActionInvocationBuffer<OscDataHandle>();
-        
-        readonly ActionInvocationBuffer m_NewActionInvocationBuffer = new ActionInvocationBuffer();
+
+        readonly ActionInvocationBuffer m_ActionInvocationBuffer = new ActionInvocationBuffer();
 
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
@@ -74,7 +71,7 @@ namespace Resolink
         void Update()
         {
             // call all Actions buffered in response to messages since last frame
-            m_NewActionInvocationBuffer.InvokeAll();
+            m_ActionInvocationBuffer.InvokeAll();
 
             // handle the existence of any new osc servers
             HandleOscServerChanges();
@@ -184,7 +181,7 @@ namespace Resolink
             // queue user action here and call them next frame, on the main thread.
             // if the callback is null, that means it's a compound control, which will fire its own user callback
             if(actionPair.UserCallback != null)
-                m_NewActionInvocationBuffer.Add(actionPair.UserCallback);
+                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
         }
 
         // the event receiver component from OscJack is basically internal to Resolink, so we hide it
