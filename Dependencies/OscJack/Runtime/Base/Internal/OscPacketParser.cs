@@ -35,7 +35,13 @@ namespace OscJack
             // OSC address
             var address = OscDataTypes.ReadString(buffer, offset);
             offset += OscDataTypes.Align4(address.Length + 1);
-
+            
+            // NEW APPROACH
+            //var addressLength = OscDataTypes.ReadStringLength(buffer, offset);
+            //offset += OscDataTypes.Align4(addressLength + 1);
+            //_dataHandle.Scan(buffer, offset);
+            //_dispatcher.Dispatch(address, _dataHandle);
+            
             if (address == "#bundle")
             {
                 // We don't use the timestamp data; Just skip it.

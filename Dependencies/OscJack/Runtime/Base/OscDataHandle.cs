@@ -54,7 +54,7 @@ namespace OscJack
 
         #region Internal method
 
-        internal void Scan(Byte[] buffer, int offset)
+        public void Scan(Byte[] buffer, int offset)
         {
             // Reset the internal state.
             _sharedBuffer = buffer;

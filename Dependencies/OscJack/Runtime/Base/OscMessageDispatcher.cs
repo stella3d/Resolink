@@ -43,7 +43,7 @@ namespace OscJack
 
         #region Handler invocation
 
-        internal void Dispatch(string address, OscDataHandle data)
+        public void Dispatch(string address, OscDataHandle data)
         {
             lock (_callbackMap)
             {

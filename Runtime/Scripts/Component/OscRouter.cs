@@ -186,6 +186,19 @@ namespace Resolink
             if(actionPair.UserCallback != null)
                 m_NewActionInvocationBuffer.Add(actionPair.UserCallback);
         }
+        
+        public void MonitorCallback(ByteBuffer addressBuffer, OscDataHandle data)
+        {
+            for (int i = 0; i < m_ByteAddresses.Length; i++)
+            {
+                var address = m_ByteAddresses[i];
+                if (addressBuffer.IsAddress(address))
+                {
+                    var handlerPair = m_AddressHandlers[i];
+                    handlerPair.ValueRead(data);
+                }
+            }
+        }
 
         // the event receiver component from OscJack is basically internal to Resolink, so we hide it
         void HideOscEventReceiver()

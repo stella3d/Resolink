@@ -6,7 +6,7 @@ using System.Text;
 
 namespace OscJack
 {
-    internal static class OscDataTypes
+    public static class OscDataTypes
     {
         static Byte[] _temp4 = new Byte[4]; // only used to reverse byte order
 
@@ -50,5 +50,7 @@ namespace OscJack
             while (buffer[offset + length] != 0) length++;
             return Encoding.UTF8.GetString(buffer, offset, length);
         }
+        
+        
     }
 }
