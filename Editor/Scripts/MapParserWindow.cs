@@ -11,9 +11,6 @@ namespace Resolink
         static string s_DefaultFilePath;
         static string s_OscMapPath;
 
-        string PreviousOutPath;
-        string OutputPath = "Assets/Resolink/DefaultOscMap.asset";
-
         string m_OutputDirectory;
         
         static ResolumeType s_ResolumeType;
@@ -31,6 +28,7 @@ namespace Resolink
             window.Show();
         }
 
+
         public void OnGUI()
         {
             using (new GUILayout.HorizontalScope())
@@ -43,6 +41,8 @@ namespace Resolink
             }
             
             s_OscMapPath = GetMapPath();
+            s_OscMapFileName = GetFileName(s_OscMapPath);
+            
             EditorGUILayout.LabelField(s_OscMapPath);
             EditorGUILayout.Space();
 
@@ -52,7 +52,9 @@ namespace Resolink
                 if (GUILayout.Button("Create OSC Map Asset"))
                 {
                     const string label = "Select Asset Creation Path";
-                    s_AssetPath = EditorUtility.SaveFilePanel(label, Application.dataPath, "DefaultOscMap", "asset");
+                    s_AssetPath = ProjectRelative(
+                        EditorUtility.SaveFilePanel(label, Application.dataPath, s_OscMapFileName, "asset"));
+                    
                     if (s_AssetPath == "" || !s_AssetPath.Contains("Assets"))
                     {
                         Debug.LogWarning("invalid asset creation path chosen");
@@ -60,10 +62,18 @@ namespace Resolink
                     }
 
                     var parser = OscMapParser.LoadAsset();
-                    parser.OutputPath = OutputPath;
+                    parser.OutputPath = s_AssetPath;
                     parser.ParseFile(s_OscMapPath);
                 }
             }
+        }
+
+        string ProjectRelative(string fullPath)
+        {
+            var assetsIndex = fullPath.IndexOf("/Assets", StringComparison.Ordinal);
+            if (assetsIndex == -1) return "";
+            assetsIndex += 1;
+            return fullPath.Substring(assetsIndex, fullPath.Length - assetsIndex).Replace(" ", "");
         }
 
         public string GetMapPath()
@@ -76,15 +86,6 @@ namespace Resolink
 
         static string s_AssetPath;
         
-        public string GetAssetPath()
-        {
-            const string label = "Select Asset Creation Path";
-            if (GUILayout.Button(label))
-                s_AssetPath = EditorUtility.SaveFilePanel(label, Application.dataPath, "DefaultOscMap", "asset");
-
-            return s_AssetPath ?? "";
-        }
-        
         public static string GetDefaultMapPath()
         {
             s_DefaultFilePath = s_ResolumeType == ResolumeType.Avenue 
@@ -92,6 +93,16 @@ namespace Resolink
                 : $"{s_UserPath}{OscMapParser.DefaultArenaPath}";
 
             return s_DefaultFilePath;
+        }
+        
+        static string s_OscMapFileName;
+
+        public static string GetFileName(string fullPath)
+        {
+            var lastSplit = fullPath.LastIndexOf('/');
+            var lastPeriod = fullPath.LastIndexOf('.');
+            if (lastSplit == -1 || lastPeriod == -1) return "";
+            return fullPath.Substring(lastSplit + 1, lastPeriod - lastSplit - 1).Replace(" ", "");
         }
     }
 }
