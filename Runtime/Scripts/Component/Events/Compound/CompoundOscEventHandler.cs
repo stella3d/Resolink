@@ -2,7 +2,6 @@ using System;
 using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Profiling;
 
 namespace Resolink
 {
