@@ -9,10 +9,9 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 3) Keeping time / tempo in sync
 
 ## Table of Contents
+[Aknowledgements](#aknowledgements)
 
 [Installation](#installation)
-
-[Aknowledgements](#aknowledgements)
 
 [Dependencies](#dependencies)
 
@@ -22,7 +21,7 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 To use Resolink, please download the .unitypackage for your platform from the [Releases](https://github.com/stella3d/Resolink/releases) page.
 
-You can also clone this repo directly into a Unity project, but you will get bundled dependencies your platform doesn't need.
+You can also clone this repo directly into a Unity project, but you will get tests & dependencies your platform doesn't need.
 
 ### Aknowledgements
 
