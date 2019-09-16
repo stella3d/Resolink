@@ -11,22 +11,21 @@ namespace Resolink
     [ExecuteAlways]
     public class OscRouter : MonoBehaviour
     {
-#pragma waring disable 649
+        const int k_DefaultCapacity = 24;
+
+#pragma warning disable 649
         static OscServer s_SharedServer;
 #pragma warning restore 649
+        
+        static int s_CallbackAddIndex;
 
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
-
-        const int k_DefaultCapacity = 24;
         
         public readonly Dictionary<string, OscActionPair> AddressHandlers = 
             new Dictionary<string, OscActionPair>(k_DefaultCapacity);
-
-        static int s_CallbackAddIndex;
         
         internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
             new Dictionary<string, Action<OscDataHandle>>(8);
-
 
         /// <summary>
         /// Every incoming osc address we tried to find a template handler for and failed
@@ -51,14 +50,12 @@ namespace Resolink
             Instance = this;
             AddPrimaryCallback(PrimaryCallback);
             m_PrimaryCallbackAdded = true;
-            HideOscEventReceiver();
             GetSharedServer();
         }
 
         void Awake()
         {
             Instance = this;
-            HideOscEventReceiver();
         }
 
         void Start()
@@ -207,16 +204,6 @@ namespace Resolink
             // if the callback is null, that means it's a compound control, which will fire its own user callback
             if(actionPair.UserCallback != null)
                 m_ActionInvocationBuffer.Add(actionPair.UserCallback);
-        }
-
-        // the event receiver component from OscJack is basically internal to Resolink, so we hide it
-        void HideOscEventReceiver()
-        {
-            var receiver = GetComponent<OscEventReceiver>();
-            if (receiver == null)
-                return;
-
-            receiver.hideFlags = HideFlags.HideInInspector;
         }
 
         /// <summary>
