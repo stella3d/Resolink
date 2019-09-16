@@ -3,6 +3,7 @@
     "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [
+        "Editor",
         "macOSStandalone"
     ],
     "excludePlatforms": [],
