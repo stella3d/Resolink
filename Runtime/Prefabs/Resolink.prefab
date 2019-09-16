@@ -101,11 +101,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5435297799950870753}
   - component: {fileID: 7619410690153919264}
-  - component: {fileID: 1177205122}
   - component: {fileID: 2546890139085608837}
   - component: {fileID: 8129098244322945597}
   m_Layer: 0
-  m_Name: OSC Event Handlers
+  m_Name: Resolink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152,66 +151,6 @@ MonoBehaviour:
   CompositionDashboard: {fileID: 3106361868688339697}
   CompositionLayerDashboard: {fileID: 6496682048279282555}
   ApplicationUI: {fileID: 8745360163990573143}
---- !u!114 &1177205122
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5435297799950870766}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51f8f979447c54247bcba0d5441e6081, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _udpPort: 9000
-  _oscAddress: /unity
-  _dataType: 0
-  _event:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  _intEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+IntEvent, jp.keijiro.osc-jack.Runtime, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-  _floatEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+FloatEvent, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vector2Event:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+Vector2Event, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vector3Event:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+Vector3Event, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vector4Event:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+Vector4Event, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vector2IntEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+Vector2IntEvent, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vector3IntEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+Vector3IntEvent, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  _stringEvent:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: OscJack.OscEventReceiver+StringEvent, jp.keijiro.osc-jack.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!114 &2546890139085608837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91b816b457b9d204b91272d3114ea4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Port: 9000
 --- !u!114 &8129098244322945597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af6dcf06c3b44a96a0372b83c163cff3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BPM: 144
+  m_Bpm: 144
 --- !u!114 &5556064679186884262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,8 +326,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-    m_TypeName: Resolink.BoolUnityEvent, Resolink.Runtime, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: Resolink.BoolUnityEvent, com.stella3d.resolink.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &5499777840408236426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,8 +370,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 1
-    m_TypeName: Resolink.FloatUnityEvent, Resolink.Runtime, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
+    m_TypeName: Resolink.FloatUnityEvent, com.stella3d.resolink.Runtime, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &6496682048279282555
 GameObject:
   m_ObjectHideFlags: 0
