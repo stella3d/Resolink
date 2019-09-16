@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -25,9 +24,9 @@ namespace Resolink
         {
             s_OscMapPath = GetDefaultMapPath();
             MapParserWindow window = (MapParserWindow) GetWindow(typeof(MapParserWindow));
+            window.titleContent = new GUIContent("Resolink Parser", "Used to create a new OSC Map asset");
             window.Show();
         }
-
 
         public void OnGUI()
         {
