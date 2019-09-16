@@ -17,15 +17,15 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Time Sync](#time-sync)
 
+### Aknowledgements
+
+This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All 3 packages this depends on were developed by him.
+
 ### Installation
 
 To use Resolink, please download the .unitypackage for your platform from the [Releases](https://github.com/stella3d/Resolink/releases) page.
 
 You can also clone this repo directly into a Unity project, but you will get tests & dependencies your platform doesn't need.
-
-### Aknowledgements
-
-This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All 3 packages this depends on were developed by him.
 
 ### Dependencies
 
@@ -38,9 +38,6 @@ For sharing the render to Resolume,
 (on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
 
 (on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
-
-###
-
 
 ### Time Sync
 
