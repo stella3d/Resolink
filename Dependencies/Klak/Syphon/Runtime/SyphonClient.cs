@@ -45,7 +45,7 @@ namespace Klak.Syphon
             get { return _targetTexture; }
             set { _targetTexture = value; }
         }
-
+#pragma warning disable 649
         [SerializeField] Renderer _targetRenderer;
 
         public Renderer targetRenderer {
@@ -73,6 +73,7 @@ namespace Klak.Syphon
         #region Private variables
 
         [SerializeField] Texture _nullTexture;
+#pragma warning restore 649
 
         IntPtr _clientInstance;
         Texture _clientTexture;
