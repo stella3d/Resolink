@@ -27,6 +27,27 @@ To use Resolink, please download the .unitypackage for your platform from the [R
 
 You can also clone this repo directly into a Unity project, but you will get tests & dependencies your platform doesn't need.
 
+
+### Supported Data Types
+
+Resolume sends the overwhelming majority of data over OSC as an `int`, `float`, or `string`.
+
+Resolink does some work to automatically interpret Resolume data in the most convenient way for use in Unity.  
+
+Any Resolume control that has an OSC Typ Tag of `Int 0 or 1` is interpreted as a `bool`, where 0 is false.
+
+#### Compound Controls
+
+Resolume has controls that send vectors and colors, but it sends the value of each member of these controls to a different OSC address.
+
+###### Colors
+
+Color controls are currently supported by enabling the OSC output for all 4 RGBA values, as seen below.
+![resolume color control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Editing_ColorControl.PNG)
+
+On the Unity side, you will get a component like this associated with that group of controls from Resolume.
+![unity color control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_ColorControl.PNG)
+
 ### Dependencies
 
 For now, dependencies are bundled in the package.
