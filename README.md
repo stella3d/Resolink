@@ -34,6 +34,10 @@ Resolume natively sends the overwhelming majority of data over OSC as an `int`, 
 
 Any Resolume control that has an OSC Type Tag of `Int 0 or 1` is interpreted as a `bool`, where 0 is false.
 
+All of these 4 types get components like this in Unity, which show the path to receive OSC at and the event to fire when a message is received.
+
+![unity float control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_FloatControl.PNG)
+
 #### Compound Controls
 
 Resolume has controls that send vectors and colors, but it sends the value of each member of these controls to a different OSC address.  To support these controls as a single unit, we group them on the Unity side.  Resolink should automatically detect these groups for you if grouping is enabled, as it is by default.
