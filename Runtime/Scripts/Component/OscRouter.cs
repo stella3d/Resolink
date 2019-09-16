@@ -146,7 +146,10 @@ namespace Resolink
         /// <param name="address">The URL path to stop handling messages for</param>
         public static bool RemoveCallbacks(string address)
         {
-            return Instance.AddressHandlers.Remove(address);
+            bool success = false;
+            try { success = Instance.AddressHandlers.Remove(address); }
+            catch(KeyNotFoundException e) { /* it don't matter */ }
+            return success;
         }
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
