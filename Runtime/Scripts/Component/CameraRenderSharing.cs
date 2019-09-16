@@ -1,5 +1,8 @@
-﻿using Klak.Spout;
+﻿#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+using Klak.Spout;
+#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 using Klak.Syphon;
+#endif
 using UnityEngine;
 
 namespace Resolink
