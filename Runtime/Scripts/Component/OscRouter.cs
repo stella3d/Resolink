@@ -12,11 +12,9 @@ namespace Resolink
     public class OscRouter : MonoBehaviour
     {
         const int k_DefaultCapacity = 24;
-
 #pragma warning disable 649
         static OscServer s_SharedServer;
 #pragma warning restore 649
-        
         static int s_CallbackAddIndex;
 
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
@@ -39,10 +37,11 @@ namespace Resolink
 
         readonly RegexDoubleActionMapper m_NewTemplateChecker = new RegexDoubleActionMapper();
         
-        public int Port = 9000;
-        
-        public static OscRouter Instance { get; protected set; }
+        [SerializeField] 
+        int m_Port = 9000;
 
+        public int Port => m_Port;
+        public static OscRouter Instance { get; protected set; }
         public Dictionary<string, Action<OscDataHandle>> WildcardAddressHandlers => m_WildcardAddressHandlers;
 
         void OnEnable()
@@ -146,12 +145,7 @@ namespace Resolink
         /// <param name="address">The URL path to stop handling messages for</param>
         public static bool RemoveCallbacks(string address)
         {
-            bool success = false;
-            try { success = Instance.AddressHandlers.Remove(address); }
-#pragma warning disable 168
-            catch(KeyNotFoundException e) { /* it don't matter */ }
-#pragma warning restore 168
-            return success;
+            return Instance.AddressHandlers.Remove(address); 
         }
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
@@ -168,7 +162,10 @@ namespace Resolink
         {
 #if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
-                server.MessageDispatcher.RemoveCallback(string.Empty, callback);
+            {
+                try { server.MessageDispatcher.RemoveCallback(string.Empty, callback); }
+                catch (KeyNotFoundException) { /* it don't matter */ }
+            }
 #else
             s_SharedServer.MessageDispatcher.RemoveCallback(string.Empty, callback);
 #endif

@@ -72,7 +72,6 @@ namespace Resolink
                 m_PreviousTimeScale = Time.timeScale;
                 m_PreviousEventValue = eventValue;
             }
-
         }
     }
 }
