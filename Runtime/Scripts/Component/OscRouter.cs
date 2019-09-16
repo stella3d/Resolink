@@ -11,9 +11,9 @@ namespace Resolink
     [ExecuteAlways]
     public class OscRouter : MonoBehaviour
     {
-#if !UNITY_EDITOR
+#pragma waring disable 649
         static OscServer s_SharedServer;
-#endif
+#pragma warning restore 649
 
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
 
@@ -40,6 +40,8 @@ namespace Resolink
 
         readonly RegexDoubleActionMapper m_NewTemplateChecker = new RegexDoubleActionMapper();
         
+        public int Port = 9000;
+        
         public static OscRouter Instance { get; protected set; }
 
         public Dictionary<string, Action<OscDataHandle>> WildcardAddressHandlers => m_WildcardAddressHandlers;
@@ -50,6 +52,7 @@ namespace Resolink
             AddPrimaryCallback(PrimaryCallback);
             m_PrimaryCallbackAdded = true;
             HideOscEventReceiver();
+            GetSharedServer();
         }
 
         void Awake()
@@ -60,6 +63,7 @@ namespace Resolink
 
         void Start()
         {
+            GetSharedServer();
             if (!m_PrimaryCallbackAdded)
             {
                 AddPrimaryCallback(PrimaryCallback);
@@ -121,6 +125,11 @@ namespace Resolink
             }
 
             Instance.AddressHandlers[address] = actionPair;
+        }
+
+        void GetSharedServer()
+        {
+            s_SharedServer = OscMaster.GetSharedServer(Port);
         }
 
         /// <summary>
