@@ -148,7 +148,9 @@ namespace Resolink
         {
             bool success = false;
             try { success = Instance.AddressHandlers.Remove(address); }
+#pragma warning disable 168
             catch(KeyNotFoundException e) { /* it don't matter */ }
+#pragma warning restore 168
             return success;
         }
 
