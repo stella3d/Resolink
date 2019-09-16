@@ -25,8 +25,8 @@ namespace Resolink
         internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
         internal const string DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
 #elif UNITY_EDITOR_OSX
-        internal const string DefaultAvenuePath = "\\Documents\\Resolume Avenue\\Shortcuts\\OSC\\Default.xml";
-        internal const string DefaultArenaPath = "\\Documents\\Resolume Arena\\Shortcuts\\OSC\\Default.xml";
+        internal const string DefaultAvenuePath = "/Documents/Resolume Avenue/Shortcuts/OSC/Default.xml";
+        internal const string DefaultArenaPath = "/Documents/Resolume Arena/Shortcuts/OSC/Default.xml";
 #endif
 
         const string k_VersionInfoNodeName = "versionInfo";
