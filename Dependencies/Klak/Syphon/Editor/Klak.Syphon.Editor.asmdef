@@ -5,7 +5,7 @@
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
-        "macOSStandalone"
+        "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

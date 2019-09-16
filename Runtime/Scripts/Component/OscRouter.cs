@@ -11,6 +11,10 @@ namespace Resolink
     [ExecuteAlways]
     public class OscRouter : MonoBehaviour
     {
+#if !UNITY_EDITOR
+        static OscServer s_SharedServer;
+#endif
+
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
 
         const int k_DefaultCapacity = 24;
@@ -22,6 +26,7 @@ namespace Resolink
         
         internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
             new Dictionary<string, Action<OscDataHandle>>(8);
+
 
         /// <summary>
         /// Every incoming osc address we tried to find a template handler for and failed
@@ -79,6 +84,8 @@ namespace Resolink
         
         void HandleOscServerChanges()
         {
+            // the server list is only defined in the editor
+#if UNITY_EDITOR
             if (OscServer.ServerList.Count == m_PreviousServerCount) 
                 return;
             
@@ -92,6 +99,7 @@ namespace Resolink
             }
 
             m_PreviousServerCount = OscServer.ServerList.Count;
+#endif
         }
 
         /// <summary>
@@ -137,14 +145,22 @@ namespace Resolink
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
+#if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.AddCallback(string.Empty, callback);
+#else
+            s_SharedServer.MessageDispatcher.AddCallback(string.Empty, callback);
+#endif
         }
 
         static void RemovePrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
+#if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.RemoveCallback(string.Empty, callback);
+#else
+            s_SharedServer.MessageDispatcher.RemoveCallback(string.Empty, callback);
+#endif
         }
 
         /// <summary>
