@@ -53,7 +53,9 @@ If you're unfamiliar with how this works, [check out the documentation](https://
 For every control you want to send a message with, right-click and `Create Shortcut`.  Make sure that OSC output is enabled for these controls as shown.
 ![Resolume OSC output indicator](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_OscOutputEnabled.PNG)
 
-When you're done, save these OSC settings somewhere - go to the Shortcuts panel in Resolume & select `Save As` from the dropdown.
+When you're done, save these OSC settings somewhere - go to the Shortcuts panel in Resolume & select `Save As` from the dropdown.  
+
+Note the port number you've setup to send OSC to.
 
 2) **Creating a Unity asset**
 
@@ -79,6 +81,8 @@ These components are where you hook up [Unity Events](https://docs.unity3d.com/M
 Putting the Resolink prefab in your scene also sets up video sharing back to Resolume.  If you look in the `Sources` panel in Resolume, you should see a Spout (on Windows) or Syphon (on Mac) server with the name of your Main Camera object.  Assign this to one of your clip slots in resolume to use it as a video source.
 
 ![resolume spout server](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Spout_Server.PNG)
+
+You should make sure the port number shown in the `Osc Router` component is the same as the OSC port you setup in Resolume.
 
 ### Supported Data Types
 
@@ -157,6 +161,12 @@ As you change BPM in Resolume, Unity's `Time.timeScale` will follow along.
 This relies on having an OSC output setup for the BPM in Resolume, as shown below.
 
 ![Resolume BPM output](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_BPM_Output.PNG)
+
+### Wildcard Routing
+
+Resolume lets you setup shortcuts that fire for any layer or clip via [wildcards](https://resolume.com/support/en/osc#wildcards) `/*/` in the OSC address.
+
+Resolink supports these wildcards via pattern matching.
 
 ### Options
 
