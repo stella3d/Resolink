@@ -25,6 +25,8 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Dependencies](#dependencies)
 
+[Contact](#contact)
+
 ### Aknowledgements
 
 This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All 3 packages this depends on were developed by him.
@@ -181,5 +183,11 @@ For sharing the render to Resolume,
 (on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
 
 (on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
+
+### Contact
+
+If something is broken, feel free to submit an issue.  Feature requests, not yet please.
+
+To get in touch in general, [get at me on Twitter](https://twitter.com/computerpupper).
 
 
