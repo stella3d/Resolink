@@ -13,6 +13,8 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Installation](#installation)
 
+[Setup](#setup)
+
 [Supported Data Types](#supported-data-types)
 
 [Current Limitations](#current-limitations)
@@ -30,6 +32,41 @@ This wouldn't be possible without the work of [Keijiro Takahashi](https://github
 To use Resolink, please download the .unitypackage for your platform from the [Releases](https://github.com/stella3d/Resolink/releases) page.
 
 You can also clone this repo directly into a Unity project, but you will get tests & dependencies your platform doesn't need.
+
+### Setup
+
+The process of generating event handlers in a Unity scene for a given Resolume setup has 3 main parts.
+
+1) **Resolume OSC Setup**
+
+   Setup OSC output from Resolume as you would for any use.  
+If you're unfamiliar with how this works, [check out the documentation](https://resolume.com/support/en/osc).  
+For every control you want to send a message with, right-click and `Create Shortcut`.  Make sure that OSC output is enabled for these controls as shown.
+![Resolume OSC output indicator](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_OscOutputEnabled.PNG)
+
+When you're done, save these OSC settings somewhere - go to the Shortcuts panel in Resolume & select `Save As` from the dropdown.
+
+2) **Creating a Unity asset**
+
+In Unity, open the Resolink window: `Window > Resolink > Map Parser`.  You should see a window like this.
+
+![Resolink unity window](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_Resolink_Window.PNG)
+
+Click the first button, `Select Resolume OSC Map File`, and select the file you saved out of Resolume earlier.
+
+Once you've done that, click `Create OSC Map Asset` to create an asset in your project that has all the settings you exported from Resolume.  It will be selected for you - look around in the inspector for the asset to learn more ! 
+
+3) **Generating Scene Components**
+
+Now that you have a map asset, drag the "Resolink" prefab (located at `Resolink/Runtime/Prefabs/`) into your scene.  Select it, and you should see this.
+
+![unity component generator](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_Component_PreGeneration.PNG)
+
+Assign your map asset to the `Osc Map` field, and click `Generate Event Components`.  
+For every control in your OSC map, a component will be added to the appropriate object within the Resolink prefab.  
+
+
+Now you can hook up [Unity Events](https://docs.unity3d.com/Manual/UnityEvents.html) to call when a message is received at each address!
 
 
 ### Supported Data Types
