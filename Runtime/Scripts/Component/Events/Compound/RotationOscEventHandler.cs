@@ -48,20 +48,21 @@ namespace Resolink
 
         // Resolume outputs rotations in Euler angles as a 0-1 float,
         // where 0 is -180 and 1 is 180, so we lerp between those to get actual angles.
-        // this also means that skipping the 0-1 clamp on input is safe
+        // TODO - not sure if a straight euler translation is accurate -
+        // depending on where you position the camera, the rotation can appear differently than it does in resolume
         public void SetEulerX(float x)
         {
-            m_EulerAngles.x = minAngle + 360f * x;  
+            m_EulerAngles.x = minAngle + 360f * x;
         }
 
         public void SetEulerY(float y)
         {
-            m_EulerAngles.y = maxAngle - 360f * y;
+            m_EulerAngles.y = minAngle + 360f * y;
         }
 
         public void SetEulerZ(float z)
         {
-            m_EulerAngles.z = maxAngle - 360f * z;
+            m_EulerAngles.z = minAngle + 360f * z;
         }
     }
 }
