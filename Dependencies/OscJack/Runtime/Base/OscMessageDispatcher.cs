@@ -50,8 +50,9 @@ namespace OscJack
                 MessageCallback callback;
 
                 // Address-specified callback
-                if (_callbackMap.TryGetValue(address, out callback))
-                    callback(address, data);
+                // RESOLINK - this is unused, so remove it 
+                //if (_callbackMap.TryGetValue(address, out callback))
+                //    callback(address, data);
 
                 // Monitor callback
                 if (_callbackMap.TryGetValue(string.Empty, out callback))
