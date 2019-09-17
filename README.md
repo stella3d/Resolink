@@ -8,6 +8,9 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 3) Keeping time / tempo in sync
 
+
+This is _not an official product_ of either Unity or Resolume.
+
 ## Table of Contents
 [Aknowledgements](#aknowledgements)
 
