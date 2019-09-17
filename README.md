@@ -40,6 +40,8 @@ To use Resolink, please download the .unitypackage for your platform from the [R
 
 You can also clone this repo directly into a Unity project, but you will get tests & dependencies your platform doesn't need.
 
+Please note that Resolink has been tested only on **Unity 2019.x**, and may not work on earlier versions.
+
 ### Setup
 
 The process of generating event handlers in a Unity scene for a given Resolume setup has 3 main parts.
@@ -174,6 +176,8 @@ There are some intentional limitations on this initial release, and planned futu
 This is just because I use Avenue - they will be implemented in future releases.
 
 4) No included runtime UI for configuration or debugging.  It's intended to use the Editor to set everything up for now.   
+
+5) Only tested on recent versions of the softwares - Unity 2019.x & Resolume 7.
 
 ### Dependencies
 
