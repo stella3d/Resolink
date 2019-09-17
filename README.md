@@ -17,11 +17,13 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Supported Data Types](#supported-data-types)
 
+[Time Sync](#time-sync)
+
+[Options](#options)
+
 [Current Limitations](#current-limitations)
 
 [Dependencies](#dependencies)
-
-[Time Sync](#time-sync)
 
 ### Aknowledgements
 
@@ -123,27 +125,6 @@ In Unity, you will get a component like this associated with that group of contr
 
 Resolume _can_ send color information over OSC as a single message in a special format, but this isn't supported yet.  
 
-### Current Limitations
-
-There are some intentional limitations on this initial release, and planned future features.
-
-1) Sending OSC from Unity to Resolume is _not yet implemented_, but _will be_, sooner rather than later.  This is because i haven't yet figured out some details of how that should work, and my personal use case is focused on driving Unity from Resolume.
-
-2) Syncing Unity to the initial state of a Resolume control will be implemented at the same time as general Unity -> Resolume communication.  Until then, Unity isn't aware of the value for a control until Resolume sends a message for it.
-
-3) No included runtime UI for configuration or debugging.  It's intended to use the Editor to set everything up for now.   
-
-### Dependencies
-
-For now, dependencies are bundled in the package.
-
-[OscJack](https://github.com/keijiro/OscJack) for handling OSC messages
-
-For sharing the render to Resolume,
-
-(on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
-
-(on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
 
 ### Time Sync
 
@@ -169,4 +150,36 @@ As you change BPM in Resolume, Unity's `Time.timeScale` will follow along.
 This relies on having an OSC output setup for the BPM in Resolume, as shown below.
 
 ![Resolume BPM output](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_BPM_Output.PNG)
+
+### Options
+
+Resolink options can be found under `Edit > Preferences > Project > Resolink`.
+
+You can disable the help boxes shown on most components, as well as enabling / disabling grouping of complex controls.
+
+### Current Limitations
+
+There are some intentional limitations on this initial release, and planned future features.
+
+1) Sending OSC from Unity to Resolume is _not yet implemented_, but _will be_, sooner rather than later.  This is because i haven't yet figured out some details of how that should work, and my personal use case is focused on driving Unity from Resolume.
+
+2) Syncing Unity to the initial state of a Resolume control will be implemented at the same time as general Unity -> Resolume communication.  Until then, Unity isn't aware of the value for a control until Resolume sends a message for it.
+
+3) Arena-specific features aren't yet supported by the parser.  
+This is just because I use Avenue - they will be implemented in future releases.
+
+4) No included runtime UI for configuration or debugging.  It's intended to use the Editor to set everything up for now.   
+
+### Dependencies
+
+For now, dependencies are bundled in the package.
+
+[OscJack](https://github.com/keijiro/OscJack) for handling OSC messages
+
+For sharing the render to Resolume,
+
+(on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
+
+(on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
+
 
