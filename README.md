@@ -13,6 +13,8 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Installation](#installation)
 
+[Supported Data Types](#supported-data-types)
+
 [Dependencies](#dependencies)
 
 [Time Sync](#time-sync)
@@ -37,6 +39,8 @@ Any Resolume control that has an OSC Type Tag of `Int 0 or 1` is interpreted as 
 All of these 4 types get components like this in Unity, which show the path to receive OSC at and the event to fire when a message is received.
 
 ![unity float control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_FloatControl.PNG)
+
+Resolume sends most floating point information as a number from 0 to 1, so it may be necessary to scale or interpolate these values to achieve your specific goal.
 
 #### Compound Controls
 
