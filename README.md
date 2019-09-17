@@ -66,6 +66,8 @@ In Unity, Euler angles are converted to a `Quaternion`, and you get a component 
 
 ![unity rotation control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_RotationControl.PNG)
 
+A note about rotations - Depending on where you position the Unity camera, the rotation can appear to be different than it is in Resolume.  I spent a while trying to work out a solution where it always looks the same, but i'm not sure if that exists.  For now it just provides a direct transmission of the angles that you see in the resolume UI.
+
 ###### Colors
 
 Color controls are currently supported by enabling the OSC output for all 4 RGBA values, as seen below.
