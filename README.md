@@ -32,24 +32,37 @@ You can also clone this repo directly into a Unity project, but you will get tes
 
 Resolume natively sends the overwhelming majority of data over OSC as an `int`, `float`, or `string`.
 
-Resolink does some work to automatically interpret Resolume data in the most convenient way for use in Unity.  
+Any Resolume control that has an OSC Type Tag of `Int 0 or 1` is interpreted as a `bool`, where 0 is false.
 
-Any Resolume control that has an OSC Typ Tag of `Int 0 or 1` is interpreted as a `bool`, where 0 is false.
+All of these 4 types get components like this in Unity, which show the path to receive OSC at and the event to fire when a message is received.
 
+![unity float control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_FloatControl.PNG)
 
 #### Compound Controls
 
-Resolume has controls that send vectors and colors, but it sends the value of each member of these controls to a different OSC address.  To support these controls as a single unit, we group them on the Unity side.
+Resolume has controls that send vectors and colors, but it sends the value of each member of these controls to a different OSC address.  To support these controls as a single unit, we group them on the Unity side.  Resolink should automatically detect these groups for you if grouping is enabled, as it is by default.
+
+You can toggle grouping of controls off in the Preferences menu to get `float` handlers for these controls instead.
 
 Compound control types include `Vector2`, `Vector3`, `Quaternion`, & `Color`.
 
+###### Vectors
+
+In Resolume, vector controls look like this.
+
+![resolume vector control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Editing_VectorControl.PNG)
+
+In Unity, you get a component like this associated with the Resolume control.
+
+![unity vector control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_VectorControl.PNG)
+
 ###### Rotations
 
-On the Resolume side, rotation controls are represented as Euler angles.
+In Resolume, rotation controls are represented as Euler angles.
 
 ![resolume rotation control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Editing_RotationControl.PNG)
 
-On the Unity side, Euler angles are converted to a `Quaternion`, and you get a component like this associated with the Resolume control.
+In Unity, Euler angles are converted to a `Quaternion`, and you get a component like this associated with the Resolume control.
 
 ![unity rotation control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_RotationControl.PNG)
 
@@ -58,10 +71,10 @@ On the Unity side, Euler angles are converted to a `Quaternion`, and you get a c
 Color controls are currently supported by enabling the OSC output for all 4 RGBA values, as seen below.
 ![resolume color control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Editing_ColorControl.PNG)
 
-On the Unity side, you will get a component like this associated with that group of controls from Resolume.
+In Unity, you will get a component like this associated with that group of controls from Resolume.
 ![unity color control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_ColorControl.PNG)
 
-Resolume can send color information over OSC as a single message in a special format, but this isn't supported yet.
+Resolume _can_ send color information over OSC as a single message in a special format, but this isn't supported yet.  
 
 ### Dependencies
 
