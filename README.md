@@ -15,6 +15,8 @@ This package aims to make integrating a [Unity](https://unity.com/) app with a [
 
 [Supported Data Types](#supported-data-types)
 
+[Current Limitations](#current-limitations)
+
 [Dependencies](#dependencies)
 
 [Time Sync](#time-sync)
@@ -81,6 +83,16 @@ In Unity, you will get a component like this associated with that group of contr
 ![unity color control](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_ColorControl.PNG)
 
 Resolume _can_ send color information over OSC as a single message in a special format, but this isn't supported yet.  
+
+### Current Limitations
+
+There are some intentional limitations on this initial release, and planned future features.
+
+1) Sending OSC from Unity to Resolume is _not yet implemented_, but _will be_, sooner rather than later.  This is because i haven't yet figured out some details of how that should work, and my personal use case is focused on driving Unity from Resolume.
+
+2) Syncing Unity to the initial state of a Resolume control will be implemented at the same time as general Unity -> Resolume communication.  Until then, Unity isn't aware of the value for a control until Resolume sends a message for it.
+
+3) No included runtime UI for configuration or debugging.  It's intended to use the Editor to set everything up for now.   
 
 ### Dependencies
 
