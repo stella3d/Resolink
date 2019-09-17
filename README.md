@@ -56,18 +56,20 @@ Click the first button, `Select Resolume OSC Map File`, and select the file you 
 
 Once you've done that, click `Create OSC Map Asset` to create an asset in your project that has all the settings you exported from Resolume.  It will be selected for you - look around in the inspector for the asset to learn more ! 
 
-3) **Generating Scene Components**
+3) **Scene Setup**
 
 Now that you have a map asset, drag the "Resolink" prefab (located at `Resolink/Runtime/Prefabs/`) into your scene.  Select it, and you should see this.
 
 ![unity component generator](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Unity_Component_PreGeneration.PNG)
 
 Assign your map asset to the `Osc Map` field, and click `Generate Event Components`.  
-For every control in your OSC map, a component will be added to the appropriate object within the Resolink prefab.  
+For every address / control in your OSC map, a component will be added to the appropriate object within the Resolink prefab.  
 
+These components are where you hook up [Unity Events](https://docs.unity3d.com/Manual/UnityEvents.html) to call when a message is received at each address.
 
-Now you can hook up [Unity Events](https://docs.unity3d.com/Manual/UnityEvents.html) to call when a message is received at each address!
+Putting the Resolink prefab in your scene also sets up video sharing back to Resolume.  If you look in the `Sources` panel in Resolume, you should see a Spout (on Windows) or Syphon (on Mac) server with the name of your Main Camera object.  Assign this to one of your clip slots in resolume to use it as a video source.
 
+![resolume spout server](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Spout_Server.PNG)
 
 ### Supported Data Types
 
