@@ -96,7 +96,7 @@ For sharing the render to Resolume,
 
 ### Time Sync
 
-There are two built-in behaviors for keeping time in sync.  Both can be disabled.
+There are two built-in behaviors for keeping time in sync.  Both will only occur if
 
 ##### Pause
 
@@ -104,7 +104,8 @@ When you press `Pause` in Resolume, Unity's time scale is set to 0, which pauses
 
 When you un-pause, Unity's time scale is set back to its previous value.
 
-This relies on having an OSC output setup for the `Pause` button in Resolume.
+This relies on having an OSC output setup for the `Pause` button in Resolume, shown below.
+![Resolume pause output](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_Pause_Output.PNG)
 
 
 ##### Resolume BPM -> Unity Time Scale
@@ -113,5 +114,6 @@ When you start a session & until you receive at least 2 tempo messages, the BPM 
 
 As you change BPM in Resolume, Unity's `Time.timeScale` will follow along.
 
-This relies on having an OSC output setup for the BPM in Resolume.
+This relies on having an OSC output setup for the BPM in Resolume, as shown below.
+![Resolume BPM output](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_BPM_Output.PNG)
 
