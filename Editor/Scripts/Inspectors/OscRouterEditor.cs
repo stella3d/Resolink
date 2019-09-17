@@ -31,7 +31,10 @@ namespace Resolink
                 EditorGUILayout.LabelField(m_Router.AddressHandlers.Count.ToString());
             }
 
-            EditorGUILayout.PropertyField(m_PortProperty);
+            using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
+            {
+                EditorGUILayout.PropertyField(m_PortProperty);
+            }
         }
     }
 }
