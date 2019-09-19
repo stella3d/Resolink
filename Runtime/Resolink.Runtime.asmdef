@@ -3,7 +3,8 @@
     "references": [
         "GUID:7cdfac5ef1f961d4ebfe51361a2020bd",
         "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2",
-        "GUID:869cd83da8fd84e10a03986d495475fd"
+        "GUID:869cd83da8fd84e10a03986d495475fd",
+        "GUID:6d615799e7e2d462e8bddaf22d355665"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [
