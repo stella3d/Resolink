@@ -15,6 +15,7 @@ namespace Resolink
         public Camera CameraToShare;
 
 #pragma warning disable 649
+        [Tooltip("The protocol to use to transmit video out of Unity")]
         [SerializeField] 
         VideoSharingProtocol m_VideoProtocol;
 #pragma warning restore 649
@@ -47,9 +48,14 @@ namespace Resolink
             {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
                 case VideoSharingProtocol.Spout:
+                {
+                    //var ndiComponent = CameraToShare.GetComponent<NDISender>();
+                    //if()
+                    
                     if (CameraToShare.GetComponent<SpoutSender>() == null)
                         CameraToShare.gameObject.AddComponent<SpoutSender>();
                     break;
+                }
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
                 case VideoSharingProtocol.Syphon:
                     if (CameraToShare.GetComponent<SyphonServer>() == null)
@@ -57,7 +63,7 @@ namespace Resolink
                     break;
 #endif
                 case VideoSharingProtocol.NDI:
-                    // TODO  - add NDI component
+                    
                     break;
             }
         }
