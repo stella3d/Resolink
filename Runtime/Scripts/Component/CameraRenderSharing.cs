@@ -14,6 +14,13 @@ namespace Resolink
         [Tooltip("The camera to share a render texture to Resolume from. Main Camera if not specified")]
         public Camera CameraToShare;
 
+#pragma warning disable 649
+        [SerializeField] 
+        VideoSharingProtocol m_VideoProtocol;
+#pragma warning restore 649
+        
+        VideoSharingProtocol VideoProtocol => m_VideoProtocol;
+
         void OnEnable()
         {
             GetCameraRef();
@@ -36,13 +43,23 @@ namespace Resolink
 
         public void EnsureSendingComponent()
         {
+            switch (m_VideoProtocol)
+            {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
-            if (CameraToShare.GetComponent<SpoutSender>() == null)
-                CameraToShare.gameObject.AddComponent<SpoutSender>();
+                case VideoSharingProtocol.Spout:
+                    if (CameraToShare.GetComponent<SpoutSender>() == null)
+                        CameraToShare.gameObject.AddComponent<SpoutSender>();
+                    break;
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-            if (CameraToShare.GetComponent<SyphonServer>() == null)
-                CameraToShare.gameObject.AddComponent<SyphonServer>();    
-#endif            
+                case VideoSharingProtocol.Syphon:
+                    if (CameraToShare.GetComponent<SyphonServer>() == null)
+                        CameraToShare.gameObject.AddComponent<SyphonServer>();
+                    break;
+#endif
+                case VideoSharingProtocol.NDI:
+                    // TODO  - add NDI component
+                    break;
+            }
         }
     }
 }
