@@ -37,10 +37,12 @@ namespace Resolink
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorUtils.Help(s_HelpText);
             
+            DrawHelp();
+
             EditorGUILayout.PropertyField(m_ProtocolProperty);
             var protocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
+            
             if (protocol != m_PreviousProtocol)
             {
                 s_HelpText = GetHelpText();
@@ -50,8 +52,27 @@ namespace Resolink
 
             EditorGUILayout.PropertyField(m_CameraProperty);
             
+
             serializedObject.ApplyModifiedProperties();
             m_PreviousProtocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
+        }
+
+        void DrawHelp()
+        {
+            const string ColorSpaceWarningText = "Please use Linear color mode with NDI! (see Player Settings)\n" +
+                                                 "Otherwise, you will get washed out colors.\n\n" + 
+                                                 "Alternately, you can remove the LinearToGammaSpace conversion " +
+                                                 "in the NDI Sender's .shader";
+            
+            var protocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
+            if (protocol == VideoSharingProtocol.NDI && PlayerSettings.colorSpace == ColorSpace.Gamma)
+            {
+                EditorGUILayout.HelpBox(ColorSpaceWarningText, MessageType.Warning);
+                if(GUILayout.Button("Set Linear Color"))
+                    PlayerSettings.colorSpace = ColorSpace.Linear;
+            }
+            else
+                EditorUtils.Help(s_HelpText);
         }
 
         string GetHelpText()
