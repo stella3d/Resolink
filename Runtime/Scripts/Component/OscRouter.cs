@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using OscJack;
 using UnityEngine;
 
@@ -22,8 +23,7 @@ namespace Resolink
         public readonly Dictionary<string, OscActionPair> AddressHandlers = 
             new Dictionary<string, OscActionPair>(k_DefaultCapacity);
         
-        internal readonly Dictionary<string, Action<OscDataHandle>> m_WildcardAddressHandlers = 
-            new Dictionary<string, Action<OscDataHandle>>(8);
+        internal static readonly HashSet<string> m_WildcardAddressHandlers = new HashSet<string>();
 
         /// <summary>
         /// Every incoming osc address we tried to find a template handler for and failed
@@ -42,7 +42,7 @@ namespace Resolink
 
         public int Port => m_Port;
         public static OscRouter Instance { get; protected set; }
-        public Dictionary<string, Action<OscDataHandle>> WildcardAddressHandlers => m_WildcardAddressHandlers;
+        public HashSet<string> WildcardAddressHandlers => m_WildcardAddressHandlers;
 
         void OnEnable()
         {
@@ -111,13 +111,14 @@ namespace Resolink
         {
             if (PathUtils.IsWildcardTemplate(address))
             {
-                if (Instance.m_WildcardAddressHandlers.ContainsKey(address))
+                if (Instance.WildcardAddressHandlers.Contains(address))
                 {
                     Debug.LogWarning($"A wildcard handler for {address} has already been registered");
                     return;
                 }
 
-                Instance.m_WildcardAddressHandlers[address] = actionPair.ValueRead;
+                Instance.WildcardAddressHandlers.Add(address);
+                Instance.m_NewTemplateChecker.Add(PathUtils.RegexForWildcardPath(address), actionPair);
             }
 
             Instance.AddressHandlers[address] = actionPair;
