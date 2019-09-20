@@ -24,6 +24,8 @@ This is _not an official product_ of either Unity or Resolume.
 
 [Options](#options)
 
+[Wildcard Routing](#wildcard-routing)
+
 [Current Limitations](#current-limitations)
 
 [Dependencies](#dependencies)
