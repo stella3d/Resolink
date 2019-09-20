@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Resolink
 {
@@ -38,18 +39,20 @@ namespace Resolink
             serializedObject.Update();
             EditorUtils.Help(s_HelpText);
             
-            m_PreviousProtocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
             EditorGUILayout.PropertyField(m_ProtocolProperty);
             var protocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
             if (protocol != m_PreviousProtocol)
             {
+                Debug.Log("change protocols ?");
                 s_HelpText = GetHelpText();
+                serializedObject.ApplyModifiedProperties();
                 m_Component.EnsureSendingComponent();
             }
 
             EditorGUILayout.PropertyField(m_CameraProperty);
             
             serializedObject.ApplyModifiedProperties();
+            m_PreviousProtocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
         }
 
         string GetHelpText()
