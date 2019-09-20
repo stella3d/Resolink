@@ -35,7 +35,7 @@ namespace Resolink
         bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
-        readonly RegexDoubleActionMapper m_NewTemplateChecker = new RegexDoubleActionMapper();
+        readonly RegexDoubleActionMapper m_TemplateChecker = new RegexDoubleActionMapper();
         
         [SerializeField] 
         int m_Port = 9000;
@@ -118,7 +118,7 @@ namespace Resolink
                 }
 
                 Instance.WildcardAddressHandlers.Add(address);
-                Instance.m_NewTemplateChecker.Add(PathUtils.RegexForWildcardPath(address), actionPair);
+                Instance.m_TemplateChecker.Add(PathUtils.RegexForWildcardPath(address), actionPair);
             }
 
             Instance.AddressHandlers[address] = actionPair;
@@ -188,7 +188,7 @@ namespace Resolink
             if (!AddressHandlers.TryGetValue(address, out var actionPair))
             {
                 // if we find a match in the template handlers, add a handler, otherwise ignore this address
-                if (m_NewTemplateChecker.Process(address, out var newActionPair))
+                if (m_TemplateChecker.Process(address, out var newActionPair))
                 {
                     AddCallbacks(address, newActionPair);
                     actionPair = newActionPair;
