@@ -43,7 +43,6 @@ namespace Resolink
             var protocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
             if (protocol != m_PreviousProtocol)
             {
-                Debug.Log("change protocols ?");
                 s_HelpText = GetHelpText();
                 serializedObject.ApplyModifiedProperties();
                 m_Component.EnsureSendingComponent();
