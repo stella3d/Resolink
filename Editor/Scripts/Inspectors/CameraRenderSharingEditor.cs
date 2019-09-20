@@ -3,7 +3,7 @@ using UnityEditor;
 namespace Resolink
 {
     [CanEditMultipleObjects]
-    [CustomEditor(typeof(CameraRenderSharing))]
+    [CustomEditor(typeof(RenderSharing))]
     public class CameraRenderSharingEditor : Editor
     {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN

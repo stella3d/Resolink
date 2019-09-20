@@ -10,7 +10,7 @@ namespace Resolink
 {
     [DisallowMultipleComponent]
     [ExecuteAlways]
-    public class CameraRenderSharing : MonoBehaviour
+    public class RenderSharing : MonoBehaviour
     {
         [Tooltip("The camera to share a render texture to Resolume from. Main Camera if not specified")]
         public Camera CameraToShare;
@@ -77,7 +77,6 @@ namespace Resolink
                 // linux isn't supported by resolink yet, but should be eventually, via NDI
                 case VideoSharingProtocol.NDI:
                 {
-                    CameraToShare.gameObject.RemoveComponent<SyphonServer>();
                     CameraToShare.AddComponentIfAbsent<NdiSender>();
                     break;
                 }
