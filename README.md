@@ -22,6 +22,8 @@ This is _not an official product_ of either Unity or Resolume.
 
 [Time Sync](#time-sync)
 
+[Video Protocols](#video-protocols)
+
 [Options](#options)
 
 [Wildcard Routing](#wildcard-routing)
