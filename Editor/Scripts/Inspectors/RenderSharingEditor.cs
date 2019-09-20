@@ -4,7 +4,7 @@ namespace Resolink
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(RenderSharing))]
-    public class CameraRenderSharingEditor : Editor
+    public class RenderSharingEditor : Editor
     {
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
         const string SpoutSyphonComponentName = "SpoutSender";
@@ -22,9 +22,12 @@ namespace Resolink
         VideoSharingProtocol m_PreviousProtocol;
 
         static string s_HelpText;
+
+        RenderSharing m_Component;
         
         public void OnEnable()
         {
+            m_Component = (RenderSharing) target;
             m_CameraProperty = serializedObject.FindProperty("CameraToShare");
             m_ProtocolProperty = serializedObject.FindProperty("m_VideoProtocol");
             s_HelpText = GetHelpText();
@@ -39,7 +42,10 @@ namespace Resolink
             EditorGUILayout.PropertyField(m_ProtocolProperty);
             var protocol = (VideoSharingProtocol) m_ProtocolProperty.enumValueIndex;
             if (protocol != m_PreviousProtocol)
+            {
                 s_HelpText = GetHelpText();
+                m_Component.EnsureSendingComponent();
+            }
 
             EditorGUILayout.PropertyField(m_CameraProperty);
             
