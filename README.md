@@ -34,7 +34,7 @@ This is _not an official product_ of either Unity or Resolume.
 
 ### Aknowledgements
 
-This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All 3 packages this depends on were developed by him.
+This wouldn't be possible without the work of [Keijiro Takahashi](https://github.com/keijiro). All packages this depends on were developed by him.
 
 ### Installation
 
@@ -164,6 +164,15 @@ This relies on having an OSC output setup for the BPM in Resolume, as shown belo
 
 ![Resolume BPM output](https://raw.githubusercontent.com/stella3d/resolink-doc-img/master/Resolume_BPM_Output.PNG)
 
+### Video Protocols
+Via Klak packages, Resolink supports all the ways that Resolume does to share video between the two applications.
+
+The protocol in use is controlled by the `Render Sharing` component on the Resolink prefab.
+
+For sharing video on the same computer, use Spout / Syphon.
+
+For sharing video between two computers, use NDI.
+
 ### Wildcard Routing
 
 Resolume lets you setup shortcuts that fire for any layer or clip via [wildcards](https://resolume.com/support/en/osc#wildcards) `/*/` in the OSC address.
@@ -197,11 +206,11 @@ For now, dependencies are bundled in the package.
 
 [OscJack](https://github.com/keijiro/OscJack) for handling OSC messages
 
-For sharing the render to Resolume,
-
 (on Windows) [KlakSpout](https://github.com/keijiro/KlakSpout), which is an interface to [Spout](http://spout.zeal.co/) 
 
 (on Mac) [KlakSyphon](https://github.com/keijiro/KlakSyphon), which is an interface to [Syphon](http://syphon.v002.info/) 
+
+[KlakNDI](https://github.com/keijiro/KlakNDI) for NDI support
 
 ### Contact
 
