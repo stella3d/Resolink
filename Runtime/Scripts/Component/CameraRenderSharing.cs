@@ -3,6 +3,7 @@ using Klak.Spout;
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 using Klak.Syphon;
 #endif
+using Klak.Ndi;
 using UnityEngine;
 
 namespace Resolink
@@ -49,22 +50,38 @@ namespace Resolink
 #if UNITY_STANDALONE_WIN || UNITY_EDITOR_WIN
                 case VideoSharingProtocol.Spout:
                 {
-                    //var ndiComponent = CameraToShare.GetComponent<NDISender>();
-                    //if()
-                    
-                    if (CameraToShare.GetComponent<SpoutSender>() == null)
-                        CameraToShare.gameObject.AddComponent<SpoutSender>();
+                    CameraToShare.gameObject.RemoveComponent<NdiSender>();
+                    CameraToShare.AddComponentIfAbsent<SpoutSender>();
+                    break;
+                }
+                case VideoSharingProtocol.NDI:
+                {
+                    CameraToShare.gameObject.RemoveComponent<SpoutSender>();
+                    CameraToShare.AddComponentIfAbsent<NdiSender>();
                     break;
                 }
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
                 case VideoSharingProtocol.Syphon:
-                    if (CameraToShare.GetComponent<SyphonServer>() == null)
-                        CameraToShare.gameObject.AddComponent<SyphonServer>();
+                {
+                    CameraToShare.gameObject.RemoveComponent<NdiSender>();
+                    CameraToShare.AddComponentIfAbsent<SyphonServer>();
                     break;
-#endif
+                }
                 case VideoSharingProtocol.NDI:
-                    
+                {
+                    CameraToShare.gameObject.RemoveComponent<SyphonServer>();
+                    CameraToShare.AddComponentIfAbsent<NdiSender>();
                     break;
+                }
+#else    
+                // linux isn't supported by resolink yet, but should be eventually, via NDI
+                case VideoSharingProtocol.NDI:
+                {
+                    CameraToShare.gameObject.RemoveComponent<SyphonServer>();
+                    CameraToShare.AddComponentIfAbsent<NdiSender>();
+                    break;
+                }
+#endif
             }
         }
     }
