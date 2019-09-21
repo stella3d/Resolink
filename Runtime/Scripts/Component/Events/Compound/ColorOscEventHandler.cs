@@ -40,6 +40,14 @@ namespace Resolink
             Handlers[2].Shortcut = group.Blue;
             Handlers[3].Shortcut = group.Alpha;
         }
+        
+        public override void SendValue()
+        {
+            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, Value.r);
+            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, Value.g);
+            OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, Value.b);
+            OscRouter.Client.Send(Handlers[3].Shortcut.Input.Path, Value.a);
+        }
 
         public void SetRed(float r) { Value.r = r; }
         

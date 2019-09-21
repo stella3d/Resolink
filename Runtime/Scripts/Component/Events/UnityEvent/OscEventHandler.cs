@@ -8,6 +8,8 @@ namespace Resolink
     public class OscEventHandler : MonoBehaviour
     {
         public ResolumeOscShortcut Shortcut;
+        
+        public virtual void SendValue() { }
     }
 
     [Serializable]
@@ -44,14 +46,12 @@ namespace Resolink
         
         protected void Register()
         {
-            //OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
             OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
             m_Registered = true;
         }
 
         protected void UnRegister()
         {
-            //OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
             OscRouter.RemoveCallbacks(Shortcut.Output.Path);
             m_Registered = false;
         }
@@ -71,11 +71,6 @@ namespace Resolink
         public void Invoke()
         {
             Event.Invoke(Value);
-        }
-
-        public void InvokeFromHandle(OscDataHandle dataHandle)
-        {
-            Event.Invoke(GetMessageValue(dataHandle));
         }
 
         // the empty update function is here so the inspector has the disable checkbox

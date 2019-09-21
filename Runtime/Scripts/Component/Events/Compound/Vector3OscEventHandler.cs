@@ -31,6 +31,13 @@ namespace Resolink
             Handlers[2].Shortcut = group.Z;
         }
         
+        public override void SendValue()
+        {
+            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, Value.x);
+            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, Value.y);
+            OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, Value.z);
+        }
+        
         public void SetX(float x) { Value.x = x; }
         
         public void SetY(float y) { Value.y = y; }

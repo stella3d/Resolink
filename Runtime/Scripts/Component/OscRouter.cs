@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using OscJack;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Resolink
 {
@@ -10,6 +11,7 @@ namespace Resolink
     /// Handles routing messages to the callbacks registered for each address
     /// </summary>
     [ExecuteAlways]
+    [DisallowMultipleComponent]
     public class OscRouter : MonoBehaviour
     {
         const int k_DefaultCapacity = 24;
@@ -18,6 +20,8 @@ namespace Resolink
 #pragma warning restore 649
         static int s_CallbackAddIndex;
 
+        static OscClient s_Client;
+        
         readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
         
         public readonly Dictionary<string, OscActionPair> AddressHandlers = 
@@ -37,11 +41,18 @@ namespace Resolink
 
         readonly RegexDoubleActionMapper m_TemplateChecker = new RegexDoubleActionMapper();
         
-        [SerializeField] 
-        int m_Port = 9000;
+        [FormerlySerializedAs("m_Port")] [SerializeField] 
+        int m_InputPort = 9000;
+        [SerializeField]
+        int m_OutputPort = 7000;
 
-        public int Port => m_Port;
+        [SerializeField] string OutputIpAddress = "127.0.0.1";
+
+        public int InputPort => m_InputPort;
+        public int OutputPort => m_OutputPort;
+        
         public static OscRouter Instance { get; protected set; }
+        public static OscClient Client => s_Client;
         public HashSet<string> WildcardAddressHandlers => m_WildcardAddressHandlers;
 
         void OnEnable()
@@ -50,6 +61,13 @@ namespace Resolink
             AddPrimaryCallback(PrimaryCallback);
             m_PrimaryCallbackAdded = true;
             GetSharedServer();
+            InitClient();
+        }
+
+        void InitClient()
+        {
+            if (s_Client == null)
+                s_Client = OscMaster.GetSharedClient(OutputIpAddress, m_OutputPort);
         }
 
         void Awake()
@@ -126,7 +144,7 @@ namespace Resolink
 
         void GetSharedServer()
         {
-            s_SharedServer = OscMaster.GetSharedServer(Port);
+            s_SharedServer = OscMaster.GetSharedServer(InputPort);
         }
 
         /// <summary>

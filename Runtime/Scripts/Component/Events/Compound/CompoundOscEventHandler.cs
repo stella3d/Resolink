@@ -131,5 +131,13 @@ namespace Resolink
         }
 
         public void AssignDefaultValue() { Value = m_DefaultValue; }
+
+        public void SendValue(TCompoundData value)
+        {
+            Value = value;
+            SendValue();
+        }
+        
+        public virtual void SendValue() { }
     }
 }

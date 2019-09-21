@@ -14,7 +14,7 @@ namespace Resolink
         public long UniqueId;
         
         /// <summary>
-        /// The path the Resolume receives messages for this control at.
+        /// The path that Resolume receives messages for this control at.
         /// Used as the persistent unique identifier for a control, since it doesn't change in Resolume.
         /// </summary>
         public ShortcutPath Input;

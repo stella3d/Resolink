@@ -37,6 +37,14 @@ namespace Resolink
             Handlers[2].Shortcut = group.Z;
         }
 
+        public override void SendValue()
+        {
+            m_EulerAngles = Value.eulerAngles;
+            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, m_EulerAngles.x);
+            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, m_EulerAngles.y);
+            OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, m_EulerAngles.z);
+        }
+
         // only convert euler -> quaternion once per frame before invoking the user callback
         protected override void ProcessBeforeInvoke()
         {

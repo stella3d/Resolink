@@ -8,5 +8,10 @@ namespace Resolink
         {
             return dataHandle.GetElementAsInt(0);
         }
+        
+        public override void SendValue()
+        {
+            OscRouter.Client.Send(Shortcut.Input.Path, Value);
+        }
     }
 }
