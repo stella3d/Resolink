@@ -44,14 +44,12 @@ namespace Resolink
         
         protected void Register()
         {
-            //OscRouter.AddCallback(Shortcut.Output.Path, InvokeFromHandle);
             OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
             m_Registered = true;
         }
 
         protected void UnRegister()
         {
-            //OscRouter.RemoveCallback(Shortcut.Output.Path, InvokeFromHandle);
             OscRouter.RemoveCallbacks(Shortcut.Output.Path);
             m_Registered = false;
         }
