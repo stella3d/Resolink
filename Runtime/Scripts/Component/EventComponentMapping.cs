@@ -144,21 +144,23 @@ namespace Resolink
         {
             go.GetComponents(components);
             var found = false;
-            T component = null;
             foreach (var c in components)
             {
                 if (c.Shortcut.Input.Path != shortcut.Input.Path)
                     continue;
 
+                c.Shortcut = shortcut;
                 found = true;
                 break;
             }
 
             if (!found)
-                component = go.AddComponent<T>();
-
-            if(component != null)
+            {
+                go.SetActive(false);
+                var component = go.AddComponent<T>();
                 component.Shortcut = shortcut;
+                go.SetActive(true);
+            }
         }
         
         static void AddColorComponentIfAbsent(GameObject go, ColorShortcutGroup group, 
