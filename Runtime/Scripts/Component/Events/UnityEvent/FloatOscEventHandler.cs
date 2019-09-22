@@ -1,7 +1,9 @@
 using OscJack;
+using UnityEngine;
 
 namespace Resolink
 {
+    [ExecuteAlways]
     public class FloatOscEventHandler : OscEventHandler<FloatUnityEvent, float>
     {
         protected override float GetMessageValue(OscDataHandle dataHandle)

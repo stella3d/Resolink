@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace Resolink
 {
+    [ExecuteAlways]
     public class ColorOscEventHandler : CompoundOscEventHandler<FloatOscActionHandler, 
         ColorUnityEvent, Color, float>
     {
@@ -29,7 +30,7 @@ namespace Resolink
             if (Mathf.Approximately(DefaultValue.a, 0f))
             {
                 m_DefaultValue.a = 1f;
-                Value.a = 1f;
+                m_Value.a = 1f;
             }
         }
 
@@ -43,18 +44,18 @@ namespace Resolink
         
         public override void SendValue()
         {
-            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, Value.r);
-            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, Value.g);
-            OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, Value.b);
-            OscRouter.Client.Send(Handlers[3].Shortcut.Input.Path, Value.a);
+            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, m_Value.r);
+            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, m_Value.g);
+            OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, m_Value.b);
+            OscRouter.Client.Send(Handlers[3].Shortcut.Input.Path, m_Value.a);
         }
 
-        public void SetRed(float r) { Value.r = r; }
+        public void SetRed(float r) { m_Value.r = r; }
         
-        public void SetGreen(float g) { Value.g = g; }
+        public void SetGreen(float g) { m_Value.g = g; }
         
-        public void SetBlue(float b) { Value.b = b; }
+        public void SetBlue(float b) { m_Value.b = b; }
         
-        public void SetAlpha(float a) { Value.a = a; }
+        public void SetAlpha(float a) { m_Value.a = a; }
     }
 }

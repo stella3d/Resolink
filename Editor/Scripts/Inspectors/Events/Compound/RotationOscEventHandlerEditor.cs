@@ -19,7 +19,7 @@ namespace Resolink
         {
             using (new EditorGUI.DisabledScope(true))
             {
-                var rotation = m_Component.Value;
+                var rotation = m_Component.m_Value;
                 EditorGUILayout.FloatField("X", rotation.x);
                 EditorGUILayout.FloatField("Y", rotation.y);
                 EditorGUILayout.FloatField("Z", rotation.z);

@@ -30,12 +30,12 @@ namespace Resolink
         
         public override void SendValue()
         {
-            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, Value.x);
-            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, Value.y);
+            OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, m_Value.x);
+            OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, m_Value.y);
         }
         
-        public void SetX(float x) { Value.x = x; }
+        public void SetX(float x) { m_Value.x = x; }
         
-        public void SetY(float y) { Value.y = y;  }
+        public void SetY(float y) { m_Value.y = y;  }
     }
 }

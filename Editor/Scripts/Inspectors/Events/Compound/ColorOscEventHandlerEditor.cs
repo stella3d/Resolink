@@ -11,7 +11,7 @@ namespace Resolink
         {
             using (new EditorGUI.DisabledScope(true))
             {
-                var color = m_Component.Value;
+                var color = m_Component.m_Value;
                 EditorGUILayout.FloatField("R", ToFloat255(color.r));
                 EditorGUILayout.FloatField("G", ToFloat255(color.g));
                 EditorGUILayout.FloatField("B", ToFloat255(color.b));

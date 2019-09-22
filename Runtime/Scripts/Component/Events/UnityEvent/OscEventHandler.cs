@@ -20,22 +20,34 @@ namespace Resolink
     {
         public TEvent Event;
 
-        protected T Value;
-        
-        protected bool m_Registered;
+        protected byte m_Registered;
+        protected bool m_OutputDirty;
+
+        protected T m_Value;
+
+        public T Value
+        {
+            get => m_Value;
+            set 
+            { 
+                m_Value = value;
+                //m_OutputDirty = true;
+                SendValue();
+            }
+        }
         
         public void OnEnable()
         {
             if (Event == null)
                 Event = new TEvent();
 
-            if (OscRouter.Instance != null && !m_Registered)
+            if (OscRouter.Instance != null && m_Registered > byte.MinValue)
                 Register();
         }
 
         void Start()
         {
-            if (!m_Registered)
+            if (m_Registered == byte.MinValue)
                 Register();
         }
 
@@ -47,13 +59,13 @@ namespace Resolink
         protected void Register()
         {
             OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
-            m_Registered = true;
+            m_Registered = byte.MaxValue;
         }
 
         protected void UnRegister()
         {
             OscRouter.RemoveCallbacks(Shortcut.Output.Path);
-            m_Registered = false;
+            m_Registered = byte.MinValue;
         }
 
         /// <summary>
@@ -65,15 +77,14 @@ namespace Resolink
 
         public void ReadData(OscDataHandle handle)
         {
-            Value = GetMessageValue(handle);
+            m_Value = GetMessageValue(handle);
         }
         
         public void Invoke()
         {
-            Event.Invoke(Value);
+            Event.Invoke(m_Value);
         }
 
-        // the empty update function is here so the inspector has the disable checkbox
         public void Update() { }
     }
 }

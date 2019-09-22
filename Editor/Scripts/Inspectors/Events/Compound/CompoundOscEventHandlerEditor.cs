@@ -41,7 +41,7 @@ namespace Resolink
         {
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
-            m_ValueProperty = serializedObject.FindProperty("Value");
+            m_ValueProperty = serializedObject.FindProperty("m_Value");
             m_DefaultValueProperty = serializedObject.FindProperty("m_DefaultValue");
             m_Component.Setup();
             InitContents();
@@ -95,12 +95,18 @@ namespace Resolink
                 }
             }
 
-            using (new EditorGUI.DisabledScope(true))
+            using (var changeScope = new EditorGUI.ChangeCheckScope())
             {
                 if(OverridePropertyDrawer)
-                    DrawValue("Value", m_Component.Value);
+                    DrawValue("Value", m_Component.m_Value);
                 else
                     EditorGUILayout.PropertyField(m_ValueProperty);
+
+                if (changeScope.changed)
+                {
+                    m_Component.SendValue();
+                    //Debug.Log("compound value changed");
+                }
             }
 
 #if RESOLINK_DEBUG_COMPOUND_EVENTS

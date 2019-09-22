@@ -1,5 +1,13 @@
+using UnityEditor;
+
 namespace Resolink
 {
-    [UnityEditor.CustomEditor(typeof(IntOscEventHandler))]
-    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntOscEventHandler, IntUnityEvent, int> { }
+    [CustomEditor(typeof(IntOscEventHandler))]
+    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntOscEventHandler, IntUnityEvent, int> 
+    {
+        protected override void DrawValue()
+        {
+            m_Component.Value = EditorGUILayout.IntField(m_Component.Value);
+        }
+    }
 }

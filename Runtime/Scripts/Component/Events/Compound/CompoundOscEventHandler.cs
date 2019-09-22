@@ -2,6 +2,7 @@ using System;
 using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Resolink
 {
@@ -24,8 +25,8 @@ namespace Resolink
         /// <summary>
         /// The value that will be passed to the UnityEvent
         /// </summary>
-        [Tooltip("The current value that will be passed to the event")]
-        public TCompoundData Value;
+        [FormerlySerializedAs("Value")] [Tooltip("The current value that will be passed to the event")]
+        public TCompoundData m_Value;
         
 #pragma warning disable 649           
         /// <summary>
@@ -49,12 +50,23 @@ namespace Resolink
         public THandler[] Handlers;
 
         protected bool m_Registered;
-        protected bool m_Dirty;
+        protected bool m_InputDirty;
+        protected bool m_OutputDirty;
+
+        public TCompoundData Value
+        {
+            get => m_Value;
+            set
+            {
+                m_Value = value;
+                m_OutputDirty = true;
+            }
+        }
 
         public void OnEnable()
         {
             Setup();
-            Value = m_DefaultValue;
+            m_Value = m_DefaultValue;
             
             if (Event == null)
                 Event = new TEvent();
@@ -71,14 +83,17 @@ namespace Resolink
         
         public virtual void Update()
         {
-            if (m_Dirty)
+            if (m_InputDirty)
             {
                 ProcessBeforeInvoke();
                 // if any of the sub-handlers modified the value since last frame,
                 // fire the UnityEvent that takes the compound data
-                Event.Invoke(Value);
-                m_Dirty = false;
+                Event.Invoke(m_Value);
+                m_InputDirty = false;
             }
+
+            if (m_OutputDirty)
+                SendValue();
         }
         
         public abstract void Setup();
@@ -126,15 +141,15 @@ namespace Resolink
             {
                 // invoking the sub-handler should modify our Value
                 handler.InvokeFromHandle(handle);
-                m_Dirty = true;
+                m_InputDirty = true;
             };
         }
 
-        public void AssignDefaultValue() { Value = m_DefaultValue; }
+        public void AssignDefaultValue() { m_Value = m_DefaultValue; }
 
         public void SendValue(TCompoundData value)
         {
-            Value = value;
+            m_Value = value;
             SendValue();
         }
         

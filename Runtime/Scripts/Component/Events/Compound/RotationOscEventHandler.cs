@@ -11,7 +11,7 @@ namespace Resolink
         public override void Setup()
         {
             m_DefaultValue = Quaternion.identity;
-            Value = m_DefaultValue;
+            m_Value = m_DefaultValue;
             
             if (Handlers == null || Handlers.Length == 0)
             {
@@ -39,7 +39,7 @@ namespace Resolink
 
         public override void SendValue()
         {
-            m_EulerAngles = Value.eulerAngles;
+            m_EulerAngles = m_Value.eulerAngles;
             OscRouter.Client.Send(Handlers[0].Shortcut.Input.Path, m_EulerAngles.x);
             OscRouter.Client.Send(Handlers[1].Shortcut.Input.Path, m_EulerAngles.y);
             OscRouter.Client.Send(Handlers[2].Shortcut.Input.Path, m_EulerAngles.z);
@@ -48,7 +48,7 @@ namespace Resolink
         // only convert euler -> quaternion once per frame before invoking the user callback
         protected override void ProcessBeforeInvoke()
         {
-            Value = Quaternion.Euler(m_EulerAngles);
+            m_Value = Quaternion.Euler(m_EulerAngles);
         }
         
         const float minAngle = -180f;

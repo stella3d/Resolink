@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,6 +8,7 @@ namespace Resolink
     public abstract class OscEventHandlerEditor<TComponent, TEvent, T> : Editor
         where TComponent : OscEventHandler<TEvent, T>
         where TEvent : UnityEvent<T>, new()
+        where T: IEquatable<T>
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
         const string k_InputPathTooltip = "The OSC address Resolume receives messages at for this control";
@@ -25,7 +27,7 @@ namespace Resolink
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
             m_PathContent = new GUIContent(m_Component.Shortcut.Output.Path, k_PathTooltip);
-            m_InputPathContent = new GUIContent(m_Component.Shortcut.Input.Path, k_InputPathTooltip);
+            m_InputPathContent = new GUIContent(m_Component.Shortcut.Input?.Path, k_InputPathTooltip);
         }
 
         public override void OnInspectorGUI()
@@ -41,7 +43,10 @@ namespace Resolink
             EditorUtils.DrawBoxLine();
             
             EditorGUILayout.LabelField(m_InputPathContent, EditorStyles.largeLabel);
-            if(GUILayout.Button("Send Value"))
+
+            DrawValue();
+
+            if(GUILayout.Button("Send Debug Value"))
                 m_Component.SendValue();
             
             serializedObject.ApplyModifiedProperties();
@@ -52,5 +57,6 @@ namespace Resolink
             m_LabelStyle = new GUIStyle(EditorStyles.boldLabel) { wordWrap = true, clipping = TextClipping.Clip };
         }
 
+        protected abstract void DrawValue();
     }
 }
