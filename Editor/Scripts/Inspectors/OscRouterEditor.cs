@@ -23,6 +23,8 @@ namespace Resolink
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+            
             EditorUtils.Help(k_HelpText);
             using (new EditorGUILayout.HorizontalScope())
             {
@@ -34,6 +36,8 @@ namespace Resolink
             {
                 EditorGUILayout.PropertyField(m_PortProperty);
             }
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
