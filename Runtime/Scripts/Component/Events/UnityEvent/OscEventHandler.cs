@@ -46,6 +46,11 @@ namespace Resolink
         
         protected void Register()
         {
+            if (Shortcut == null)
+            {
+                Debug.Log("null shortcut ?");
+            }
+
             OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
             m_Registered = true;
         }

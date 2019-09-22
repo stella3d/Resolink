@@ -9,8 +9,10 @@ namespace Resolink
         where TEvent : UnityEvent<T>, new()
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";
+        const string k_InputPathTooltip = "The OSC address Resolume receives messages at for this control";
 
         protected GUIContent m_PathContent;
+        protected GUIContent m_InputPathContent;
         
         protected TComponent m_Component;
 
@@ -23,6 +25,7 @@ namespace Resolink
             m_Component = (TComponent) target;
             m_EventProperty = serializedObject.FindProperty("Event");
             m_PathContent = new GUIContent(m_Component.Shortcut.Output.Path, k_PathTooltip);
+            m_InputPathContent = new GUIContent(m_Component.Shortcut.Input.Path, k_InputPathTooltip);
         }
 
         public override void OnInspectorGUI()
@@ -31,8 +34,16 @@ namespace Resolink
                 InitHeaderStyle();
             
             serializedObject.UpdateIfRequiredOrScript();
+            
             EditorGUILayout.LabelField(m_PathContent, m_LabelStyle);
             EditorGUILayout.PropertyField(m_EventProperty);
+
+            EditorUtils.DrawBoxLine();
+            
+            EditorGUILayout.LabelField(m_InputPathContent, EditorStyles.largeLabel);
+            if(GUILayout.Button("Send Value"))
+                m_Component.SendValue();
+            
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -40,5 +51,6 @@ namespace Resolink
         {
             m_LabelStyle = new GUIStyle(EditorStyles.boldLabel) { wordWrap = true, clipping = TextClipping.Clip };
         }
+
     }
 }

@@ -11,14 +11,16 @@ namespace Resolink
         readonly GUIContent m_HandlerCountLabelContent = new GUIContent("Registered Handler Count", 
             "The number of addresses that event handlers have been registered for");
 
-        SerializedProperty m_PortProperty;
+        SerializedProperty m_InputPortProperty;
+        SerializedProperty m_OutputPortProperty;
 
         OscRouter m_Router;
 
         public void OnEnable()
         {
             m_Router = (OscRouter) target;
-            m_PortProperty = serializedObject.FindProperty("m_Port");
+            m_InputPortProperty = serializedObject.FindProperty("m_InputPort");
+            m_OutputPortProperty = serializedObject.FindProperty("m_OutputPort");
         }
 
         public override void OnInspectorGUI()
@@ -32,7 +34,8 @@ namespace Resolink
 
             using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
             {
-                EditorGUILayout.PropertyField(m_PortProperty);
+                EditorGUILayout.PropertyField(m_InputPortProperty);
+                EditorGUILayout.PropertyField(m_OutputPortProperty);
             }
         }
     }
