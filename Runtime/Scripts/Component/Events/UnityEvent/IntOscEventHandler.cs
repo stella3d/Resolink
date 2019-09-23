@@ -4,9 +4,16 @@ namespace Resolink
 {
     public class IntOscEventHandler : OscEventHandler<IntUnityEvent, int> 
     {         
-        protected override int GetMessageValue(OscDataHandle dataHandle)
+        public override bool ReadData(OscDataHandle handle)
         {
-            return dataHandle.GetElementAsInt(0);
+            var newValue = handle.GetElementAsInt(0);
+            if (m_Value != newValue)
+            {
+                m_Value = newValue;
+                return true;
+            }
+
+            return false;
         }
         
         public override void SendValue()

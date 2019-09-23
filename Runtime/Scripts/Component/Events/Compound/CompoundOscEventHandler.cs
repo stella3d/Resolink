@@ -135,13 +135,14 @@ namespace Resolink
             m_Registered = false;
         }
         
-        Action<OscDataHandle> ReadAndSetDirty(OscActionHandler<TComponentData> handler)
+        Func<OscDataHandle, bool> ReadAndSetDirty(OscActionHandler<TComponentData> handler)
         {
             return handle =>
             {
                 // invoking the sub-handler should modify our Value
                 handler.InvokeFromHandle(handle);
                 m_InputDirty = true;
+                return true;
             };
         }
 

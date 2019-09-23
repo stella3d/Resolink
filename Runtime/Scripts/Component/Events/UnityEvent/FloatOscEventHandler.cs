@@ -6,9 +6,20 @@ namespace Resolink
     [ExecuteAlways]
     public class FloatOscEventHandler : OscEventHandler<FloatUnityEvent, float>
     {
-        protected override float GetMessageValue(OscDataHandle dataHandle)
+        const float k_Epsilon = 0.00001f;
+        
+        public override bool ReadData(OscDataHandle handle)
         {
-            return dataHandle.GetElementAsFloat(0);
+            var newValue = handle.GetElementAsFloat(0);
+            var delta = m_Value - newValue;
+            delta = delta > 0 ? delta : -delta; 
+            if (delta > k_Epsilon)
+            {
+                m_Value = newValue;
+                return true;
+            }
+
+            return false;
         }
 
         public override void SendValue()

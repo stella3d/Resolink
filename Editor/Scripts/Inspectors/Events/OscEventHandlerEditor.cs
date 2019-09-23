@@ -55,7 +55,7 @@ namespace Resolink
 
         void InitHeaderStyle()
         {
-            m_LabelStyle = new GUIStyle(EditorStyles.miniBoldLabel) { wordWrap = true, clipping = TextClipping.Clip };
+            m_LabelStyle = new GUIStyle(EditorStyles.whiteLabel) { wordWrap = true, clipping = TextClipping.Clip };
         }
 
         protected abstract void DrawValue();

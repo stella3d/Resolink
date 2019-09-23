@@ -69,16 +69,12 @@ namespace Resolink
         }
 
         /// <summary>
-        /// Extract a typed value from a data handle. 
+        /// Extract a typed value from an OSC data handle. 
         /// </summary>
-        /// <param name="dataHandle">The handle to extract from</param>
-        /// <returns>The message value</returns>
-        protected abstract T GetMessageValue(OscDataHandle dataHandle);
+        /// <param name="handle">The handle to extract from</param>
+        /// <returns>True if the value changed, false otherwise</returns>
+        public abstract bool ReadData(OscDataHandle handle);
 
-        public void ReadData(OscDataHandle handle)
-        {
-            m_Value = GetMessageValue(handle);
-        }
         
         public void Invoke()
         {

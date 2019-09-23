@@ -125,7 +125,7 @@ namespace Resolink
 
         void InitStyles()
         {
-            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel)
+            m_LabelStyle = new GUIStyle(EditorStyles.whiteLabel)
             {
                 stretchWidth = true
             };

@@ -153,7 +153,7 @@ namespace Resolink
         /// <param name="address">The URL path to handle messages for</param>
         /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
         /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
+        public static void AddCallbacks(string address, Func<OscDataHandle, bool> valueRead, Action userCallback)
         {
             AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
@@ -219,12 +219,14 @@ namespace Resolink
             }
 
             // immediately read the value from the OSC buffer to prevent values going to the wrong controls
-            actionPair.ValueRead(handle);
-            
-            // queue user action here and call them next frame, on the main thread.
-            // if the callback is null, that means it's a compound control, which will fire its own user callback
-            if(actionPair.UserCallback != null)
-                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            // if the value hasn't changed, don't bother queueing the user callback
+            if (actionPair.ValueRead(handle))
+            {
+                // queue user action here and call them next frame, on the main thread.
+                // if the callback is null, that means it's a compound control, which will fire its own user callback
+                if(actionPair.UserCallback != null)
+                    m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            }
         }
 
         /// <summary>
