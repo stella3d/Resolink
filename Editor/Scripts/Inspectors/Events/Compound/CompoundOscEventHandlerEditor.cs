@@ -103,10 +103,7 @@ namespace Resolink
                     EditorGUILayout.PropertyField(m_ValueProperty);
 
                 if (changeScope.changed)
-                {
                     m_Component.SendValue();
-                    //Debug.Log("compound value changed");
-                }
             }
 
 #if RESOLINK_DEBUG_COMPOUND_EVENTS

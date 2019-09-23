@@ -22,6 +22,8 @@ namespace Resolink
 
         protected GUIStyle m_LabelStyle;
 
+        protected bool m_FoldoutInspector;
+        
         public void OnEnable()
         {
             m_Component = (TComponent) target;
@@ -36,25 +38,24 @@ namespace Resolink
                 InitHeaderStyle();
             
             serializedObject.UpdateIfRequiredOrScript();
-            
+
+            EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
             EditorGUILayout.LabelField(m_PathContent, m_LabelStyle);
             EditorGUILayout.PropertyField(m_EventProperty);
 
             EditorUtils.DrawBoxLine();
             
-            EditorGUILayout.LabelField(m_InputPathContent, EditorStyles.largeLabel);
+            EditorGUILayout.LabelField("Output", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(m_InputPathContent, m_LabelStyle);
 
             DrawValue();
-
-            if(GUILayout.Button("Send Debug Value"))
-                m_Component.SendValue();
             
             serializedObject.ApplyModifiedProperties();
         }
 
         void InitHeaderStyle()
         {
-            m_LabelStyle = new GUIStyle(EditorStyles.boldLabel) { wordWrap = true, clipping = TextClipping.Clip };
+            m_LabelStyle = new GUIStyle(EditorStyles.miniBoldLabel) { wordWrap = true, clipping = TextClipping.Clip };
         }
 
         protected abstract void DrawValue();
