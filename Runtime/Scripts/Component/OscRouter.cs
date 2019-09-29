@@ -242,6 +242,9 @@ namespace Resolink
         /// <param name="offset"></param>
         protected void NewPrimaryCallback(byte[] addressBuffer, int length, OscDataHandle handle)
         {
+            
+            var rgx = new Regex("layer/[0-9a-zA-Z]+/effects");
+
             //if (m_AddressesToIgnore.Contains(address))
             //    return;
             
