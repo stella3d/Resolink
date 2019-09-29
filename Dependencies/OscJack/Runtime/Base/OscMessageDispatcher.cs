@@ -11,6 +11,7 @@ namespace OscJack
         #region Callback delegate definition
 
         public delegate void MessageCallback(string address, OscDataHandle data);
+        public delegate void NewMessageCallback(byte[] address, int addressByteLength, OscDataHandle data);
 
         #endregion
 
@@ -58,6 +59,13 @@ namespace OscJack
                 if (_callbackMap.TryGetValue(string.Empty, out callback))
                     callback(address, data);
             }
+        }
+
+        public NewMessageCallback PrimaryCallback { get; set; }
+        
+        internal void Dispatch(byte[] address, int addressByteLength, OscDataHandle data)
+        {
+            PrimaryCallback?.Invoke(address, addressByteLength, data);
         }
 
         #endregion

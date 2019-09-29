@@ -27,6 +27,8 @@ namespace OscJack
         OscMessageDispatcher _dispatcher;
         OscDataHandle _dataHandle = new OscDataHandle();
 
+        byte[] _copyBuffer = new byte[4098];
+
         void ScanMessage(Byte[] buffer, int offset, int length)
         {
             // Where the next element begins if any
@@ -34,6 +36,8 @@ namespace OscJack
 
             // OSC address
             var address = OscDataTypes.ReadString(buffer, offset);
+            var addressByteLength = OscDataTypes.ReadByteString(buffer, offset, _copyBuffer, 0);
+            
             offset += OscDataTypes.Align4(address.Length + 1);
 
             if (address == "#bundle")
@@ -58,6 +62,7 @@ namespace OscJack
                 // Retrieve the arguments and dispatch the message.
                 _dataHandle.Scan(buffer, offset);
                 _dispatcher.Dispatch(address, _dataHandle);
+                _dispatcher.Dispatch(_copyBuffer, addressByteLength, _dataHandle);
             }
         }
 

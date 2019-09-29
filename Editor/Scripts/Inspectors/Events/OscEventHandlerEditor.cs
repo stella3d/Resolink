@@ -37,7 +37,7 @@ namespace Resolink
             if (m_LabelStyle == null)
                 InitHeaderStyle();
             
-            serializedObject.UpdateIfRequiredOrScript();
+            serializedObject.Update();
 
             EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
             EditorGUILayout.LabelField(m_PathContent, m_LabelStyle);
@@ -49,6 +49,8 @@ namespace Resolink
             EditorGUILayout.LabelField(m_InputPathContent, m_LabelStyle);
 
             DrawValue();
+            
+            EditorUtility.SetDirty(this);
             
             serializedObject.ApplyModifiedProperties();
         }

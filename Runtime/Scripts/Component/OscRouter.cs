@@ -167,11 +167,14 @@ namespace Resolink
             return Instance.AddressHandlers.Remove(address); 
         }
 
-        static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
+        void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
 #if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.AddCallback(string.Empty, callback);
+
+            foreach (var server in OscServer.ServerList)
+                server.MessageDispatcher.PrimaryCallback = NewPrimaryCallback;
 #else
             s_SharedServer.MessageDispatcher.AddCallback(string.Empty, callback);
 #endif
@@ -227,6 +230,48 @@ namespace Resolink
                 if(actionPair.UserCallback != null)
                     m_ActionInvocationBuffer.Add(actionPair.UserCallback);
             }
+        }
+
+        /// <summary>
+        /// This is the message handler for every OSC message we receive
+        /// </summary>
+        /// <param name="address">The URL path where this message was received</param>
+        /// <param name="length"></param>
+        /// <param name="handle">A handle to access the value of the message</param>
+        /// <param name="addressBuffer"></param>
+        /// <param name="offset"></param>
+        protected void NewPrimaryCallback(byte[] addressBuffer, int length, OscDataHandle handle)
+        {
+            //if (m_AddressesToIgnore.Contains(address))
+            //    return;
+            
+            /*
+            if (!AddressHandlers.TryGetValue(address, out var actionPair))
+            {
+                // if we find a match in the template handlers, add a handler, otherwise ignore this address
+                if (m_TemplateChecker.Process(address, out var newActionPair))
+                {
+                    AddCallbacks(address, newActionPair);
+                    actionPair = newActionPair;
+                }
+                else
+                {
+                    m_AddressesToIgnore.Add(address);
+                    return;
+                }
+            }
+            
+
+            // immediately read the value from the OSC buffer to prevent values going to the wrong controls
+            // if the value hasn't changed, don't bother queueing the user callback
+            if (actionPair.ValueRead(handle))
+            {
+                // queue user action here and call them next frame, on the main thread.
+                // if the callback is null, that means it's a compound control, which will fire its own user callback
+                if(actionPair.UserCallback != null)
+                    m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            }
+            */
         }
 
         /// <summary>
