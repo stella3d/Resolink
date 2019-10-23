@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using OscCore;
 using OscJack;
 
 namespace Resolink
@@ -64,7 +65,7 @@ namespace Resolink
     /// <summary>
     /// Used at runtime to match incoming messages against wildcard handlers
     /// </summary>
-    public class RegexActionMapper : RegexMapper<Action<OscDataHandle>> { }
+    public class RegexActionMapper : RegexMapper<Action<OscMessageValues>> { }
     
     /// <summary>
     /// Used at runtime to match incoming messages against wildcard handlers

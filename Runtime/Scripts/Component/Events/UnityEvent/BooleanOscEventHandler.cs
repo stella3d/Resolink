@@ -1,12 +1,12 @@
-using OscJack;
+using OscCore;
 
 namespace Resolink
 {
     public class BooleanOscEventHandler : OscEventHandler<BoolUnityEvent, bool>
     {
-        protected override bool GetMessageValue(OscDataHandle dataHandle)
+        protected override bool GetMessageValue(OscMessageValues dataHandle)
         {
-            return dataHandle.GetElementAsInt(0) > 0;
+            return dataHandle.ReadIntElement(0) > 0;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using OscCore;
 using OscJack;
 
 namespace Resolink
@@ -6,9 +7,9 @@ namespace Resolink
     [Serializable]
     public class FloatOscActionHandler : OscActionHandler<float>
     {
-        protected override float GetMessageValue(OscDataHandle dataHandle)
+        protected override float GetMessageValue(OscMessageValues dataHandle)
         {
-            return dataHandle.GetElementAsFloat(0);
+            return dataHandle.ReadFloatElement(0);
         }
 
         public FloatOscActionHandler(Action<float> action) : base(action) { }

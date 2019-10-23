@@ -2,7 +2,8 @@
     "name": "com.stella3d.resolink.Editor",
     "references": [
         "GUID:fa037716f9e1b434ea9124af6b48ef9a",
-        "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2"
+        "GUID:9df4bb2434fa4444a85e58f9b2d5d6d2",
+        "GUID:9d1f21c757f944f4188b1b799669c761"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [

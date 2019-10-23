@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using OscCore;
 using OscJack;
 using UnityEngine;
+using OscServer = OscCore.OscServer; 
 
 namespace Resolink
 {
@@ -39,7 +41,7 @@ namespace Resolink
         
         [SerializeField] 
         int m_Port = 9000;
-
+        
         public int Port => m_Port;
         public static OscRouter Instance { get; protected set; }
         public HashSet<string> WildcardAddressHandlers => m_WildcardAddressHandlers;
@@ -47,7 +49,7 @@ namespace Resolink
         void OnEnable()
         {
             Instance = this;
-            AddPrimaryCallback(PrimaryCallback);
+            //AddPrimaryCallback(PrimaryCallback);
             m_PrimaryCallbackAdded = true;
             GetSharedServer();
         }
@@ -60,18 +62,9 @@ namespace Resolink
         void Start()
         {
             GetSharedServer();
-            if (!m_PrimaryCallbackAdded)
-            {
-                AddPrimaryCallback(PrimaryCallback);
-                m_PrimaryCallbackAdded = true;
-            }
         }
 
-        void OnDisable()
-        {
-            m_PrimaryCallbackAdded = false;
-            RemovePrimaryCallback(PrimaryCallback);
-        }
+        void OnDisable() { }
 
         void Update()
         {
@@ -84,6 +77,7 @@ namespace Resolink
         
         void HandleOscServerChanges()
         {
+            /*
             // the server list is only defined in the editor
 #if UNITY_EDITOR
             if (OscServer.ServerList.Count == m_PreviousServerCount) 
@@ -100,6 +94,7 @@ namespace Resolink
 
             m_PreviousServerCount = OscServer.ServerList.Count;
 #endif
+            */
         }
 
         /// <summary>
@@ -109,6 +104,8 @@ namespace Resolink
         /// <param name="actionPair">The value read action & user callback to execute</param>
         public static void AddCallbacks(string address, OscActionPair actionPair)
         {
+            s_SharedServer.AddressSpace.TryAddMethod(address, actionPair);
+            /*
             if (PathUtils.IsWildcardTemplate(address))
             {
                 if (Instance.WildcardAddressHandlers.Contains(address))
@@ -122,11 +119,12 @@ namespace Resolink
             }
 
             Instance.AddressHandlers[address] = actionPair;
+            */
         }
 
         void GetSharedServer()
         {
-            s_SharedServer = OscMaster.GetSharedServer(Port);
+            s_SharedServer = OscServer.GetOrCreate(Port);
         }
 
         /// <summary>
@@ -135,7 +133,7 @@ namespace Resolink
         /// <param name="address">The URL path to handle messages for</param>
         /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
         /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
+        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback)
         {
             AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
@@ -151,25 +149,38 @@ namespace Resolink
 
         static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
+            /*
 #if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
                 server.MessageDispatcher.AddCallback(string.Empty, callback);
 #else
             s_SharedServer.MessageDispatcher.AddCallback(string.Empty, callback);
 #endif
+            */
+        }
+        
+        static void AddPrimaryCallback(OscCore.MonitorCallback callback)
+        {
         }
 
         static void RemovePrimaryCallback(OscMessageDispatcher.MessageCallback callback)
         {
+            /*
 #if UNITY_EDITOR
             foreach (var server in OscServer.ServerList)
             {
                 try { server.MessageDispatcher.RemoveCallback(string.Empty, callback); }
-                catch (KeyNotFoundException) { /* it don't matter */ }
+                catch (KeyNotFoundException) { /* it don't matter  }
             }
 #else
             s_SharedServer.MessageDispatcher.RemoveCallback(string.Empty, callback);
 #endif
+           */
+        }
+        
+        static void RemovePrimaryCallback(OscCore.MonitorCallback callback)
+        {
+            
         }
 
         /// <summary>
@@ -177,7 +188,7 @@ namespace Resolink
         /// </summary>
         /// <param name="address">The URL path where this message was received</param>
         /// <param name="handle">A handle to access the value of the message</param>
-        protected void PrimaryCallback(string address, OscDataHandle handle)
+        protected void PrimaryCallback(string address, OscMessageValues handle)
         {
 #if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));
@@ -205,10 +216,10 @@ namespace Resolink
             
             // queue user action here and call them next frame, on the main thread.
             // if the callback is null, that means it's a compound control, which will fire its own user callback
-            if(actionPair.UserCallback != null)
-                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            if(actionPair.MainThreadQueued != null)
+                m_ActionInvocationBuffer.Add(actionPair.MainThreadQueued);
         }
-
+        
         /// <summary>
         /// Messages arriving at addresses we can't find handlers for get added to an ignore set.
         /// Call this to clear that - You would do this if handlers were added later at runtime.

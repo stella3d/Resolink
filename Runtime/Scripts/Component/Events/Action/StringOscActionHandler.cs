@@ -1,14 +1,14 @@
 using System;
-using OscJack;
+using OscCore;
 
 namespace Resolink
 {
     [Serializable]
     public class StringOscActionHandler : OscActionHandler<string>
     {
-        protected override string GetMessageValue(OscDataHandle dataHandle)
+        protected override string GetMessageValue(OscMessageValues dataHandle)
         {
-            return dataHandle.GetElementAsString(0);
+            return dataHandle.ReadStringElement(0);
         }
 
         public StringOscActionHandler(Action<string> action) : base(action) { }
