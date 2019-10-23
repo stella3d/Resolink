@@ -3,6 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using UnityEngine;
 
 namespace OscJack
 {
@@ -10,13 +13,27 @@ namespace OscJack
     {
         #region Public Members
 
-        public OscPacketParser(OscMessageDispatcher dispatcher)
+        public OscPacketParser(OscMessageDispatcher dispatcher, string appPath = "")
         {
+            OutPath = Path.Combine(appPath, LogFilePath);
+            Debug.Log("log file: " + OutPath);
+            
+            LogStream = !File.Exists(OutPath) ? File.Create(OutPath) : File.OpenWrite(OutPath);
+
             _dispatcher = dispatcher;
         }
 
+        const string LogFilePath = "ResolumeOscInputBytes.txt";
+
+        string OutPath;
+        readonly FileStream LogStream;
+
+        static readonly byte[] newLineBytes = Encoding.ASCII.GetBytes("\n");
+        
         public void Parse(Byte[] buffer, int length)
         {
+            LogStream.Write(buffer, 0, length);
+            LogStream.Write(newLineBytes, 0, newLineBytes.Length);
             ScanMessage(buffer, 0, length);
         }
 
@@ -28,6 +45,11 @@ namespace OscJack
         OscDataHandle _dataHandle = new OscDataHandle();
 
         byte[] _copyBuffer = new byte[4098];
+
+        public void Dispose()
+        {
+            LogStream.Close();
+        }
 
         void ScanMessage(Byte[] buffer, int offset, int length)
         {

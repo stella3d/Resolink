@@ -48,6 +48,7 @@ namespace OscJack
 
         public void Dispose()
         {
+            _parser.Dispose();
             Dispose(true);
             GC.SuppressFinalize(this);
 
@@ -118,10 +119,12 @@ namespace OscJack
         Socket _socket;
         Thread _thread;
         bool _disposed;
+        OscPacketParser _parser;
 
         void ServerLoop()
         {
             var parser = new OscPacketParser(_dispatcher);
+            _parser = parser;
             var buffer = new byte[4096];
 
             while (!_disposed)
