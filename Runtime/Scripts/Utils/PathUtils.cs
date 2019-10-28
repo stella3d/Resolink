@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace Resolink
 {
@@ -19,11 +18,6 @@ namespace Resolink
             const string asterisk = "/*/";
             var wildcardIndex = path.IndexOf(asterisk, StringComparison.CurrentCulture);
             return wildcardIndex != -1;
-        }
-        
-        public static bool HasLayerNumber(string path)
-        {
-            return Regexes.LayerNumber.IsMatch(path);
         }
         
         // this assumed that the regex has matched
@@ -51,7 +45,7 @@ namespace Resolink
             // as an input example,    /composition/layers/*/autopilot
             // we want the regex like  /composition/layers/[0-9]+/autopilot$
             // Resolume always uses * to represent a number as far as i have seen
-            var regexStr = path.Replace("/*/", "/[0-9]+/") + "$";
+            var regexStr = "^" + path.Replace("/*/", "/[0-9]+/") + "$";
             return new Regex(regexStr);
         }
     }

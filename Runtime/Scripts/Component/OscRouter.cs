@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using OscCore;
-using OscJack;
 using UnityEngine;
 using OscServer = OscCore.OscServer; 
 
@@ -34,7 +32,6 @@ namespace Resolink
 
         readonly ActionInvocationBuffer m_ActionInvocationBuffer = new ActionInvocationBuffer();
 
-        bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
         readonly RegexDoubleActionMapper m_TemplateChecker = new RegexDoubleActionMapper();
@@ -49,8 +46,6 @@ namespace Resolink
         void OnEnable()
         {
             Instance = this;
-            //AddPrimaryCallback(PrimaryCallback);
-            m_PrimaryCallbackAdded = true;
             GetSharedServer();
         }
 
@@ -97,6 +92,9 @@ namespace Resolink
 
         static void GetSharedServer()
         {
+            if (Instance == null)
+                return;
+                
             s_SharedServer = OscServer.GetOrCreate(Instance.Port);
         }
 
