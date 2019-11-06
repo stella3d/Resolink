@@ -1,6 +1,5 @@
 using System;
 using OscCore;
-using OscJack;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -56,7 +55,7 @@ namespace Resolink
 
         protected void UnRegister()
         {
-            OscRouter.RemoveCallbacks(Shortcut.Output.Path);
+            OscRouter.RemoveCallbacks(Shortcut.Output.Path, ReadData, Invoke);
             m_Registered = false;
         }
 

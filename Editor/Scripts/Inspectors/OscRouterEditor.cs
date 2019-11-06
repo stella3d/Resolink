@@ -29,7 +29,10 @@ namespace Resolink
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.LabelField(m_HandlerCountLabelContent);
-                EditorGUILayout.LabelField(m_Router.AddressHandlers.Count.ToString());
+                string numberLabel = m_Router.Server?.AddressSpace != null
+                    ? m_Router.Server.AddressSpace.HandlerCount.ToString() : "0";
+
+                EditorGUILayout.LabelField(numberLabel);
             }
 
             using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using OscCore;
 using UnityEngine;
 using OscServer = OscCore.OscServer; 
@@ -9,44 +8,30 @@ namespace Resolink
     /// <summary>
     /// Handles routing messages to the callbacks registered for each address
     /// </summary>
-    //[ExecuteAlways]
+    [ExecuteAlways]
     public class OscRouter : MonoBehaviour
     {
-        const int k_DefaultCapacity = 24;
 #pragma warning disable 649
         static OscServer s_SharedServer;
 #pragma warning restore 649
         static int s_CallbackAddIndex;
 
-        readonly HashSet<OscServer> m_KnownServers = new HashSet<OscServer>();
-        
-        public readonly Dictionary<string, OscActionPair> AddressHandlers = 
-            new Dictionary<string, OscActionPair>(k_DefaultCapacity);
-        
-        internal static readonly HashSet<string> m_WildcardAddressHandlers = new HashSet<string>();
-
-        /// <summary>
-        /// Every incoming osc address we tried to find a template handler for and failed
-        /// </summary>
-        readonly HashSet<string> m_AddressesToIgnore = new HashSet<string>();
-
-        readonly ActionInvocationBuffer m_ActionInvocationBuffer = new ActionInvocationBuffer();
-
-        int m_PreviousServerCount;
-
-        readonly RegexDoubleActionMapper m_TemplateChecker = new RegexDoubleActionMapper();
-        
         [SerializeField] 
         int m_Port = 9000;
         
         public int Port => m_Port;
-        public static OscRouter Instance { get; protected set; }
-        public HashSet<string> WildcardAddressHandlers => m_WildcardAddressHandlers;
 
+        public int HandlerCount;
+
+        public OscServer Server => s_SharedServer;
+        
+        public static OscRouter Instance { get; protected set; }
+        
         void OnEnable()
         {
             Instance = this;
             GetSharedServer();
+            s_SharedServer.Start();
         }
 
         void Awake()
@@ -64,15 +49,13 @@ namespace Resolink
         void OnDisable()
         {
             OscServer.Remove(m_Port);
+            s_SharedServer.Dispose();
         }
-
+        
         void Update()
         {
-            // this is a hack
+            // TODO - move this into its own component
             s_SharedServer.Update();
-            
-            // call all Actions buffered in response to messages since last frame
-            m_ActionInvocationBuffer.InvokeAll();
         }
 
         /// <summary>
@@ -87,7 +70,7 @@ namespace Resolink
             if (s_SharedServer == null)
                 return;
             
-            s_SharedServer.AddressSpace.TryAddMethod(address, actionPair);
+            s_SharedServer.TryAddMethod(address, actionPair);
         }
 
         static void GetSharedServer()
@@ -103,8 +86,8 @@ namespace Resolink
         /// </summary>
         /// <param name="address">The URL path to handle messages for</param>
         /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
-        /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback)
+        /// <param name="userCallback">OPTIONAL - The user callback to queue for execution on the main thread</param>
+        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback = null)
         {
             AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
@@ -113,23 +96,23 @@ namespace Resolink
         /// Remove a previously registered OSC message handler  
         /// </summary>
         /// <param name="address">The URL path to stop handling messages for</param>
-        public static bool RemoveCallbacks(string address)
+        /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
+        /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
+        public static bool RemoveCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback = null)
         {
-            return true;
-            //return s_SharedServer != null && s_SharedServer.RemoveMethod(address, );
+            return s_SharedServer != null && 
+                   s_SharedServer.RemoveMethod(address, new OscActionPair(valueRead, userCallback));
         }
         
-        static void AddPrimaryCallback(MonitorCallback callback) { }
-        static void RemovePrimaryCallback(MonitorCallback callback) { }
-        
         /// <summary>
-        /// Messages arriving at addresses we can't find handlers for get added to an ignore set.
-        /// Call this to clear that - You would do this if handlers were added later at runtime.
-        /// This should not be needed otherwise
+        /// Remove a previously registered OSC message handler  
         /// </summary>
-        public static void ClearIgnoredAddresses()
+        /// <param name="address">The URL path to stop handling messages for</param>
+        /// <param name="actionPair">The callbacks associated with this address to remove</param>
+        public static bool RemoveCallbacks(string address, OscActionPair actionPair)
         {
-            Instance.m_AddressesToIgnore.Clear();
+            return s_SharedServer != null && 
+                   s_SharedServer.RemoveMethod(address, actionPair);
         }
     }
 }

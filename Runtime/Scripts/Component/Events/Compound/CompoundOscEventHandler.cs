@@ -51,6 +51,8 @@ namespace Resolink
         protected bool m_Registered;
         protected bool m_Dirty;
 
+        protected OscActionPair m_CallbackPair;
+        
         public void OnEnable()
         {
             Setup();
@@ -100,8 +102,9 @@ namespace Resolink
                 if (handler.Shortcut == null)
                     continue;
                 
-                var action = ReadAndSetDirty(handler);
-                OscRouter.AddCallbacks(handler.Shortcut.Output.Path, action, null);
+                // create an action pair so we can remove it when unregistering
+                m_CallbackPair = new OscActionPair(ReadAndSetDirty(handler), null);
+                OscRouter.AddCallbacks(handler.Shortcut.Output.Path, m_CallbackPair);
             }
 
             m_Registered = true;
@@ -114,12 +117,13 @@ namespace Resolink
                 if (handler.Shortcut == null)
                     continue;
                 
-                OscRouter.RemoveCallbacks(handler.Shortcut.Output.Path);
+                OscRouter.RemoveCallbacks(handler.Shortcut.Output.Path, m_CallbackPair);
             }
 
             m_Registered = false;
         }
         
+        // wrap a child handler in a function that also sets our dirty flag
         Action<OscMessageValues> ReadAndSetDirty(OscActionHandler<TComponentData> handler)
         {
             return handle =>
