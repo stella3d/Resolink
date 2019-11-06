@@ -38,18 +38,12 @@ namespace Resolink
         {
             Instance = this;
             GetSharedServer();
-        }
-
-        void Start()
-        {
-            // TODO - start server on its own elsewhere
             s_SharedServer.Start();
         }
 
         void OnDisable()
         {
             OscServer.Remove(m_Port);
-            s_SharedServer.Dispose();
         }
         
         void Update()
