@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4993bc08a0208ed4f810f20f4554dff9, type: 3}
   m_Name: Single Color Parse Test
   m_EditorClassIdentifier: 
-  RelativeXmlPath: Single Color.xml
+  XmlPath: /Resolink/Tests/Editor/Maps/Simple/Single Color.xml
   ExpectedResult: {fileID: 11400000, guid: 70ad5abf4ce17474ea4b036a6a6765e5, type: 2}

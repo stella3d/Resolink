@@ -1,10 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 
 namespace Resolink.Tests
 {
     [CreateAssetMenu(fileName = "New Expected Parse Result", menuName = "Resolink/Test/Parse Result", order = 5)]
+    [Serializable]
     public class ExpectedParseResult : ScriptableObject
     {
         public string XmlPath;
@@ -13,6 +15,8 @@ namespace Resolink.Tests
 
         public ResolumeOscMap Parse()
         {
+            if (string.IsNullOrEmpty(XmlPath)) return null;
+            
             var fullPath = Application.dataPath + XmlPath;
             if (!File.Exists(fullPath))
             {

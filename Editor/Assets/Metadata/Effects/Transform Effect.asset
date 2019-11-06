@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3065db1eeb02429c837938f89a047dcf, type: 3}
   m_Name: Transform Effect
   m_EditorClassIdentifier: 
-  Types: 0202020200
+  Types: 02020202
   InputPaths:
   - /transform?[0-9]+/effect/position[xy]
   - /transform?[0-9]+/effect/rotation[xyz]
   - /transform?[0-9]+/effect/anchor[xyz]
-  - /transform?[0-9]+/effect/scale?[wh]
   - /transform?[0-9]+/effect/scale?[wh]

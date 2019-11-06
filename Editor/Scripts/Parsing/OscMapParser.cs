@@ -319,6 +319,10 @@ namespace Resolink
                     var type = TypeFromEnum(asset.Types[i]);
                     if(type != null) 
                         m_RegexToTypeMapper.Add(regex, type);
+                    else
+                    {
+                        type = null;
+                    }
                 }
             }
         }
