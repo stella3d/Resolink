@@ -1,6 +1,7 @@
 using System;
 using OscCore;
 using OscJack;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -34,6 +35,10 @@ namespace Resolink
 
         void Start()
         {
+#if UNITY_EDITOR
+            if (!EditorApplication.isPlayingOrWillChangePlaymode)
+                return;
+#endif
             if (!m_Registered)
                 Register();
         }
