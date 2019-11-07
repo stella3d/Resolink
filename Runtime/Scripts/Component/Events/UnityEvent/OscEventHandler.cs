@@ -22,6 +22,8 @@ namespace Resolink
         protected T Value;
         
         protected bool m_Registered;
+
+        protected OscActionPair m_ActionPair;
         
         public void OnEnable()
         {
@@ -49,13 +51,14 @@ namespace Resolink
         
         protected void Register()
         {
-            OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
+            m_ActionPair = new OscActionPair(ReadData, Invoke);
+            OscRouter.AddCallbacks(Shortcut.Output.Path, m_ActionPair);
             m_Registered = true;
         }
 
         protected void UnRegister()
         {
-            OscRouter.RemoveCallbacks(Shortcut.Output.Path, ReadData, Invoke);
+            OscRouter.RemoveCallbacks(Shortcut.Output.Path, m_ActionPair);
             m_Registered = false;
         }
 

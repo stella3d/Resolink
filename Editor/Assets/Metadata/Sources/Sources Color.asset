@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Types: 0202
   InputPaths:
-  - source/[a-z0-9]+/color/(red|green|blue|alpha)
-  - source/[a-z0-9]+/bgcolor/(red|green|blue|alpha)
+  - /source/[a-z0-9]+/color([0-9])?/(red|green|blue|alpha)
+  - /source/[a-z0-9]+/bgcolor/(red|green|blue|alpha)

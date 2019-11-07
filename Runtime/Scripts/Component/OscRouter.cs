@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using OscCore;
+using UnityEditor;
 using UnityEngine;
 using OscServer = OscCore.OscServer; 
 
@@ -21,50 +23,36 @@ namespace Resolink
         
         public int Port => m_Port;
 
-        public int HandlerCount;
-
+        /// <summary>The underlying OSC server that does the heavy lifting of routing</summary>
         public OscServer Server => s_SharedServer;
-        
+
         public static OscRouter Instance { get; protected set; }
         
         void OnEnable()
         {
             Instance = this;
             GetSharedServer();
-            s_SharedServer.Start();
         }
 
-        void Awake()
+        void OnDestroy()
         {
-            Instance = this;
-            GetSharedServer();
-            s_SharedServer.Start();
-        }
-
-        void OnDisable()
-        {
+#if UNITY_EDITOR
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+                return;
+#endif
             OscServer.Remove(m_Port);
         }
-        
-        void Update()
+
+        void OnApplicationQuit()
         {
-            // TODO - move this into its own component
-            s_SharedServer.Update();
+            OscServer.Remove(m_Port);
+            s_SharedServer.Dispose();
         }
 
-        /// <summary>
-        /// Register a new pair of OSC message handlers
-        /// </summary>
-        /// <param name="address">The URL path to handle messages for</param>
-        /// <param name="actionPair">The value read action & user callback to execute</param>
-        public static void AddCallbacks(string address, OscActionPair actionPair)
+        void Update()
         {
-            if (s_SharedServer == null)
-                GetSharedServer();
-            if (s_SharedServer == null)
-                return;
-            
-            s_SharedServer.TryAddMethod(address, actionPair);
+            // TODO - move this into its own component ?  not strictly necessary
+            s_SharedServer.Update();
         }
 
         static void GetSharedServer()
@@ -78,35 +66,22 @@ namespace Resolink
         /// <summary>
         /// Register a new pair of OSC message handlers
         /// </summary>
-        /// <param name="address">The URL path to handle messages for</param>
-        /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
-        /// <param name="userCallback">OPTIONAL - The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback = null)
+        /// <param name="address">The OSC address to handle messages for</param>
+        /// <param name="actionPair">The value read action & user callback to execute</param>
+        public static void AddCallbacks(string address, OscActionPair actionPair)
         {
-            AddCallbacks(address, new OscActionPair(valueRead, userCallback));
+            s_SharedServer?.TryAddMethodPair(address, actionPair);
         }
         
         /// <summary>
         /// Remove a previously registered OSC message handler  
         /// </summary>
-        /// <param name="address">The URL path to stop handling messages for</param>
-        /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
-        /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static bool RemoveCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback = null)
-        {
-            return s_SharedServer != null && 
-                   s_SharedServer.RemoveMethod(address, new OscActionPair(valueRead, userCallback));
-        }
-        
-        /// <summary>
-        /// Remove a previously registered OSC message handler  
-        /// </summary>
-        /// <param name="address">The URL path to stop handling messages for</param>
+        /// <param name="address">The OSC address to handle messages for</param>
         /// <param name="actionPair">The callbacks associated with this address to remove</param>
         public static bool RemoveCallbacks(string address, OscActionPair actionPair)
         {
             return s_SharedServer != null && 
-                   s_SharedServer.RemoveMethod(address, actionPair);
+                   s_SharedServer.RemoveMethodPair(address, actionPair);
         }
     }
 }
