@@ -36,7 +36,6 @@ namespace Resolink
 
         readonly ActionInvocationBuffer m_ActionInvocationBuffer = new ActionInvocationBuffer();
 
-        bool m_PrimaryCallbackAdded;
         int m_PreviousServerCount;
 
         readonly RegexDoubleActionMapper m_TemplateChecker = new RegexDoubleActionMapper();
@@ -50,9 +49,12 @@ namespace Resolink
 
         void OnEnable()
         {
+            if (Instance != null && Instance != this)
+                enabled = false;
+            
             Instance = this;
-            AddPrimaryCallback(PrimaryCallback);
-            m_PrimaryCallbackAdded = true;
+            //AddPrimaryCallback(PrimaryCallback);
+            // m_PrimaryCallbackAdded = true;
             GetSharedServer();
         }
 
@@ -64,48 +66,30 @@ namespace Resolink
         void Start()
         {
             GetSharedServer();
+            
+            /*
             if (!m_PrimaryCallbackAdded)
             {
                 AddPrimaryCallback(PrimaryCallback);
                 m_PrimaryCallbackAdded = true;
             }
+            */
         }
 
         void OnDisable()
         {
-            m_PrimaryCallbackAdded = false;
-            RemovePrimaryCallback(PrimaryCallback);
+            //RemovePrimaryCallback(PrimaryCallback);
         }
 
         void Update()
         {
             // call all Actions buffered in response to messages since last frame
-            m_ActionInvocationBuffer.InvokeAll();
+            // m_ActionInvocationBuffer.InvokeAll();
 
             // handle the existence of any new osc servers
-            HandleOscServerChanges();
+            // HandleOscServerChanges();
         }
         
-        void HandleOscServerChanges()
-        {
-            // the server list is only defined in the editor
-#if UNITY_EDITOR
-            if (OscServer.ServerList.Count == m_PreviousServerCount) 
-                return;
-            
-            foreach (var server in OscServer.ServerList)
-            {
-                if (m_KnownServers.Contains(server))
-                    continue;
-
-                server.MessageDispatcher.AddCallback(string.Empty, PrimaryCallback);
-                m_KnownServers.Add(server);
-            }
-
-            m_PreviousServerCount = OscServer.ServerList.Count;
-#endif
-        }
-
         /// <summary>
         /// Register a new pair of OSC message handlers
         /// </summary>
@@ -113,7 +97,6 @@ namespace Resolink
         /// <param name="actionPair">The value read action & user callback to execute</param>
         public static void AddCallbacks(string address, OscActionPair actionPair)
         {
-            
             if (PathUtils.IsWildcardTemplate(address))
             {
                 if (Instance.WildcardAddressHandlers.Contains(address))
@@ -126,9 +109,8 @@ namespace Resolink
                 Instance.m_TemplateChecker.Add(PathUtils.RegexForWildcardPath(address), actionPair);
             }
 
-            // Instance.CoreServer.TryAddMethodPair(address, actionPair);
-
-            Instance.AddressHandlers[address] = actionPair;
+            Instance.CoreServer.TryAddMethodPair(address, actionPair);
+            // Instance.AddressHandlers[address] = actionPair;
         }
 
         void GetSharedServer()
@@ -157,27 +139,14 @@ namespace Resolink
             return Instance.AddressHandlers.Remove(address); 
         }
 
-        static void AddPrimaryCallback(OscMessageDispatcher.MessageCallback callback)
+        /// <summary>
+        /// Remove a previously registered OSC message handler  
+        /// </summary>
+        /// <param name="address">The URL path to stop handling messages for</param>
+        /// <param name="valueRead">The server thread callback to remove</param>
+        public static bool RemoveCallbacksCore(string address, Action<OscMessageValues> valueRead)
         {
-#if UNITY_EDITOR
-            foreach (var server in OscServer.ServerList)
-                server.MessageDispatcher.AddCallback(string.Empty, callback);
-#else
-            s_SharedServer.MessageDispatcher.AddCallback(string.Empty, callback);
-#endif
-        }
-
-        static void RemovePrimaryCallback(OscMessageDispatcher.MessageCallback callback)
-        {
-#if UNITY_EDITOR
-            foreach (var server in OscServer.ServerList)
-            {
-                try { server.MessageDispatcher.RemoveCallback(string.Empty, callback); }
-                catch (KeyNotFoundException) { /* it don't matter */ }
-            }
-#else
-            s_SharedServer.MessageDispatcher.RemoveCallback(string.Empty, callback);
-#endif
+            return Instance.CoreServer.RemoveMethod(address, valueRead); 
         }
 
         /// <summary>
@@ -217,40 +186,6 @@ namespace Resolink
                 m_ActionInvocationBuffer.Add(actionPair.MainThreadQueued);
         }
         
-        // OSCCORE METHOD
-        protected void PrimaryCallbackCore(string address, OscMessageValues handle)
-        {
-#if RESOLINK_DEBUG_OSC
-            Debug.Log(address + " " + handle.GetElementAsString(0));
-#endif
-            
-            if (m_AddressesToIgnore.Contains(address))
-                return;
-            
-            if (!AddressHandlers.TryGetValue(address, out var actionPair))
-            {
-                // if we find a match in the template handlers, add a handler, otherwise ignore this address
-                if (m_TemplateChecker.Process(address, out var newActionPair))
-                {
-                    AddCallbacks(address, newActionPair);
-                    actionPair = newActionPair;
-                }
-                else
-                {
-                    m_AddressesToIgnore.Add(address);
-                    return;
-                }
-            }
-
-            // immediately read the value from the OSC buffer to prevent values going to the wrong controls
-            actionPair.ValueRead(handle);
-            
-            // queue user action here and call them next frame, on the main thread.
-            // if the callback is null, that means it's a compound control, which will fire its own user callback
-            if(actionPair.MainThreadQueued != null)
-                m_ActionInvocationBuffer.Add(actionPair.MainThreadQueued);
-        }
-
         /// <summary>
         /// Messages arriving at addresses we can't find handlers for get added to an ignore set.
         /// Call this to clear that - You would do this if handlers were added later at runtime.

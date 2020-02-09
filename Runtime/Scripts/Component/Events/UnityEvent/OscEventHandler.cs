@@ -51,7 +51,8 @@ namespace Resolink
 
         protected void UnRegister()
         {
-            OscRouter.RemoveCallbacks(Shortcut.Output.Path);
+            // OscRouter.RemoveCallbacks(Shortcut.Output.Path);
+            OscRouter.RemoveCallbacksCore(Shortcut.Output.Path, ReadDataCore);
             m_Registered = false;
         }
 
