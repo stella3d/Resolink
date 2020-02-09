@@ -1,8 +1,8 @@
 {
     "name": "com.stella3d.resolink.Tests.Editor",
     "references": [
-        "GUID:0e3e44f9e05556445a9c505c02d54b2b",
-        "GUID:fa037716f9e1b434ea9124af6b48ef9a"
+        "com.stella3d.resolink.Runtime",
+        "com.stella3d.resolink.Editor"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"
@@ -15,6 +15,5 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": []
+    "defineConstraints": []
 }
