@@ -2,9 +2,9 @@
     "name": "com.stella3d.resolink.Editor",
     "references": [
         "com.stella3d.resolink.Runtime",
-        "jp.keijiro.osc-jack.Runtime"
+        "jp.keijiro.osc-jack.Runtime",
+        "OscCore.Runtime"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor"
     ],
@@ -13,5 +13,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
