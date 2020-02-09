@@ -143,7 +143,7 @@ namespace Resolink
         /// <param name="address">The URL path to stop handling messages for</param>
         public static bool RemoveCallbacksCore(string address)
         {
-            return Instance.CoreServer.RemoveAddress(address); 
+            return Instance != null && Instance.CoreServer.RemoveAddress(address); 
         }
 
         /// <summary>
