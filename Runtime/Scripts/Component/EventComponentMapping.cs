@@ -8,10 +8,10 @@ namespace Resolink
     [ExecuteAlways]
     public class EventComponentMapping : MonoBehaviour
     {
-        static readonly List<IntOscEventHandler> k_IntHandlerComponents = new List<IntOscEventHandler>();
-        static readonly List<FloatOscEventHandler> k_FloatHandlerComponents = new List<FloatOscEventHandler>();
-        static readonly List<BooleanOscEventHandler> k_BoolHandlerComponents = new List<BooleanOscEventHandler>();
-        static readonly List<StringOscEventHandler> k_StringHandlerComponents = new List<StringOscEventHandler>();
+        static readonly List<IntResolumeShortcutHandler> k_IntHandlerComponents = new List<IntResolumeShortcutHandler>();
+        static readonly List<FloatResolumeShortcutHandler> k_FloatHandlerComponents = new List<FloatResolumeShortcutHandler>();
+        static readonly List<BooleanResolumeShortcutHandler> k_BoolHandlerComponents = new List<BooleanResolumeShortcutHandler>();
+        static readonly List<StringResolumeShortcutHandler> k_StringHandlerComponents = new List<StringResolumeShortcutHandler>();
         
         static readonly List<ColorOscEventHandler> k_ColorHandlerComponents = new List<ColorOscEventHandler>();
         static readonly List<Vector2OscEventHandler> k_Vector2HandlerComponents = new List<Vector2OscEventHandler>();
@@ -140,7 +140,7 @@ namespace Resolink
         }
         
         static void AddShortcutComponentIfAbsent<T>(GameObject go, ResolumeOscShortcut shortcut, List<T> components) 
-            where T: OscEventHandler
+            where T: ResolumeShortcutHandler
         {
             go.GetComponents(components);
             var found = false;
@@ -257,7 +257,7 @@ namespace Resolink
         
         static void DisableIfNoHandlers(GameObject go)
         {
-            if (go.GetComponent<OscEventHandler>() != null)
+            if (go.GetComponent<ResolumeShortcutHandler>() != null)
                 go.SetActive(true);
             else if(go.GetComponent<CompoundOscEventHandler>() != null)
                 go.SetActive(true);
@@ -267,10 +267,10 @@ namespace Resolink
 
         void RemoveUnusedPrevious()
         {
-            RemoveUnusedPrevious<IntOscEventHandler, IntUnityEvent, int>(OscMap, gameObject, k_IntHandlerComponents);
-            RemoveUnusedPrevious<FloatOscEventHandler, FloatUnityEvent, float>(OscMap, gameObject, k_FloatHandlerComponents);
-            RemoveUnusedPrevious<BooleanOscEventHandler, BoolUnityEvent, bool>(OscMap, gameObject, k_BoolHandlerComponents);
-            RemoveUnusedPrevious<StringOscEventHandler, StringUnityEvent, string>(OscMap, gameObject, k_StringHandlerComponents);
+            RemoveUnusedPrevious<IntResolumeShortcutHandler, IntUnityEvent, int>(OscMap, gameObject, k_IntHandlerComponents);
+            RemoveUnusedPrevious<FloatResolumeShortcutHandler, FloatUnityEvent, float>(OscMap, gameObject, k_FloatHandlerComponents);
+            RemoveUnusedPrevious<BooleanResolumeShortcutHandler, BoolUnityEvent, bool>(OscMap, gameObject, k_BoolHandlerComponents);
+            RemoveUnusedPrevious<StringResolumeShortcutHandler, StringUnityEvent, string>(OscMap, gameObject, k_StringHandlerComponents);
             
             // TODO - this, for compound events
         }
@@ -278,7 +278,7 @@ namespace Resolink
         static void RemoveUnusedPrevious<THandler, TEvent, TData>(ResolumeOscMap map, 
             GameObject go, List<THandler> components)
             where TEvent : UnityEvent<TData>, new()
-            where THandler : OscEventHandler<TEvent, TData>
+            where THandler : ResolumeShortcutHandler<TEvent, TData>
         {
             go.GetComponents(components);
             foreach (var component in components)

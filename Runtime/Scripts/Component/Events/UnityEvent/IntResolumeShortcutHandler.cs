@@ -3,7 +3,7 @@ using OscJack;
 
 namespace Resolink
 {
-    public class IntOscEventHandler : OscEventHandler<IntUnityEvent, int> 
+    public class IntResolumeShortcutHandler : ResolumeShortcutHandler<IntUnityEvent, int> 
     {         
         protected override int GetMessageValue(OscDataHandle dataHandle)
         {

@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 namespace Resolink
 {
-    public class OscEventHandler : MonoBehaviour
+    public class ResolumeShortcutHandler : MonoBehaviour
     {
         public ResolumeOscShortcut Shortcut;
     }
@@ -14,7 +14,7 @@ namespace Resolink
     [Serializable]
     [HelpURL(HelpLinks.TableOfContents)]
     [ExecuteAlways]
-    public abstract class OscEventHandler<TEvent, T> : OscEventHandler
+    public abstract class ResolumeShortcutHandler<TEvent, T> : ResolumeShortcutHandler
         where TEvent: UnityEvent<T>, new()
     {
         public TEvent Event;
@@ -52,7 +52,7 @@ namespace Resolink
         protected void UnRegister()
         {
             // OscRouter.RemoveCallbacks(Shortcut.Output.Path);
-            OscRouter.RemoveCallbacksCore(Shortcut.Output.Path, ReadDataCore);
+            OscRouter.RemoveCallbacksCore(Shortcut.Output.Path);
             m_Registered = false;
         }
 

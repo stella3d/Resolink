@@ -102,7 +102,7 @@ namespace Resolink
                     continue;
                 
                 var action = ReadAndSetDirtyCore(handler);
-                OscRouter.AddCallbacks(handler.Shortcut.Output.Path, action, null);
+                OscRouter.AddCallbacks(handler.Shortcut.Output.Path, action);
             }
 
             m_Registered = true;
@@ -116,6 +116,7 @@ namespace Resolink
                     continue;
                 
                 OscRouter.RemoveCallbacks(handler.Shortcut.Output.Path);
+                OscRouter.RemoveCallbacksCore(handler.Shortcut.Output.Path);
             }
 
             m_Registered = false;

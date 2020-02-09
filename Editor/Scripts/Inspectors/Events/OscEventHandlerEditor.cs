@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace Resolink
 {
     public abstract class OscEventHandlerEditor<TComponent, TEvent, T> : Editor
-        where TComponent : OscEventHandler<TEvent, T>
+        where TComponent : ResolumeShortcutHandler<TEvent, T>
         where TEvent : UnityEvent<T>, new()
     {
         const string k_PathTooltip = "The OSC address we receive messages at associated with this event";

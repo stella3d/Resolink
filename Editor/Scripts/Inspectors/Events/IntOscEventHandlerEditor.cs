@@ -1,5 +1,5 @@
 namespace Resolink
 {
-    [UnityEditor.CustomEditor(typeof(IntOscEventHandler))]
-    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntOscEventHandler, IntUnityEvent, int> { }
+    [UnityEditor.CustomEditor(typeof(IntResolumeShortcutHandler))]
+    public class IntOscEventHandlerEditor : OscEventHandlerEditor<IntResolumeShortcutHandler, IntUnityEvent, int> { }
 }

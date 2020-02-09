@@ -125,7 +125,7 @@ namespace Resolink
         /// <param name="address">The URL path to handle messages for</param>
         /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
         /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback)
+        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback = null)
         {
             AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
@@ -139,14 +139,11 @@ namespace Resolink
             return Instance.AddressHandlers.Remove(address); 
         }
 
-        /// <summary>
-        /// Remove a previously registered OSC message handler  
-        /// </summary>
+        /// <summary>Remove all handlers for an address</summary>
         /// <param name="address">The URL path to stop handling messages for</param>
-        /// <param name="valueRead">The server thread callback to remove</param>
-        public static bool RemoveCallbacksCore(string address, Action<OscMessageValues> valueRead)
+        public static bool RemoveCallbacksCore(string address)
         {
-            return Instance.CoreServer.RemoveMethod(address, valueRead); 
+            return Instance.CoreServer.RemoveAddress(address); 
         }
 
         /// <summary>
