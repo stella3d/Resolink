@@ -1,4 +1,5 @@
 using System;
+using OscCore;
 using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
@@ -100,7 +101,7 @@ namespace Resolink
                 if (handler.Shortcut == null)
                     continue;
                 
-                var action = ReadAndSetDirty(handler);
+                var action = ReadAndSetDirtyCore(handler);
                 OscRouter.AddCallbacks(handler.Shortcut.Output.Path, action, null);
             }
 
@@ -126,6 +127,16 @@ namespace Resolink
             {
                 // invoking the sub-handler should modify our Value
                 handler.InvokeFromHandle(handle);
+                m_Dirty = true;
+            };
+        }
+        
+        Action<OscMessageValues> ReadAndSetDirtyCore(OscActionHandler<TComponentData> handler)
+        {
+            return handle =>
+            {
+                // invoking the sub-handler should modify our Value
+                handler.InvokeFromHandleCore(handle);
                 m_Dirty = true;
             };
         }

@@ -1,4 +1,5 @@
 using System;
+using OscCore;
 using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
@@ -44,7 +45,7 @@ namespace Resolink
         
         protected void Register()
         {
-            OscRouter.AddCallbacks(Shortcut.Output.Path, ReadData, Invoke);
+            OscRouter.AddCallbacks(Shortcut.Output.Path, ReadDataCore, Invoke);
             m_Registered = true;
         }
 
@@ -60,11 +61,23 @@ namespace Resolink
         /// <param name="dataHandle">The handle to extract from</param>
         /// <returns>The message value</returns>
         protected abstract T GetMessageValue(OscDataHandle dataHandle);
+        
+        /// <summary>
+        /// Extract a typed value from a data handle. 
+        /// </summary>
+        /// <param name="messageValues">The message value handle to extract from</param>
+        /// <returns>The message value</returns>
+        protected abstract T GetMessageValueCore(OscMessageValues messageValues);
 
         public void ReadData(OscDataHandle handle)
         {
             Value = GetMessageValue(handle);
         }
+        
+        public void ReadDataCore(OscMessageValues handle)
+        {
+            Value = GetMessageValueCore(handle);
+        }        
         
         public void Invoke()
         {

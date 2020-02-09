@@ -18,6 +18,7 @@ namespace Resolink
         const int k_DefaultCapacity = 24;
 #pragma warning disable 649
         static OscServer s_SharedServer;
+        internal CoreServer CoreServer;
 #pragma warning restore 649
         static int s_CallbackAddIndex;
 
@@ -112,6 +113,7 @@ namespace Resolink
         /// <param name="actionPair">The value read action & user callback to execute</param>
         public static void AddCallbacks(string address, OscActionPair actionPair)
         {
+            
             if (PathUtils.IsWildcardTemplate(address))
             {
                 if (Instance.WildcardAddressHandlers.Contains(address))
@@ -124,12 +126,15 @@ namespace Resolink
                 Instance.m_TemplateChecker.Add(PathUtils.RegexForWildcardPath(address), actionPair);
             }
 
+            // Instance.CoreServer.TryAddMethodPair(address, actionPair);
+
             Instance.AddressHandlers[address] = actionPair;
         }
 
         void GetSharedServer()
         {
-            s_SharedServer = OscMaster.GetSharedServer(Port);
+            //s_SharedServer = OscMaster.GetSharedServer(Port);
+            CoreServer = CoreServer.GetOrCreate(m_Port);
         }
 
         /// <summary>
@@ -138,7 +143,7 @@ namespace Resolink
         /// <param name="address">The URL path to handle messages for</param>
         /// <param name="valueRead">The value read action to execute immediately on the worker thread</param>
         /// <param name="userCallback">The user callback to queue for execution on the main thread</param>
-        public static void AddCallbacks(string address, Action<OscDataHandle> valueRead, Action userCallback)
+        public static void AddCallbacks(string address, Action<OscMessageValues> valueRead, Action userCallback)
         {
             AddCallbacks(address, new OscActionPair(valueRead, userCallback));
         }
@@ -204,20 +209,21 @@ namespace Resolink
             }
 
             // immediately read the value from the OSC buffer to prevent values going to the wrong controls
-            actionPair.ValueRead(handle);
+            // actionPair.ValueRead(handle);
             
             // queue user action here and call them next frame, on the main thread.
             // if the callback is null, that means it's a compound control, which will fire its own user callback
-            if(actionPair.UserCallback != null)
-                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            if(actionPair.MainThreadQueued != null)
+                m_ActionInvocationBuffer.Add(actionPair.MainThreadQueued);
         }
         
         // OSCCORE METHOD
-        protected void PrimaryCallbackCore(string address, OscDataHandle handle)
+        protected void PrimaryCallbackCore(string address, OscMessageValues handle)
         {
 #if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));
 #endif
+            
             if (m_AddressesToIgnore.Contains(address))
                 return;
             
@@ -241,8 +247,8 @@ namespace Resolink
             
             // queue user action here and call them next frame, on the main thread.
             // if the callback is null, that means it's a compound control, which will fire its own user callback
-            if(actionPair.UserCallback != null)
-                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+            if(actionPair.MainThreadQueued != null)
+                m_ActionInvocationBuffer.Add(actionPair.MainThreadQueued);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
 using System;
+using OscCore;
 using OscJack;
 
 namespace Resolink
@@ -25,10 +26,23 @@ namespace Resolink
         /// <param name="dataHandle">The handle to extract from</param>
         /// <returns>The message value</returns>
         protected abstract T GetMessageValue(OscDataHandle dataHandle);
+        
+        /// <summary>
+        /// Extract a typed value from a data handle. 
+        /// </summary>
+        /// <param name="values">The handle to extract from</param>
+        /// <returns>The message value</returns>
+        protected abstract T GetMessageValueCore(OscMessageValues values);
 
         public void InvokeFromHandle(OscDataHandle dataHandle)
         {
             Event.Invoke(GetMessageValue(dataHandle));
+        }
+        
+        // TODO - rename this something that doesn't ref 'handle' after OscJack is removed
+        public void InvokeFromHandleCore(OscMessageValues values)
+        {
+            Event.Invoke(GetMessageValueCore(values));
         }
     }
 }

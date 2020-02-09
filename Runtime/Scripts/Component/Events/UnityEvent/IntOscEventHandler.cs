@@ -1,3 +1,4 @@
+using OscCore;
 using OscJack;
 
 namespace Resolink
@@ -7,6 +8,11 @@ namespace Resolink
         protected override int GetMessageValue(OscDataHandle dataHandle)
         {
             return dataHandle.GetElementAsInt(0);
+        }
+        
+        protected override int GetMessageValueCore(OscMessageValues values)
+        {
+            return values.ReadIntElement(0);
         }
     }
 }
