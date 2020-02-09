@@ -2,12 +2,10 @@
     "name": "com.stella3d.resolink.Runtime",
     "references": [
         "jp.keijiro.osc-jack.Runtime",
-        "BlobHandles.Runtime",
-        "NtpTimestamp",
         "Klak.Ndi",
-        "Klak.Spout"
+        "Klak.Spout",
+        "OscCore.Runtime"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [
         "Editor",
         "macOSStandalone",
@@ -18,5 +16,7 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": []
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

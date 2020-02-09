@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using OscJack;
+using OscCore;
 using UnityEngine;
+
+using OscServer = OscJack.OscServer;
+using CoreServer = OscCore.OscServer;
 
 namespace Resolink
 {
@@ -178,6 +181,39 @@ namespace Resolink
         /// <param name="address">The URL path where this message was received</param>
         /// <param name="handle">A handle to access the value of the message</param>
         protected void PrimaryCallback(string address, OscDataHandle handle)
+        {
+#if RESOLINK_DEBUG_OSC
+            Debug.Log(address + " " + handle.GetElementAsString(0));
+#endif
+            if (m_AddressesToIgnore.Contains(address))
+                return;
+            
+            if (!AddressHandlers.TryGetValue(address, out var actionPair))
+            {
+                // if we find a match in the template handlers, add a handler, otherwise ignore this address
+                if (m_TemplateChecker.Process(address, out var newActionPair))
+                {
+                    AddCallbacks(address, newActionPair);
+                    actionPair = newActionPair;
+                }
+                else
+                {
+                    m_AddressesToIgnore.Add(address);
+                    return;
+                }
+            }
+
+            // immediately read the value from the OSC buffer to prevent values going to the wrong controls
+            actionPair.ValueRead(handle);
+            
+            // queue user action here and call them next frame, on the main thread.
+            // if the callback is null, that means it's a compound control, which will fire its own user callback
+            if(actionPair.UserCallback != null)
+                m_ActionInvocationBuffer.Add(actionPair.UserCallback);
+        }
+        
+        // OSCCORE METHOD
+        protected void PrimaryCallbackCore(string address, OscDataHandle handle)
         {
 #if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));
