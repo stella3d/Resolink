@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using OscJack;
 using OscCore;
 using UnityEngine;
 
-using OscServer = OscJack.OscServer;
 using CoreServer = OscCore.OscServer;
 
 namespace Resolink
@@ -136,7 +134,7 @@ namespace Resolink
         /// <param name="address">The URL path to stop handling messages for</param>
         public static bool RemoveCallbacks(string address)
         {
-            return Instance.AddressHandlers.Remove(address); 
+            return Instance != null && Instance.AddressHandlers.Remove(address); 
         }
 
         /// <summary>Remove all handlers for an address</summary>
@@ -151,7 +149,7 @@ namespace Resolink
         /// </summary>
         /// <param name="address">The URL path where this message was received</param>
         /// <param name="handle">A handle to access the value of the message</param>
-        protected void PrimaryCallback(string address, OscDataHandle handle)
+        protected void PrimaryCallback(string address, object handle)
         {
 #if RESOLINK_DEBUG_OSC
             Debug.Log(address + " " + handle.GetElementAsString(0));

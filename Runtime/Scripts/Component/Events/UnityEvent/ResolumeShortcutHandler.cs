@@ -1,6 +1,5 @@
 using System;
 using OscCore;
-using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -59,22 +58,10 @@ namespace Resolink
         /// <summary>
         /// Extract a typed value from a data handle. 
         /// </summary>
-        /// <param name="dataHandle">The handle to extract from</param>
-        /// <returns>The message value</returns>
-        protected abstract T GetMessageValue(OscDataHandle dataHandle);
-        
-        /// <summary>
-        /// Extract a typed value from a data handle. 
-        /// </summary>
         /// <param name="messageValues">The message value handle to extract from</param>
         /// <returns>The message value</returns>
         protected abstract T GetMessageValueCore(OscMessageValues messageValues);
 
-        public void ReadData(OscDataHandle handle)
-        {
-            Value = GetMessageValue(handle);
-        }
-        
         public void ReadDataCore(OscMessageValues handle)
         {
             Value = GetMessageValueCore(handle);
@@ -83,11 +70,6 @@ namespace Resolink
         public void Invoke()
         {
             Event.Invoke(Value);
-        }
-
-        public void InvokeFromHandle(OscDataHandle dataHandle)
-        {
-            Event.Invoke(GetMessageValue(dataHandle));
         }
 
         // the empty update function is here so the inspector has the disable checkbox

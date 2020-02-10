@@ -16,6 +16,7 @@ namespace Resolink
 
         public static bool IsWildcardTemplate(string path)
         {
+            if (path == null) return false;
             const string asterisk = "/*/";
             var wildcardIndex = path.IndexOf(asterisk, StringComparison.CurrentCulture);
             return wildcardIndex != -1;

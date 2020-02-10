@@ -1,6 +1,5 @@
 using System;
 using OscCore;
-using OscJack;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -121,17 +120,7 @@ namespace Resolink
 
             m_Registered = false;
         }
-        
-        Action<OscDataHandle> ReadAndSetDirty(OscActionHandler<TComponentData> handler)
-        {
-            return handle =>
-            {
-                // invoking the sub-handler should modify our Value
-                handler.InvokeFromHandle(handle);
-                m_Dirty = true;
-            };
-        }
-        
+
         Action<OscMessageValues> ReadAndSetDirtyCore(OscActionHandler<TComponentData> handler)
         {
             return handle =>
