@@ -1,6 +1,5 @@
 using OscCore;
 
-
 namespace Resolink
 {
     public class FloatResolumeShortcutHandler : ResolumeShortcutHandler<FloatUnityEvent, float>
